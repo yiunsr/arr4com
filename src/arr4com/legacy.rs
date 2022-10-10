@@ -1,35 +1,33 @@
-use crate::arr4com::OpTarget;
-use crate::arr4com::Arr4F32;
-use crate::arr4com::Arr4ComF32;
+use crate::arr4com::Arr4ComAL;
 
-pub struct LegacyArr4F32<const DLEN: usize>{
+pub struct LegacyArr4Float<T, const DLEN: usize>{
+    nerver_use:T
 }
 
 
-type F32Leg<const DLEN: usize> = LegacyArr4F32<DLEN>;
-impl<const DLEN: usize> Arr4ComF32<DLEN> for F32Leg<DLEN>{
+impl<const DLEN: usize> Arr4ComAL<f32, DLEN> for LegacyArr4Float<f32, DLEN>{
 
-    fn add(ret: &mut Arr4F32<DLEN>, lhs: &Arr4F32<DLEN>, rhs: &Arr4F32<DLEN>){
+    fn add(ret: &mut [f32;DLEN], lhs: [f32;DLEN], rhs: [f32;DLEN]){
         for index in 0..DLEN{
-            ret.data[index] = lhs.data[index] + rhs.data[index];
+            ret[index] = lhs[index] + rhs[index];
         }
     }
     
-    fn sub(ret: &mut Arr4F32<DLEN>, lhs: &Arr4F32<DLEN>, rhs: &Arr4F32<DLEN>){
+    fn sub(ret: &mut [f32;DLEN], lhs: [f32;DLEN], rhs: [f32;DLEN]){
         for index in 0..DLEN{
-            ret.data[index] = lhs.data[index] - rhs.data[index];
+            ret[index] = lhs[index] - rhs[index];
         }
     }
 
-    fn mul(ret: &mut Arr4F32<DLEN>, lhs: &Arr4F32<DLEN>, rhs: &Arr4F32<DLEN>){
+    fn mul(ret: &mut [f32;DLEN], lhs: [f32;DLEN], rhs: [f32;DLEN]){
         for index in 0..DLEN{
-            ret.data[index] = lhs.data[index] * rhs.data[index];
+            ret[index] = lhs[index] * rhs[index];
         }
     }
 
-    fn div(ret: &mut Arr4F32<DLEN>, lhs: &Arr4F32<DLEN>, rhs: &Arr4F32<DLEN>){
+    fn div(ret: &mut [f32;DLEN], lhs: [f32;DLEN], rhs: [f32;DLEN]){
         for index in 0..DLEN{
-            ret.data[index] = lhs.data[index] / rhs.data[index];
+            ret[index] = lhs[index] / rhs[index];
         }
     }
 }

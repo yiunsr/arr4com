@@ -1,21 +1,48 @@
-use arr4com::arr4com::Arr4F32;
-use arr4com::arr4com::Arr4ComF32;
+use arr4com::arr4com::Arr4Com;
+
 use arr4com::arr4com::OpTarget;
 
-fn main() {
+const BLOCK_SIZE: usize = 256;
+ 
+
+fn main01() {
     //arr4com::arr4com::OpTarget 
     //let arr = arr4com::arr4com::arr4float::new();
-    let mut ret:Arr4F32<256> = Arr4F32::new(OpTarget::AVX2);
-    let mut arrLhs:Arr4F32<256> = Arr4F32::new(OpTarget::AVX2);
-    let mut arrRhs:Arr4F32<256> = Arr4F32::new(OpTarget::AVX2);
-    for i in 0..256{
-        arrLhs.data[i] = (i as f32) * 2f32;
-        arrRhs.data[i] = i as f32;
+    let compute:Arr4Com<BLOCK_SIZE> = Arr4Com::new(OpTarget::AVX2);
+    let mut result = [0f32;BLOCK_SIZE];
+    let mut lhs = [0f32;BLOCK_SIZE];
+    let mut rhs = [0f32;BLOCK_SIZE];
+    for i in 0..BLOCK_SIZE{
+        lhs[i] = (i as f32) * 2f32;
+        rhs[i] = i as f32;
     }
-    ret.add(&arrLhs, &arrRhs);
+    compute.add(&mut result, lhs, rhs);
 
-    println!("ret: {}", ret.data[0..10][0]);
-    println!("ret: {}", ret.data[0..10][1]);
-    println!("ret: {}", ret.data[0..10][2]);
-    
+    println!("ret: {}", result[0]);
+    println!("ret: {}", result[1]);
+    println!("ret: {}", result[2]);
+}
+
+fn main02(){
+    let compute:Arr4Com<BLOCK_SIZE> = Arr4Com::new(OpTarget::AVX2);
+    let mut result = [0f32;BLOCK_SIZE];
+    let mut lhs:Vec<f32> = Vec::with_capacity(BLOCK_SIZE);
+    let mut rhs:Vec<f32> = Vec::with_capacity(BLOCK_SIZE);
+    for i in 0..BLOCK_SIZE{
+        lhs.push((i as f32) * 2f32);
+        rhs.push(i as f32);
+    }
+    let lhs:[f32; BLOCK_SIZE] = lhs[..].try_into().unwrap();
+    let rhs:[f32; BLOCK_SIZE] = rhs[..].try_into().unwrap();
+
+    compute.add(&mut result, lhs, rhs);
+
+    println!("ret: {}", result[0]);
+    println!("ret: {}", result[1]);
+    println!("ret: {}", result[2]);
+}
+
+fn main() {
+    //main01();
+    main02();
 }

@@ -4,90 +4,78 @@ mod legacy;
 
 #[derive(Clone, Copy)]
 pub enum OpTarget {
+    LEGACY,
     AVX2,
     // CUDA,
-    LEGACY,
 }
 
-pub struct Arr4F32<const DLEN: usize>{
+pub struct Arr4Com<const DLEN: usize>{
     pub op_target: OpTarget,
-    pub data: [f32; DLEN],
+    pub dlen: usize,
 }
 
-pub trait Arr4ComF32<const DLEN: usize>{
-    fn add(ret: &mut Arr4F32<DLEN>, lhs: &Arr4F32<DLEN>, rhs: &Arr4F32<DLEN>);
-    fn sub(ret: &mut Arr4F32<DLEN>, lhs: &Arr4F32<DLEN>, rhs: &Arr4F32<DLEN>);
-    fn mul(ret: &mut Arr4F32<DLEN>, lhs: &Arr4F32<DLEN>, rhs: &Arr4F32<DLEN>);
-    fn div(ret: &mut Arr4F32<DLEN>, lhs: &Arr4F32<DLEN>, rhs: &Arr4F32<DLEN>);
+pub trait Arr4ComAL<T, const DLEN: usize>{
+    fn add(ret: &mut [T;DLEN], lhs: [T;DLEN], rhs: [T;DLEN]);
+    fn sub(ret: &mut [T;DLEN], lhs: [T;DLEN], rhs: [T;DLEN]);
+    fn mul(ret: &mut [T;DLEN], lhs: [T;DLEN], rhs: [T;DLEN]);
+    fn div(ret: &mut [T;DLEN], lhs: [T;DLEN], rhs: [T;DLEN]);
 }
 
 
-impl<const DLEN: usize> Arr4F32<DLEN>{
+impl<const DLEN: usize> Arr4Com<DLEN>{
     pub fn new(op_target: OpTarget) -> Self{
         match op_target {
             OpTarget::AVX2 => {
-                Arr4F32{op_target: OpTarget::AVX2,  data: [0f32; DLEN]}
+                Arr4Com{op_target: OpTarget::AVX2, dlen: DLEN}
             },
             OpTarget::LEGACY => {
-                Arr4F32{op_target: OpTarget::LEGACY,  data: [0f32; DLEN]}
+                Arr4Com{op_target: OpTarget::LEGACY, dlen: DLEN}
             }
         }
     }
-    pub fn from(op_target: OpTarget, array: [f32; DLEN]) -> Self{
-        match op_target {
-            OpTarget::AVX2 => {
-                Arr4F32{op_target: OpTarget::AVX2,  data: array}
-            },
-            OpTarget::LEGACY => {
-                Arr4F32{op_target: OpTarget::LEGACY,  data: array}
-            }
-        }
-    }
+}
 
-    pub fn at(self, index:usize)->f32{
-        self.data[index]
-    }
-
-    pub fn add(&mut self, lhs: &Arr4F32<DLEN>, rhs: &Arr4F32<DLEN>){
+impl<const DLEN: usize> Arr4Com<DLEN>{
+    pub fn add(self, ret: &mut [f32;DLEN], lhs: [f32;DLEN], rhs: [f32;DLEN]){
         match self.op_target {
             OpTarget::AVX2 => {
-                avx2::Avx2Arr4F32::add(self, &lhs, rhs);
+                avx2::Avx2Arr4Float::add(ret, lhs, rhs);
             },
             OpTarget::LEGACY => {
-                legacy::LegacyArr4F32::add(self, &lhs, rhs);
+                legacy::LegacyArr4Float::add(ret, lhs, rhs);
             }
         }
     }
 
-    pub fn sub(&mut self, lhs: &Arr4F32<DLEN>, rhs: &Arr4F32<DLEN>){
+    pub fn sub(self, ret: &mut [f32;DLEN], lhs: [f32;DLEN], rhs: [f32;DLEN]){
         match self.op_target {
             OpTarget::AVX2 => {
-                avx2::Avx2Arr4F32::add(self, &lhs, rhs);
+                avx2::Avx2Arr4Float::sub(ret, lhs, rhs);
             },
             OpTarget::LEGACY => {
-                legacy::LegacyArr4F32::add(self, &lhs, rhs);
+                legacy::LegacyArr4Float::sub(ret, lhs, rhs);
             }
         }
     }
 
-    pub fn mul(&mut self, lhs: &Arr4F32<DLEN>, rhs: &Arr4F32<DLEN>){
+    pub fn mul(self, ret: &mut [f32;DLEN], lhs: [f32;DLEN], rhs: [f32;DLEN]){
         match self.op_target {
             OpTarget::AVX2 => {
-                avx2::Avx2Arr4F32::add(self, &lhs, rhs);
+                avx2::Avx2Arr4Float::mul(ret, lhs, rhs);
             },
             OpTarget::LEGACY => {
-                legacy::LegacyArr4F32::add(self, &lhs, rhs);
+                legacy::LegacyArr4Float::mul(ret, lhs, rhs);
             }
         }
     }
 
-    pub fn div(&mut self, lhs: &Arr4F32<DLEN>, rhs: &Arr4F32<DLEN>){
+    pub fn div(self, ret: &mut [f32;DLEN], lhs: [f32;DLEN], rhs: [f32;DLEN]){
         match self.op_target {
             OpTarget::AVX2 => {
-                avx2::Avx2Arr4F32::add(self, &lhs, rhs);
+                avx2::Avx2Arr4Float::div(ret, lhs, rhs);
             },
             OpTarget::LEGACY => {
-                legacy::LegacyArr4F32::add(self, &lhs, rhs);
+                legacy::LegacyArr4Float::div(ret, lhs, rhs);
             }
         }
     }
