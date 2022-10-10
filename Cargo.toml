@@ -1,0 +1,17 @@
+[package]
+name = "arr4com"
+version = "0.1.0"
+edition = "2021"
+
+
+[lib]
+name = "arr4com"
+path = "src/lib.rs"
+
+[[bin]]
+name = "arr4combin"
+path = "src/bin.rs"
+
+
+[dependencies]
+arrayvec = "0.7.2"
