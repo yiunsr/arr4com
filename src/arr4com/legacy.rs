@@ -1,42 +1,35 @@
-use arrayvec::ArrayVec;
 use crate::arr4com::OpTarget;
-use crate::arr4com::Arr4FloatCom;
+use crate::arr4com::Arr4F32;
+use crate::arr4com::Arr4ComF32;
 
 pub struct LegacyArr4F32<const DLEN: usize>{
-    pub op_target: OpTarget,
-    pub data: ArrayVec<f32, DLEN>,
 }
 
 
 type F32Leg<const DLEN: usize> = LegacyArr4F32<DLEN>;
-impl<const DLEN: usize> Arr4FloatCom<f32, DLEN> for F32Leg<DLEN>{
-    fn new() -> Self{
-        LegacyArr4F32{
-            op_target: OpTarget::LEGACY,
-            data: ArrayVec::<f32, DLEN>::new()
+impl<const DLEN: usize> Arr4ComF32<DLEN> for F32Leg<DLEN>{
+
+    fn add(ret: &mut Arr4F32<DLEN>, lhs: &Arr4F32<DLEN>, rhs: &Arr4F32<DLEN>){
+        for index in 0..DLEN{
+            ret.data[index] = lhs.data[index] + rhs.data[index];
+        }
+    }
+    
+    fn sub(ret: &mut Arr4F32<DLEN>, lhs: &Arr4F32<DLEN>, rhs: &Arr4F32<DLEN>){
+        for index in 0..DLEN{
+            ret.data[index] = lhs.data[index] - rhs.data[index];
         }
     }
 
-    fn add(&mut self, rhs:&F32Leg<DLEN>){
+    fn mul(ret: &mut Arr4F32<DLEN>, lhs: &Arr4F32<DLEN>, rhs: &Arr4F32<DLEN>){
         for index in 0..DLEN{
-            self.data[index] += rhs.data[index];
-        }
-    }
-    fn sub(&mut self, rhs: &F32Leg<DLEN>){
-        for index in 0..DLEN{
-            self.data[index] -= rhs.data[index];
+            ret.data[index] = lhs.data[index] * rhs.data[index];
         }
     }
 
-    fn mul(&mut self, rhs: &F32Leg<DLEN>){
+    fn div(ret: &mut Arr4F32<DLEN>, lhs: &Arr4F32<DLEN>, rhs: &Arr4F32<DLEN>){
         for index in 0..DLEN{
-            self.data[index] *= rhs.data[index];
-        }
-    }
-
-    fn div(&mut self, rhs: &F32Leg<DLEN>){
-        for index in 0..DLEN{
-            self.data[index] /= rhs.data[index];
+            ret.data[index] = lhs.data[index] / rhs.data[index];
         }
     }
 }

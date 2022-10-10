@@ -1,45 +1,95 @@
 // pub mod arr4float;
 mod avx2;
 mod legacy;
-use arrayvec::ArrayVec;
 
-
+#[derive(Clone, Copy)]
 pub enum OpTarget {
     AVX2,
     // CUDA,
     LEGACY,
 }
 
-
-pub trait Arr4FloatCom<T, const DLEN: usize>{
-    fn new()-> Self;
-    fn add(&mut self, rhs: &Self);
-    fn sub(&mut self, rhs: &Self);
-    fn mul(&mut self, rhs: &Self);
-    fn div(&mut self, rhs: &Self);
-}
-
 pub struct Arr4F32<const DLEN: usize>{
     pub op_target: OpTarget,
-    pub imp_avx2 : Option<avx2::Avx2Arr4F32<DLEN>>,
-    pub imp_leg : Option<legacy::LegacyArr4F32<DLEN>>
+    pub data: [f32; DLEN],
 }
 
-type F32Arr<const DLEN: usize> = Arr4F32<DLEN>;
-pub fn new_arr4f32<const DLEN: usize>(op_target: OpTarget) -> F32Arr<DLEN>{
-    match op_target {
-        AVX2 => {
-            let arr = avx2::Avx2Arr4F32::<DLEN>::new();
-            Arr4F32{op_target: AVX2,  imp_avx2: Some(arr), imp_leg: None}
-        },
-        LEGACY => {
-            let arr = legacy::LegacyArr4F32::<DLEN>::new();
-            Arr4F32{op_target: LEGACY,  imp_avx2: None, imp_leg: Some(arr)}
+pub trait Arr4ComF32<const DLEN: usize>{
+    fn add(ret: &mut Arr4F32<DLEN>, lhs: &Arr4F32<DLEN>, rhs: &Arr4F32<DLEN>);
+    fn sub(ret: &mut Arr4F32<DLEN>, lhs: &Arr4F32<DLEN>, rhs: &Arr4F32<DLEN>);
+    fn mul(ret: &mut Arr4F32<DLEN>, lhs: &Arr4F32<DLEN>, rhs: &Arr4F32<DLEN>);
+    fn div(ret: &mut Arr4F32<DLEN>, lhs: &Arr4F32<DLEN>, rhs: &Arr4F32<DLEN>);
+}
+
+
+impl<const DLEN: usize> Arr4F32<DLEN>{
+    pub fn new(op_target: OpTarget) -> Self{
+        match op_target {
+            OpTarget::AVX2 => {
+                Arr4F32{op_target: OpTarget::AVX2,  data: [0f32; DLEN]}
+            },
+            OpTarget::LEGACY => {
+                Arr4F32{op_target: OpTarget::LEGACY,  data: [0f32; DLEN]}
+            }
+        }
+    }
+    pub fn from(op_target: OpTarget, array: [f32; DLEN]) -> Self{
+        match op_target {
+            OpTarget::AVX2 => {
+                Arr4F32{op_target: OpTarget::AVX2,  data: array}
+            },
+            OpTarget::LEGACY => {
+                Arr4F32{op_target: OpTarget::LEGACY,  data: array}
+            }
+        }
+    }
+
+    pub fn at(self, index:usize)->f32{
+        self.data[index]
+    }
+
+    pub fn add(&mut self, lhs: &Arr4F32<DLEN>, rhs: &Arr4F32<DLEN>){
+        match self.op_target {
+            OpTarget::AVX2 => {
+                avx2::Avx2Arr4F32::add(self, &lhs, rhs);
+            },
+            OpTarget::LEGACY => {
+                legacy::LegacyArr4F32::add(self, &lhs, rhs);
+            }
+        }
+    }
+
+    pub fn sub(&mut self, lhs: &Arr4F32<DLEN>, rhs: &Arr4F32<DLEN>){
+        match self.op_target {
+            OpTarget::AVX2 => {
+                avx2::Avx2Arr4F32::add(self, &lhs, rhs);
+            },
+            OpTarget::LEGACY => {
+                legacy::LegacyArr4F32::add(self, &lhs, rhs);
+            }
+        }
+    }
+
+    pub fn mul(&mut self, lhs: &Arr4F32<DLEN>, rhs: &Arr4F32<DLEN>){
+        match self.op_target {
+            OpTarget::AVX2 => {
+                avx2::Avx2Arr4F32::add(self, &lhs, rhs);
+            },
+            OpTarget::LEGACY => {
+                legacy::LegacyArr4F32::add(self, &lhs, rhs);
+            }
+        }
+    }
+
+    pub fn div(&mut self, lhs: &Arr4F32<DLEN>, rhs: &Arr4F32<DLEN>){
+        match self.op_target {
+            OpTarget::AVX2 => {
+                avx2::Avx2Arr4F32::add(self, &lhs, rhs);
+            },
+            OpTarget::LEGACY => {
+                legacy::LegacyArr4F32::add(self, &lhs, rhs);
+            }
         }
     }
 }
 
-
-impl<const DLEN: usize> Arr4F32<DLEN> for Arr4FloatCom<f32, DLEN:>{
-
-}

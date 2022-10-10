@@ -14,4 +14,4 @@ path = "src/bin.rs"
 
 
 [dependencies]
-arrayvec = "0.7.2"
+tinyvec = "1.6.0"
