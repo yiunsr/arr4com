@@ -38,6 +38,7 @@
                     "kind": "bin"
                 }
             },
+            "env": { "RUST_BACKTRACE": "1" },
             "args": [],
             "cwd": "${workspaceFolder}"
         },
