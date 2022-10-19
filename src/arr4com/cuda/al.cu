@@ -22,3 +22,9 @@ extern "C" __global__ void arr4com_div(const float* x, const float* y, float* ou
         out[i] = x[i] / y[i];
     }
 }
+
+extern "C" __global__ void arr4com_sin(const float* x, float* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = __sinf(x[i]);
+    }
+}

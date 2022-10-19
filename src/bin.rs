@@ -58,8 +58,23 @@ fn main03(){
     println!("ret: {}", result[2]);
 }
 
+fn main04(){
+    let compute:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::new(OpTarget::AVX2);
+    let mut result = [0f32;BLOCK_SIZE];
+    let mut lhs = [0f32;BLOCK_SIZE];
+    for i in 0..BLOCK_SIZE{
+        lhs[i] = (i as f32);
+    }
+    compute.sin(&mut result, lhs);
+
+    println!("ret: {}", result[0]);
+    println!("ret: {}", result[1]);
+    println!("ret: {}", result[2]);
+}
+
 fn main() {
     //main01();
     //main02();
-    main03();
+    //main03();
+    main04();
 }

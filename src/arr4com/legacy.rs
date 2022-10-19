@@ -30,4 +30,10 @@ impl<const DLEN: usize> Arr4ComAL<f32, DLEN> for LegacyArr4Float<f32, DLEN>{
             ret[index] = lhs[index] / rhs[index];
         }
     }
+
+    fn sin(ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = lhs[index].sin();
+        }
+    }
 }

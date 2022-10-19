@@ -1,5 +1,6 @@
 use core::{arch::x86_64::*};
 use crate::arr4com::Arr4ComAL;
+use crate::arr4com::sleef::simdsp;
 
 macro_rules! InterLoop2{
     ($ret:ident, $lhs:ident, $rhs:ident, $F:ident) => {
@@ -53,4 +54,19 @@ impl<const DLEN: usize> Arr4ComAL<f32, DLEN> for F32Avx<DLEN>{
     fn div(ret: &mut [f32;DLEN], lhs: [f32;DLEN], rhs: [f32;DLEN]){
         InterLoop2!(ret, lhs, rhs, _mm256_div_ps);
     }
+
+    fn sin(ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        let bs = 8;
+        let block = DLEN as usize / 8;
+
+        for index in 0..block{
+            unsafe{
+                let left = _mm256_loadu_ps(&lhs[index * bs]);
+                let result = simdsp::xsinf_u1(left);
+                _mm256_storeu_ps(&mut ret[index * bs], result);
+            }
+        }
+    }
+
 }
+

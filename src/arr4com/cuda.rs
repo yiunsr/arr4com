@@ -6,6 +6,33 @@ use std::ffi::CString;
 
 use crate::arr4com::Arr4ComAL;
 
+
+macro_rules! InterCuda1{
+    ($self:ident, $ret:ident, $lhs:ident,  $F:ident) => {
+        let mut x = unsafe { DeviceBuffer::uninitialized(DLEN).unwrap() };
+        x.copy_from(&$lhs).unwrap();
+
+        let mut r = unsafe { DeviceBuffer::uninitialized(DLEN).unwrap() };
+        // r.copy_from(&ret).unwrap();
+
+        let module_data = CString::new(include_str!("./cuda/al.ptx")).unwrap();
+        let module = Module::load_from_string(&module_data).unwrap();
+        let stream = $self.stream;
+
+        unsafe {
+            // Launch the `arr4com_add` function with one block containing one thread on the given stream.
+            launch!(module.$F<<<1, 256, 0, stream>>>(
+                x.as_device_ptr(),
+                r.as_device_ptr(),
+                DLEN // Length
+            )).unwrap();
+        }
+    
+        stream.synchronize().unwrap();
+        r.copy_to($ret).unwrap();
+    };
+}
+
 macro_rules! InterCuda2{
     ($self:ident, $ret:ident, $lhs:ident, $rhs:ident, $F:ident) => {
         let mut x = unsafe { DeviceBuffer::uninitialized(DLEN).unwrap() };
@@ -22,7 +49,7 @@ macro_rules! InterCuda2{
         let stream = $self.stream;
 
         unsafe {
-            // Launch the `sum` function with one block containing one thread on the given stream.
+            // Launch the `arr4com_add` function with one block containing one thread on the given stream.
             launch!(module.$F<<<1, 256, 0, stream>>>(
                 x.as_device_ptr(),
                 y.as_device_ptr(),
@@ -88,7 +115,7 @@ impl<const DLEN: usize> F32Cuda<DLEN>{
         let stream = self.stream;
 
         unsafe {
-            // Launch the `sum` function with one block containing one thread on the given stream.
+            // Launch the `arr4com_add` function with one block containing one thread on the given stream.
             launch!(module.arr4com_add<<<1, 256, 0, stream>>>(
                 x.as_device_ptr(),
                 y.as_device_ptr(),
@@ -112,4 +139,30 @@ impl<const DLEN: usize> F32Cuda<DLEN>{
     pub fn div(self, ret: &mut [f32;DLEN], lhs: [f32;DLEN], rhs: [f32;DLEN]){
         InterCuda2!(self, ret, lhs, rhs, arr4com_div);
     }
+
+    pub fn sin(self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCuda1!(self, ret, lhs, arr4com_sin);
+    }
+
+    // pub fn sort(self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+    //     let mut x = unsafe { DeviceBuffer::uninitialized(DLEN).unwrap() };
+    //     x.copy_from(&lhs).unwrap();
+
+    //     let mut r = unsafe { DeviceBuffer::uninitialized(DLEN).unwrap() };
+
+    //     let module_data = CString::new(include_str!("./cuda/al.ptx")).unwrap();
+    //     let module = Module::load_from_string(&module_data).unwrap();
+    //     let stream = self.stream;
+
+    //     unsafe {
+    //         launch!(module.arr4com_sort<<<1, 256, 0, stream>>>(
+    //             x.as_device_ptr(),
+    //             r.as_device_ptr(),
+    //             DLEN // Length
+    //         )).unwrap();
+    //     }
+    
+    //     stream.synchronize().unwrap();
+    //     r.copy_to(ret).unwrap();
+    // }
 }

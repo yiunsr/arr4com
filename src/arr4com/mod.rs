@@ -2,6 +2,7 @@
 mod legacy;
 mod avx2;
 mod cuda;
+mod sleef;
 
 #[derive(Clone, Copy)]
 pub enum OpTarget {
@@ -21,6 +22,8 @@ pub trait Arr4ComAL<T, const DLEN: usize>{
     fn sub(ret: &mut [T;DLEN], lhs: [T;DLEN], rhs: [T;DLEN]);
     fn mul(ret: &mut [T;DLEN], lhs: [T;DLEN], rhs: [T;DLEN]);
     fn div(ret: &mut [T;DLEN], lhs: [T;DLEN], rhs: [T;DLEN]);
+
+    fn sin(ret: &mut [T;DLEN], lhs: [T;DLEN]);
 }
 
 
@@ -102,5 +105,27 @@ impl<const DLEN: usize> Arr4Com<f32, DLEN>{
             },
         }
     }
+
+    pub fn sin(self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        match self.op_target {
+            OpTarget::LEGACY => {
+                legacy::LegacyArr4Float::sin(ret, lhs);
+            },
+            OpTarget::AVX2 => {
+                avx2::Avx2Arr4Float::sin(ret, lhs);
+            },
+            OpTarget::CUDA => {
+                let cuda_com = self.cuda_com.unwrap();
+                cuda_com.sin(ret, lhs);
+            },
+        }
+    }
+
+    // pub fn sort(self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+    //     let cuda_com = self.cuda_com.unwrap();
+    //     cuda_com.sort(ret, lhs);
+    // }
+
+
 }
 
