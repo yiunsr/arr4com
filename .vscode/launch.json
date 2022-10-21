@@ -5,22 +5,27 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Run Test Debugger",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/target/debug/deps/arr4com-005e48d67f488da6.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": []
+        },
+        {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug unit tests in library 'arr4comlib'",
+            "name": "Cargo test",
             "cargo": {
                 "args": [
                     "test",
-                    "--no-run",
-                    "--lib",
-                    "--package=arr4com"
-                ],
-                "filter": {
-                    "name": "arr4comlib",
-                    "kind": "lib"
-                }
+                    "--no-run"
+                ]
             },
-            "args": [],
+            "program": "${cargo:program}",
+            "args": ["${selectedText}"],
             "cwd": "${workspaceFolder}"
         },
         {
@@ -39,25 +44,6 @@
                 }
             },
             "env": { "RUST_BACKTRACE": "1" },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'arr4combin'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--bin=arr4combin",
-                    "--package=arr4com"
-                ],
-                "filter": {
-                    "name": "arr4combin",
-                    "kind": "bin"
-                }
-            },
             "args": [],
             "cwd": "${workspaceFolder}"
         }

@@ -1,3 +1,11 @@
+#![allow(
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    dead_code
+)]
+
+
 use crate::arr4com::sleef::helperavx2::*;
 
 pub fn  vd2getx_vd_vd2(v:vdouble2)->vdouble { v.x }

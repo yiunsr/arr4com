@@ -23,3 +23,9 @@ nvcc add.cu -ptx
 ```
 
 * llvm 으로도 컴파일 가능 한 것 같음 
+
+
+## unittest 디버깅용 파일생성
+```
+cargo test
+```

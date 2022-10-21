@@ -1,3 +1,11 @@
+#![allow(
+    improper_ctypes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    dead_code
+)]
+
 use core::{arch::x86_64::*};
 use crate::arr4com::sleef::misc::*;
 pub type vmask = __m256i;
@@ -5,6 +13,7 @@ pub type vopmask = __m256i;
 
 pub type vdouble = __m256d;
 pub type vint = __m128i;
+
 
 pub type vfloat = __m256;
 pub type vint2 = __m256i;
@@ -183,7 +192,7 @@ pub fn vge_vo_vd_vd(x:vdouble, y:vdouble)->vopmask { unsafe{ vreinterpret_vm_vd(
 
 pub fn vadd_vi_vi_vi(x:vint, y:vint)->vint { unsafe{ _mm_add_epi32(x, y)} }
 pub fn vsub_vi_vi_vi(x:vint, y:vint)->vint { unsafe{ _mm_sub_epi32(x, y)} }
-pub fn vneg_vi_vi(e:vint)->vint { unsafe{ vsub_vi_vi_vi(vcast_vi_i(0), e)} }
+pub fn vneg_vi_vi(e:vint)->vint {  vsub_vi_vi_vi(vcast_vi_i(0), e) }
 
 pub fn vand_vi_vi_vi(x:vint, y:vint)->vint { unsafe{ _mm_and_si128(x, y)} }
 pub fn vandnot_vi_vi_vi(x:vint, y:vint)->vint { unsafe{ _mm_andnot_si128(x, y)} }
@@ -265,14 +274,14 @@ pub fn vcast_vi2_i(i:i32)->vint2 { unsafe{ _mm256_set1_epi32(i)} }
 pub fn vreinterpret_vm_vf(vf:vfloat)->vmask { unsafe{ _mm256_castps_si256(vf)} }
 pub fn vreinterpret_vf_vm(vm:vmask)->vfloat { unsafe{ _mm256_castsi256_ps(vm)} }
 
-pub fn vreinterpret_vf_vi2(vi:vint2)->vfloat { unsafe{ vreinterpret_vf_vm(vcast_vm_vi2(vi))} }
-pub fn vreinterpret_vi2_vf(vf:vfloat)->vint2 { unsafe{vcast_vi2_vm(vreinterpret_vm_vf(vf))} }
+pub fn vreinterpret_vf_vi2(vi:vint2)->vfloat {  vreinterpret_vf_vm(vcast_vm_vi2(vi)) }
+pub fn vreinterpret_vi2_vf(vf:vfloat)->vint2 { vcast_vi2_vm(vreinterpret_vm_vf(vf)) }
 
 pub fn vadd_vf_vf_vf(x:vfloat, y:vfloat)->vfloat { unsafe{_mm256_add_ps(x, y)} }
 pub fn vsub_vf_vf_vf(x:vfloat, y:vfloat)->vfloat { unsafe{ _mm256_sub_ps(x, y)} }
 pub fn vmul_vf_vf_vf(x:vfloat, y:vfloat)->vfloat { unsafe{ _mm256_mul_ps(x, y)} }
 pub fn vdiv_vf_vf_vf(x:vfloat, y:vfloat)->vfloat { unsafe{ _mm256_div_ps(x, y)} }
-pub fn vrec_vf_vf(x:vfloat)->vfloat { unsafe{ vdiv_vf_vf_vf(vcast_vf_f(1.0f32), x)} }
+pub fn vrec_vf_vf(x:vfloat)->vfloat { vdiv_vf_vf_vf(vcast_vf_f(1.0f32), x) }
 pub fn vsqrt_vf_vf(x:vfloat)->vfloat { unsafe{ _mm256_sqrt_ps(x)} }
 pub fn vabs_vf_vf(f:vfloat)->vfloat { vreinterpret_vf_vm(vandnot_vm_vm_vm(vreinterpret_vm_vf(vcast_vf_f(-0.0f32)), vreinterpret_vm_vf(f))) }
 pub fn vneg_vf_vf(d:vfloat)->vfloat { vreinterpret_vf_vm(vxor_vm_vm_vm(vreinterpret_vm_vf(vcast_vf_f(-0.0f32)), vreinterpret_vm_vf(d)))}
@@ -297,15 +306,15 @@ pub fn vge_vo_vf_vf(x:vfloat, y:vfloat)->vopmask { unsafe{ vreinterpret_vm_vf(_m
 
 pub fn vadd_vi2_vi2_vi2(x:vint2, y:vint2)->vint2 { unsafe{ _mm256_add_epi32(x, y)} }
 pub fn vsub_vi2_vi2_vi2(x:vint2, y:vint2)->vint2 { unsafe{ _mm256_sub_epi32(x, y)} }
-pub fn vneg_vi2_vi2(e:vint2)->vint2 { unsafe{ vsub_vi2_vi2_vi2(vcast_vi2_i(0), e)} }
+pub fn vneg_vi2_vi2(e:vint2)->vint2 { vsub_vi2_vi2_vi2(vcast_vi2_i(0), e) }
 
 pub fn vand_vi2_vi2_vi2(x:vint2, y:vint2 )->vint2 { unsafe{ _mm256_and_si256(x, y)} }
 pub fn vandnot_vi2_vi2_vi2(x:vint2, y:vint2 )->vint2 { unsafe{ _mm256_andnot_si256(x, y)} }
 pub fn vor_vi2_vi2_vi2(x:vint2, y:vint2 )->vint2 { unsafe{ _mm256_or_si256(x, y)} }
 pub fn vxor_vi2_vi2_vi2(x:vint2, y:vint2 )->vint2 { unsafe{ _mm256_xor_si256(x, y)} }
 
-pub fn vand_vi2_vo_vi2(x:vopmask, y:vint2)->vint2 { unsafe{vand_vi2_vi2_vi2(vcast_vi2_vm(x), y)} }
-pub fn vandnot_vi2_vo_vi2(x:vopmask, y:vint2)->vint2 { unsafe{vandnot_vi2_vi2_vi2(vcast_vi2_vm(x), y)} }
+pub fn vand_vi2_vo_vi2(x:vopmask, y:vint2)->vint2 { vand_vi2_vi2_vi2(vcast_vi2_vm(x), y) }
+pub fn vandnot_vi2_vo_vi2(x:vopmask, y:vint2)->vint2 { vandnot_vi2_vi2_vi2(vcast_vi2_vm(x), y) }
 
 pub fn vsll_vi2_vi2_i<const c: i32>(x:vint2)->vint2 { unsafe{ _mm256_slli_epi32(x, c)} }
 pub fn vsrl_vi2_vi2_i<const c: i32>(x:vint2)->vint2 { unsafe{ _mm256_srli_epi32(x, c)} }
@@ -324,11 +333,11 @@ pub fn vsel_vi2_vo_vi2_vi2(m:vopmask, x:vint2, y:vint2)->vint2 {
 pub fn vsel_vf_vo_vf_vf(o:vopmask, x:vfloat, y:vfloat)->vfloat { unsafe{_mm256_blendv_ps(y, x, _mm256_castsi256_ps(o))} }
 
 pub fn vsel_vf_vo_f_f(o:vopmask, v1:f32, v0:f32)->vfloat {
-    unsafe{ vsel_vf_vo_vf_vf(o, vcast_vf_f(v1), vcast_vf_f(v0))}
+    vsel_vf_vo_vf_vf(o, vcast_vf_f(v1), vcast_vf_f(v0))
 }
 
 pub fn vsel_vf_vo_vo_f_f_f(o0:vopmask, o1:vopmask, d0:f32, d1:f32, d2:f32)->vfloat {
-    unsafe{ vsel_vf_vo_vf_vf(o0, vcast_vf_f(d0), vsel_vf_vo_f_f(o1, d1, d2))}
+    vsel_vf_vo_vf_vf(o0, vcast_vf_f(d0), vsel_vf_vo_f_f(o1, d1, d2))
 }
 
 pub fn vsel_vf_vo_vo_vo_f_f_f_f(o0:vopmask, o1:vopmask, o2:vopmask, d0:f32, d1:f32, d2:f32, d3:f32)->vfloat {
@@ -370,8 +379,8 @@ pub fn vnegpos_vf_vf(d:vfloat)->vfloat { vreinterpret_vf_vm(vxor_vm_vm_vm(vreint
 pub fn vsubadd_vd_vd_vd(x:vdouble, y:vdouble)->vdouble { unsafe{ _mm256_addsub_pd(x, y)} }
 pub fn vsubadd_vf_vf_vf(x:vfloat, y:vfloat)->vfloat { unsafe{_mm256_addsub_ps(x, y)} }
 
-pub fn vmlsubadd_vd_vd_vd_vd(x:vdouble, y:vdouble, z:vdouble)->vdouble { unsafe{ vmla_vd_vd_vd_vd(x, y, vnegpos_vd_vd(z))} }
-pub fn vmlsubadd_vf_vf_vf_vf(x:vfloat, y:vfloat, z:vfloat)->vfloat { unsafe{vmla_vf_vf_vf_vf(x, y, vnegpos_vf_vf(z))} }
+pub fn vmlsubadd_vd_vd_vd_vd(x:vdouble, y:vdouble, z:vdouble)->vdouble { vmla_vd_vd_vd_vd(x, y, vnegpos_vd_vd(z)) }
+pub fn vmlsubadd_vf_vf_vf_vf(x:vfloat, y:vfloat, z:vfloat)->vfloat { vmla_vf_vf_vf_vf(x, y, vnegpos_vf_vf(z)) }
 
 pub fn  vrev21_vd_vd(d0:vdouble)->vdouble { unsafe{ _mm256_shuffle_pd(d0, d0, (0 << 3) | (1 << 2) | (0 << 1) | (1 << 0))} }
 pub fn vreva2_vd_vd(d0:vdouble)->vdouble { 

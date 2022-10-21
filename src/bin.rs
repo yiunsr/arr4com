@@ -1,9 +1,8 @@
 use arr4com::arr4com::Arr4Com;
-
 use arr4com::arr4com::OpTarget;
 
 const BLOCK_SIZE: usize = 256;
- 
+
 
 fn main01() {
     //arr4com::arr4com::OpTarget 
@@ -63,7 +62,7 @@ fn main04(){
     let mut result = [0f32;BLOCK_SIZE];
     let mut lhs = [0f32;BLOCK_SIZE];
     for i in 0..BLOCK_SIZE{
-        lhs[i] = (i as f32);
+        lhs[i] = i as f32;
     }
     compute.sin(&mut result, lhs);
 
@@ -78,3 +77,7 @@ fn main() {
     //main03();
     main04();
 }
+
+
+#[cfg(test)]
+mod tests;

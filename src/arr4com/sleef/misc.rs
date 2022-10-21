@@ -1,3 +1,10 @@
+#![allow(
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    dead_code
+)]
+
 pub const M_PI:f64 = 3.141592653589793238462643383279502884;
 pub const M_1_PI:f64 = 0.318309886183790671537767526745028724f64;
 pub const M_2_PI:f64 = 0.636619772367581343075535053490057448f64;
