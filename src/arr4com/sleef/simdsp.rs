@@ -66,7 +66,7 @@ pub fn visnumber_vo_vf(x:vfloat)->vopmask{ vnot_vo32_vo32(vor_vo_vo_vo(visinf_vo
 pub fn vilogbk_vi2_vf(d:vfloat)->vint2{
     let o = vlt_vo_vf_vf(d, vcast_vf_f(5.421010862427522E-20f32));
     let d = vsel_vf_vo_vf_vf(o, vmul_vf_vf_vf(vcast_vf_f(1.8446744073709552E19f32), d), d);
-    let mut q = vand_vi2_vi2_vi2(vsrl_vi2_vi2_i::<23>(vreinterpret_vi2_vf(d)), vcast_vi2_i(0xff));
+    let q = vand_vi2_vi2_vi2(vsrl_vi2_vi2_i::<23>(vreinterpret_vi2_vf(d)), vcast_vi2_i(0xff));
     vsub_vi2_vi2_vi2(q, vsel_vi2_vo_vi2_vi2(o, vcast_vi2_i(64 + 0x7f), vcast_vi2_i(0x7f)))
 }
 
@@ -154,10 +154,9 @@ fn rempisubf(x:vfloat)->fi_t{
     fisetdi_fi_vf_vi2(vsub_vf_vf_vf(x, vmul_vf_vf_vf(y, vcast_vf_f(0.25f32))), vi)
 }
 fn rempif(a:vfloat)->dfi_t{
-    let mut x:vfloat2; let mut y:vfloat2;
-    let mut ex:vint2 = vilogb2k_vi2_vf(a);
+    let mut ex = vilogb2k_vi2_vf(a);
     ex = vsub_vi2_vi2_vi2(ex, vcast_vi2_i(25));
-    let mut q:vint2 = vand_vi2_vo_vi2(vgt_vo_vi2_vi2(ex, vcast_vi2_i(90-25)), vcast_vi2_i(-64));
+    let mut q = vand_vi2_vo_vi2(vgt_vo_vi2_vi2(ex, vcast_vi2_i(90-25)), vcast_vi2_i(-64));
     let a = vldexp3_vf_vf_vi2(a, q);
     ex = vandnot_vi2_vi2_vi2(vsra_vi2_vi2_i::<31>(ex), ex);
     ex = vsll_vi2_vi2_i::<2>(ex);
@@ -166,7 +165,7 @@ fn rempif(a:vfloat)->dfi_t{
     q = figeti_vi2_di(di);
     x = vf2setx_vf2_vf2_vf(x, figetd_vf_di(di));
     x = dfnormalize_vf2_vf2(x);
-    y = dfmul_vf2_vf_vf(a, vgather_vf_p_vi2(&Sleef_rempitabsp[1], ex));
+    let mut y = dfmul_vf2_vf_vf(a, vgather_vf_p_vi2(&Sleef_rempitabsp[1], ex));
     x = dfadd2_vf2_vf2_vf2(x, y);
     di = rempisubf(vf2getx_vf_vf2(x));
     q = vadd_vi2_vi2_vi2(q, figeti_vi2_di(di));
@@ -183,8 +182,8 @@ fn rempif(a:vfloat)->dfi_t{
 
 pub fn xsinf_u1(d:vfloat)->vfloat{
     let mut q:vint2;
-    let mut u:vfloat; let mut v:vfloat;
-    let mut s:vfloat2; let mut t:vfloat2; let mut x:vfloat2;
+    let mut u:vfloat; let v:vfloat;
+    let mut s:vfloat2; let t:vfloat2; let x:vfloat2;
 
     if vtestallones_i_vo32(vlt_vo_vf_vf(vabs_vf_vf(d), vcast_vf_f(TRIGRANGEMAX2f))) != 0 {
         u = vrint_vf_vf(vmul_vf_vf_vf(d, vcast_vf_f(M_1_PI as f32)));
@@ -227,8 +226,8 @@ pub fn xcosf_u1(d:vfloat)->vfloat{
     let mut q:vint2;
     let mut u:vfloat;
     let mut s:vfloat2;
-    let mut t:vfloat2;
-    let mut x:vfloat2;
+    let t:vfloat2;
+    let x:vfloat2;
     
     if vtestallones_i_vo32(vlt_vo_vf_vf(vabs_vf_vf(d), vcast_vf_f(TRIGRANGEMAX2f))) != 0 {
         let dq = vmla_vf_vf_vf_vf(vrint_vf_vf(vmla_vf_vf_vf_vf(d, vcast_vf_f(M_1_PI as f32), vcast_vf_f(-0.5f32))),
@@ -322,7 +321,7 @@ pub fn xtanf_u1(d:vfloat)->vfloat{
 pub fn atan2kf_u1(y:vfloat2, x:vfloat2)->vfloat2{
     let mut q = vsel_vi2_vf_vf_vi2_vi2(vf2getx_vf_vf2(x), vcast_vf_f(0f32), vcast_vi2_i(-2), vcast_vi2_i(0));
     let mut p = vlt_vo_vf_vf(vf2getx_vf_vf2(x), vcast_vf_f(0f32));
-    let mut r = vand_vm_vo32_vm(p, vreinterpret_vm_vf(vcast_vf_f(-0.0f32)));
+    let r = vand_vm_vo32_vm(p, vreinterpret_vm_vf(vcast_vf_f(-0.0f32)));
     let mut x = vf2setx_vf2_vf2_vf(x, vreinterpret_vf_vm(vxor_vm_vm_vm(vreinterpret_vm_vf(vf2getx_vf_vf2(x)), r)));
     x = vf2sety_vf2_vf2_vf(x, vreinterpret_vf_vm(vxor_vm_vm_vm(vreinterpret_vm_vf(vf2gety_vf_vf2(x)), r)));
   
@@ -883,6 +882,266 @@ pub fn xlog2f(d:vfloat)->vfloat{
     r = vsel_vf_vo_vf_vf(vispinf_vo_vf(d), vcast_vf_f(SLEEF_INFINITY as f32), r);
     r = vsel_vf_vo_vf_vf(vor_vo_vo_vo(vlt_vo_vf_vf(d, vcast_vf_f(0f32)), visnan_vo_vf(d)), vcast_vf_f(SLEEF_NAN as f32), r);
     r = vsel_vf_vo_vf_vf(veq_vo_vf_vf(d, vcast_vf_f(0f32)), vcast_vf_f(-SLEEF_INFINITY as f32), r);
+    
+    r
+}
+
+fn xlog1pf(d:vfloat)->vfloat{
+    let mut dp1 = vadd_vf_vf_vf(d, vcast_vf_f(1f32));
+
+    let o = vlt_vo_vf_vf(dp1, vcast_vf_f(SLEEF_FLT_MIN));
+    dp1 = vsel_vf_vo_vf_vf(o, vmul_vf_vf_vf(dp1, vcast_vf_f((1i64 << 32) as f32 * (1i64 << 32) as f32 )), dp1);
+    let mut e = vilogb2k_vi2_vf(vmul_vf_vf_vf(dp1, vcast_vf_f(1.0f32/0.75f32)));
+    let mut t = vldexp3_vf_vf_vi2(vcast_vf_f(1f32), vneg_vi2_vi2(e));
+    let m = vmla_vf_vf_vf_vf(d, t, vsub_vf_vf_vf(t, vcast_vf_f(1f32)));
+    e = vsel_vi2_vo_vi2_vi2(o, vsub_vi2_vi2_vi2(e, vcast_vi2_i(64)), e);
+    let mut s = dfmul_vf2_vf2_vf(vcast_vf2_f_f(0.69314718246459960938f32, -1.904654323148236017e-09f32), vcast_vf_vi2(e));
+
+    let x = dfdiv_vf2_vf2_vf2(vcast_vf2_vf_vf(m, vcast_vf_f(0f32)), dfadd_vf2_vf_vf(vcast_vf_f(2f32), m));
+    let x2 = vmul_vf_vf_vf(vf2getx_vf_vf2(x), vf2getx_vf_vf2(x));
+
+    t = vcast_vf_f(0.3027294874e+0f32);
+    t = vmla_vf_vf_vf_vf(t, x2, vcast_vf_f(0.3996108174e+0f32));
+    t = vmla_vf_vf_vf_vf(t, x2, vcast_vf_f(0.6666694880e+0f32));
+  
+    s = dfadd_vf2_vf2_vf2(s, dfscale_vf2_vf2_vf(x, vcast_vf_f(2f32)));
+    s = dfadd_vf2_vf2_vf(s, vmul_vf_vf_vf(vmul_vf_vf_vf(x2, vf2getx_vf_vf2(x)), t));
+
+    let mut r = vadd_vf_vf_vf(vf2getx_vf_vf2(s), vf2gety_vf_vf2(s));
+  
+    r = vsel_vf_vo_vf_vf(vgt_vo_vf_vf(d, vcast_vf_f(1e+38)), vcast_vf_f(SLEEF_INFINITYf), r);
+    r = vreinterpret_vf_vm(vor_vm_vo32_vm(vgt_vo_vf_vf(vcast_vf_f(-1f32), d), vreinterpret_vm_vf(r)));
+    r = vsel_vf_vo_vf_vf(veq_vo_vf_vf(d, vcast_vf_f(-1f32)), vcast_vf_f(-SLEEF_INFINITYf), r);
+    r = vsel_vf_vo_vf_vf(visnegzero_vo_vf(d), vcast_vf_f(-0.0f32), r);
+
+    r
+}
+
+pub fn xfabsf(x:vfloat)->vfloat{ vabs_vf_vf(x) }
+pub fn xcopysignf(x:vfloat, y:vfloat)->vfloat{ vcopysign_vf_vf_vf(x, y) }
+pub fn xfmaxf(x:vfloat, y:vfloat)->vfloat{
+    vsel_vf_vo_vf_vf(visnan_vo_vf(y), x, vmax_vf_vf_vf(x, y))
+}
+pub fn xfminf(x:vfloat, y:vfloat)->vfloat{
+    vsel_vf_vo_vf_vf(visnan_vo_vf(y), x, vmin_vf_vf_vf(x, y))
+}
+pub fn xtruncf(x:vfloat)->vfloat{   vtruncate_vf_vf(x) }
+    
+pub fn xfloorf(x:vfloat)->vfloat{
+    let mut fr = vsub_vf_vf_vf(x, vcast_vf_vi2(vtruncate_vi2_vf(x)));
+    fr = vsel_vf_vo_vf_vf(vlt_vo_vf_vf(fr, vcast_vf_f(0f32)), vadd_vf_vf_vf(fr, vcast_vf_f(1.0f32)), fr);
+    vsel_vf_vo_vf_vf(vor_vo_vo_vo(visinf_vo_vf(x), vge_vo_vf_vf(vabs_vf_vf(x), vcast_vf_f((1i64 << 23) as f32))), x, vcopysign_vf_vf_vf(vsub_vf_vf_vf(x, fr), x))
+}
+    
+pub fn xceilf(x:vfloat)->vfloat{
+    let mut fr = vsub_vf_vf_vf(x, vcast_vf_vi2(vtruncate_vi2_vf(x)));
+    fr = vsel_vf_vo_vf_vf(vle_vo_vf_vf(fr, vcast_vf_f(0f32)), fr, vsub_vf_vf_vf(fr, vcast_vf_f(1.0f32)));
+    vsel_vf_vo_vf_vf(vor_vo_vo_vo(visinf_vo_vf(x), vge_vo_vf_vf(vabs_vf_vf(x), vcast_vf_f( (1i64 << 23) as f32))), x, vcopysign_vf_vf_vf(vsub_vf_vf_vf(x, fr), x))
+}
+    
+pub fn xroundf(d:vfloat)->vfloat{
+    let mut x = vadd_vf_vf_vf(d, vcast_vf_f(0.5f32));
+    let mut fr = vsub_vf_vf_vf(x, vcast_vf_vi2(vtruncate_vi2_vf(x)));
+    x = vsel_vf_vo_vf_vf(vand_vo_vo_vo(vle_vo_vf_vf(x, vcast_vf_f(0f32)), veq_vo_vf_vf(fr, vcast_vf_f(0f32))), vsub_vf_vf_vf(x, vcast_vf_f(1.0f32)), x);
+    fr = vsel_vf_vo_vf_vf(vlt_vo_vf_vf(fr, vcast_vf_f(0f32)), vadd_vf_vf_vf(fr, vcast_vf_f(1.0f32)), fr);
+    x = vsel_vf_vo_vf_vf(veq_vo_vf_vf(d, vcast_vf_f(0.4999999701976776123f32)), vcast_vf_f(0f32), x);
+    vsel_vf_vo_vf_vf(vor_vo_vo_vo(visinf_vo_vf(d), vge_vo_vf_vf(vabs_vf_vf(d), vcast_vf_f((1i64 << 23) as f32))), d, vcopysign_vf_vf_vf(vsub_vf_vf_vf(x, fr), d))
+}
+
+
+pub fn xfmaf(arg_x:vfloat, arg_y:vfloat, arg_z:vfloat)->vfloat{
+    if cfg!(target_feature = "fma") {
+        return vfma_vf_vf_vf_vf(arg_x, arg_y, arg_z);
+    }
+    let mut h2 = vadd_vf_vf_vf(vmul_vf_vf_vf(arg_z, arg_y), arg_z);
+    let mut q = vcast_vf_f(1f32);
+    let o = vlt_vo_vf_vf(vabs_vf_vf(h2), vcast_vf_f(1e-38f32));
+    let mut x:vfloat;
+    let mut y:vfloat;
+    let mut z;
+    {
+        const c0:f32 =  (1i64 << 25) as f32;
+        let c1 = c0 * c0;
+        let c2 = c1 * c1;
+        x = vsel_vf_vo_vf_vf(o, vmul_vf_vf_vf(arg_x, vcast_vf_f(c1)), arg_x);
+        y = vsel_vf_vo_vf_vf(o, vmul_vf_vf_vf(arg_y, vcast_vf_f(c1)), arg_y);
+        z = vsel_vf_vo_vf_vf(o, vmul_vf_vf_vf(arg_z, vcast_vf_f(c2)), arg_z);
+        q = vsel_vf_vo_vf_vf(o, vcast_vf_f(1.0f32 / c2), q);
+    }
+    let o = vgt_vo_vf_vf(vabs_vf_vf(h2), vcast_vf_f(1e+38f32));
+    {
+        const c0:f32 = (1i64 << 2) as f32;
+        let c1 = c0 * c0;
+        let c2 = c1 * c1;
+        x = vsel_vf_vo_vf_vf(o, vmul_vf_vf_vf(x, vcast_vf_f(1.0f32 / c1)), x);
+        y = vsel_vf_vo_vf_vf(o, vmul_vf_vf_vf(y, vcast_vf_f(1.0f32 / c1)), y);
+        z = vsel_vf_vo_vf_vf(o, vmul_vf_vf_vf(z, vcast_vf_f(1.0f32 / c2)), z);
+        q = vsel_vf_vo_vf_vf(o, vcast_vf_f(c2), q);
+    }
+    let mut d = dfmul_vf2_vf_vf(x, y);
+    d = dfadd2_vf2_vf2_vf(d, z);
+    let ret = vsel_vf_vo_vf_vf(vor_vo_vo_vo(veq_vo_vf_vf(x, vcast_vf_f(0f32)), veq_vo_vf_vf(y, vcast_vf_f(0f32))), z, vadd_vf_vf_vf(vf2getx_vf_vf2(d), vf2gety_vf_vf2(d)));
+    let mut o = visinf_vo_vf(z);
+    o = vandnot_vo_vo_vo(visinf_vo_vf(x), o);
+    o = vandnot_vo_vo_vo(visnan_vo_vf(x), o);
+    o = vandnot_vo_vo_vo(visinf_vo_vf(y), o);
+    o = vandnot_vo_vo_vo(visnan_vo_vf(y), o);
+    h2 = vsel_vf_vo_vf_vf(o, z, h2);
+    
+    o = vor_vo_vo_vo(visinf_vo_vf(h2), visnan_vo_vf(h2));
+      
+    vsel_vf_vo_vf_vf(o, h2, vmul_vf_vf_vf(ret, q))
+}
+
+pub fn xsqrtf(d:vfloat)->vfloat{
+    vsqrt_vf_vf(d)
+}
+
+pub fn xhypotf_u05(arg_x:vfloat, arg_y:vfloat)->vfloat{
+    let x = vabs_vf_vf(arg_x);
+    let y = vabs_vf_vf(arg_y);
+    let min = vmin_vf_vf_vf(x, y);
+    let mut n = min;
+    let max = vmax_vf_vf_vf(x, y);
+    let mut d = max;
+  
+    let o = vlt_vo_vf_vf(max, vcast_vf_f(SLEEF_FLT_MIN));
+    n = vsel_vf_vo_vf_vf(o, vmul_vf_vf_vf(n, vcast_vf_f( (1i64 << 24) as f32)), n);
+    d = vsel_vf_vo_vf_vf(o, vmul_vf_vf_vf(d, vcast_vf_f( (1i64 << 24) as f32 )), d);
+  
+    let mut t = dfdiv_vf2_vf2_vf2(vcast_vf2_vf_vf(n, vcast_vf_f(0f32)), vcast_vf2_vf_vf(d, vcast_vf_f(0f32)));
+    t = dfmul_vf2_vf2_vf(dfsqrt_vf2_vf2(dfadd2_vf2_vf2_vf(dfsqu_vf2_vf2(t), vcast_vf_f(1f32))), max);
+    let mut ret = vadd_vf_vf_vf(vf2getx_vf_vf2(t), vf2gety_vf_vf2(t));
+    ret = vsel_vf_vo_vf_vf(visnan_vo_vf(ret), vcast_vf_f(SLEEF_INFINITYf), ret);
+    ret = vsel_vf_vo_vf_vf(veq_vo_vf_vf(min, vcast_vf_f(0f32)), max, ret);
+    ret = vsel_vf_vo_vf_vf(vor_vo_vo_vo(visnan_vo_vf(x), visnan_vo_vf(y)), vcast_vf_f(SLEEF_NANf), ret);
+    ret = vsel_vf_vo_vf_vf(vor_vo_vo_vo(veq_vo_vf_vf(x, vcast_vf_f(SLEEF_INFINITYf)), veq_vo_vf_vf(y, vcast_vf_f(SLEEF_INFINITYf))), vcast_vf_f(SLEEF_INFINITYf), ret);
+  
+    ret
+}
+
+pub fn xnextafterf(arg_x:vfloat, y:vfloat)->vfloat{
+    let x = vsel_vf_vo_vf_vf(veq_vo_vf_vf(arg_x, vcast_vf_f(0f32)), vmulsign_vf_vf_vf(vcast_vf_f(0f32), y), arg_x);
+    let mut xi2 = vreinterpret_vi2_vf(x);
+    let  c = vxor_vo_vo_vo(vsignbit_vo_vf(x), vge_vo_vf_vf(y, x));
+
+    xi2 = vsel_vi2_vo_vi2_vi2(c, vsub_vi2_vi2_vi2(vcast_vi2_i(0), vxor_vi2_vi2_vi2(xi2, vcast_vi2_i((1u32 << 31) as i32))), xi2);
+    xi2 = vsel_vi2_vo_vi2_vi2(vneq_vo_vf_vf(x, y), vsub_vi2_vi2_vi2(xi2, vcast_vi2_i(1)), xi2);
+    xi2 = vsel_vi2_vo_vi2_vi2(c, vsub_vi2_vi2_vi2(vcast_vi2_i(0), vxor_vi2_vi2_vi2(xi2, vcast_vi2_i((1u32 << 31) as i32))), xi2);
+  
+    let mut ret = vreinterpret_vf_vi2(xi2);
+
+    ret = vsel_vf_vo_vf_vf(vand_vo_vo_vo(veq_vo_vf_vf(ret, vcast_vf_f(0f32)), vneq_vo_vf_vf(x, vcast_vf_f(0f32))), 
+               vmulsign_vf_vf_vf(vcast_vf_f(0f32), x), ret);
+    ret = vsel_vf_vo_vf_vf(vand_vo_vo_vo(veq_vo_vf_vf(x, vcast_vf_f(0f32)), veq_vo_vf_vf(y, vcast_vf_f(0f32))), y, ret);
+    ret = vsel_vf_vo_vf_vf(vor_vo_vo_vo(visnan_vo_vf(x), visnan_vo_vf(y)), vcast_vf_f(SLEEF_NANf), ret);
+    ret
+}
+  
+pub fn xfrfrexpf(arg_x:vfloat)->vfloat{
+    let x = vsel_vf_vo_vf_vf(vlt_vo_vf_vf(vabs_vf_vf(arg_x), vcast_vf_f(SLEEF_FLT_MIN)), vmul_vf_vf_vf(arg_x, vcast_vf_f((1u64 << 30) as f32)), arg_x);
+  
+    let mut xm = vreinterpret_vm_vf(x);
+    xm = vand_vm_vm_vm(xm, vcast_vm_i_i( !0x7f800000i32, !0x7f800000i32));
+    xm = vor_vm_vm_vm (xm, vcast_vm_i_i( 0x3f000000i32,  0x3f000000i32));
+  
+    let mut ret = vreinterpret_vf_vm(xm);
+  
+    ret = vsel_vf_vo_vf_vf(visinf_vo_vf(x), vmulsign_vf_vf_vf(vcast_vf_f(SLEEF_INFINITYf), x), ret);
+    ret = vsel_vf_vo_vf_vf(veq_vo_vf_vf(x, vcast_vf_f(0f32)), x, ret);
+    
+    ret
+}
+
+fn vtoward0_vf_vf(x:vfloat)->vfloat{
+    let t = vreinterpret_vf_vi2(vsub_vi2_vi2_vi2(vreinterpret_vi2_vf(x), vcast_vi2_i(1)));
+    vsel_vf_vo_vf_vf(veq_vo_vf_vf(x, vcast_vf_f(0f32)), vcast_vf_f(0f32), t)
+}
+
+fn vptrunc_vf_vf(x:vfloat)->vfloat{
+    vtruncate_vf_vf(x)
+}
+
+fn sinpifk(d:vfloat)->vfloat2{
+    let u = vmul_vf_vf_vf(d, vcast_vf_f(4.0f32));
+    let mut q = vtruncate_vi2_vf(u);
+    q = vand_vi2_vi2_vi2(vadd_vi2_vi2_vi2(q, vxor_vi2_vi2_vi2(vsrl_vi2_vi2_i::<31>(q), vcast_vi2_i(1))), vcast_vi2_i(!1));
+    let o = veq_vo_vi2_vi2(vand_vi2_vi2_vi2(q, vcast_vi2_i(2)), vcast_vi2_i(2));
+  
+    let mut s = vsub_vf_vf_vf(u, vcast_vf_vi2(q));
+    let t = s;
+    s = vmul_vf_vf_vf(s, s);
+    let s2 = dfmul_vf2_vf_vf(t, t);
+  
+    let mut u = vsel_vf_vo_f_f(o, -0.2430611801e-7f32, 0.3093842054e-6f32);
+    u = vmla_vf_vf_vf_vf(u, s, vsel_vf_vo_f_f(o, 0.3590577080e-5f32, -0.3657307388e-4f32));
+    u = vmla_vf_vf_vf_vf(u, s, vsel_vf_vo_f_f(o, -0.3259917721e-3f32, 0.2490393585e-2f32));
+    let mut x = dfadd2_vf2_vf_vf2(vmul_vf_vf_vf(u, s), vsel_vf2_vo_f_f_f_f(o, 0.015854343771934509277f32, 4.4940051354032242811e-10f32,
+                          -0.080745510756969451904f32, -1.3373665339076936258e-09f32));
+    x = dfadd2_vf2_vf2_vf2(dfmul_vf2_vf2_vf2(s2, x),
+               vsel_vf2_vo_f_f_f_f(o, -0.30842512845993041992f32, -9.0728339030733922277e-09f32,
+                           0.78539818525314331055f32, -2.1857338617566484855e-08f32));
+  
+    x = dfmul_vf2_vf2_vf2(x, vsel_vf2_vo_vf2_vf2(o, s2, vcast_vf2_vf_vf(t, vcast_vf_f(0f32))));
+    x = vsel_vf2_vo_vf2_vf2(o, dfadd2_vf2_vf2_vf(x, vcast_vf_f(1f32)), x);
+  
+    let o = veq_vo_vi2_vi2(vand_vi2_vi2_vi2(q, vcast_vi2_i(4)), vcast_vi2_i(4));
+    x = vf2setx_vf2_vf2_vf(x, vreinterpret_vf_vm(vxor_vm_vm_vm(vand_vm_vo32_vm(o, vreinterpret_vm_vf(vcast_vf_f(-0.0f32))), vreinterpret_vm_vf(vf2getx_vf_vf2(x)))));
+    x = vf2sety_vf2_vf2_vf(x, vreinterpret_vf_vm(vxor_vm_vm_vm(vand_vm_vo32_vm(o, vreinterpret_vm_vf(vcast_vf_f(-0.0f32))), vreinterpret_vm_vf(vf2gety_vf_vf2(x)))));
+  
+    x
+}
+
+pub fn xsinpif_u05(d:vfloat)->vfloat{
+    let x = sinpifk(d);
+    let mut r = vadd_vf_vf_vf(vf2getx_vf_vf2(x), vf2gety_vf_vf2(x));
+  
+    r = vsel_vf_vo_vf_vf(visnegzero_vo_vf(d), vcast_vf_f(-0.0), r);
+    r = vreinterpret_vf_vm(vandnot_vm_vo32_vm(vgt_vo_vf_vf(vabs_vf_vf(d), vcast_vf_f(TRIGRANGEMAX4f)), vreinterpret_vm_vf(r)));
+    r = vreinterpret_vf_vm(vor_vm_vo32_vm(visinf_vo_vf(d), vreinterpret_vm_vf(r)));
+    
+    r
+}
+
+fn cospifk(d:vfloat)->vfloat2{
+    let u = vmul_vf_vf_vf(d, vcast_vf_f(4.0f32));
+    let mut q = vtruncate_vi2_vf(u);
+    q = vand_vi2_vi2_vi2(vadd_vi2_vi2_vi2(q, vxor_vi2_vi2_vi2(vsrl_vi2_vi2_i::<31>(q), vcast_vi2_i(1))), vcast_vi2_i(!1));
+    let o = veq_vo_vi2_vi2(vand_vi2_vi2_vi2(q, vcast_vi2_i(2)), vcast_vi2_i(0));
+  
+    let mut s = vsub_vf_vf_vf(u, vcast_vf_vi2(q));
+    let t = s;
+    s = vmul_vf_vf_vf(s, s);
+    let s2 = dfmul_vf2_vf_vf(t, t);
+    
+    //
+  
+    let mut u = vsel_vf_vo_f_f(o, -0.2430611801e-7f32, 0.3093842054e-6f32);
+    u = vmla_vf_vf_vf_vf(u, s, vsel_vf_vo_f_f(o, 0.3590577080e-5f32, -0.3657307388e-4f32));
+    u = vmla_vf_vf_vf_vf(u, s, vsel_vf_vo_f_f(o, -0.3259917721e-3f32, 0.2490393585e-2f32));
+    let mut x = dfadd2_vf2_vf_vf2(vmul_vf_vf_vf(u, s),
+              vsel_vf2_vo_f_f_f_f(o, 0.015854343771934509277f32, 4.4940051354032242811e-10f32,
+                          -0.080745510756969451904f32, -1.3373665339076936258e-09f32));
+    x = dfadd2_vf2_vf2_vf2(dfmul_vf2_vf2_vf2(s2, x),
+               vsel_vf2_vo_f_f_f_f(o, -0.30842512845993041992f32, -9.0728339030733922277e-09f32,
+                           0.78539818525314331055f32, -2.1857338617566484855e-08f32));
+  
+    x = dfmul_vf2_vf2_vf2(x, vsel_vf2_vo_vf2_vf2(o, s2, vcast_vf2_vf_vf(t, vcast_vf_f(0f32))));
+    x = vsel_vf2_vo_vf2_vf2(o, dfadd2_vf2_vf2_vf(x, vcast_vf_f(1f32)), x);
+  
+    let o = veq_vo_vi2_vi2(vand_vi2_vi2_vi2(vadd_vi2_vi2_vi2(q, vcast_vi2_i(2)), vcast_vi2_i(4)), vcast_vi2_i(4));
+    x = vf2setx_vf2_vf2_vf(x, vreinterpret_vf_vm(vxor_vm_vm_vm(vand_vm_vo32_vm(o, vreinterpret_vm_vf(vcast_vf_f(-0.0))), vreinterpret_vm_vf(vf2getx_vf_vf2(x)))));
+    x = vf2sety_vf2_vf2_vf(x, vreinterpret_vf_vm(vxor_vm_vm_vm(vand_vm_vo32_vm(o, vreinterpret_vm_vf(vcast_vf_f(-0.0))), vreinterpret_vm_vf(vf2gety_vf_vf2(x)))));
+  
+    x
+}
+
+pub fn xcospif_u05(d:vfloat)->vfloat{
+    let x = cospifk(d);
+    let mut r = vadd_vf_vf_vf(vf2getx_vf_vf2(x), vf2gety_vf_vf2(x));
+  
+    r = vsel_vf_vo_vf_vf(vgt_vo_vf_vf(vabs_vf_vf(d), vcast_vf_f(TRIGRANGEMAX4f)), vcast_vf_f(1f32), r);
+    r = vreinterpret_vf_vm(vor_vm_vo32_vm(visinf_vo_vf(d), vreinterpret_vm_vf(r)));
     
     r
 }
