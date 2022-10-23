@@ -139,16 +139,41 @@ impl<const DLEN: usize> F32Cuda<DLEN>{
         InterCuda2f32!(self, ret, lhs, rhs, a4c_divf32);
     }
 
-    pub fn sin(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
-        InterCuda1f32!(self, ret, lhs, a4c_sinf32);
-    }
-
     pub fn cos(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
         InterCuda1f32!(self, ret, lhs, a4c_cosf32);
     }
-
+    pub fn sin(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCuda1f32!(self, ret, lhs, a4c_sinf32);
+    }
     pub fn tan(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
         InterCuda1f32!(self, ret, lhs, a4c_tanf32);
+    }
+    pub fn acos(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCuda1f32!(self, ret, lhs, a4c_acosf32);
+    }
+    pub fn asin(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCuda1f32!(self, ret, lhs, a4c_asinf32);
+    }
+    pub fn atan(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCuda1f32!(self, ret, lhs, a4c_atanf32);
+    }
+    pub fn cosh(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCuda1f32!(self, ret, lhs, a4c_coshf32);
+    }
+    pub fn sinh(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCuda1f32!(self, ret, lhs, a4c_sinhf32);
+    }
+    pub fn tanh(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCuda1f32!(self, ret, lhs, a4c_tanhf32);
+    }
+    pub fn acosh(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCuda1f32!(self, ret, lhs, a4c_acoshf32);
+    }
+    pub fn asinh(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCuda1f32!(self, ret, lhs, a4c_asinhf32);
+    }
+    pub fn atanh(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCuda1f32!(self, ret, lhs, a4c_atanhf32);
     }
 
     // pub fn sort(self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){

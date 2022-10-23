@@ -80,25 +80,50 @@ impl<const DLEN: usize> Arr4ComAL<f32, DLEN> for F32Avx<DLEN>{
         InterLoop2f32!(ret, lhs, rhs, _mm256_div_ps);
     }
 
-    fn sin(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+    fn cos(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
         let bs = 8;
         let block = DLEN as usize / 8;
 
         for index in 0..block{
             unsafe{
                 let left = _mm256_loadu_ps(&lhs[index * bs]);
-                let result = simdsp::xsinf_u1(left);
+                let result = simdsp::xcosf_u1(left);
                 _mm256_storeu_ps(&mut ret[index * bs], result);
             }
         }
     }
-
-    fn cos(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
-        InterLoop1f32!(ret, lhs, xcosf_u1);
+    fn sin(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterLoop1f32!(ret, lhs, xsinf_u1);
     }
-
     fn tan(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
         InterLoop1f32!(ret, lhs, xtanf_u1);
+    }
+    fn asin(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterLoop1f32!(ret, lhs, xasinf_u1);
+    }
+    fn acos(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterLoop1f32!(ret, lhs, xacosf_u1);
+    }
+    fn atan(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterLoop1f32!(ret, lhs, xatanf_u1);
+    }
+    fn sinh(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterLoop1f32!(ret, lhs, xsinhf);
+    }
+    fn cosh(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterLoop1f32!(ret, lhs, xcoshf);
+    }
+    fn tanh(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterLoop1f32!(ret, lhs, xtanhf);
+    }
+    fn asinh(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterLoop1f32!(ret, lhs, xasinhf);
+    }
+    fn acosh(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterLoop1f32!(ret, lhs, xacoshf);
+    }
+    fn atanh(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterLoop1f32!(ret, lhs, xatanhf);
     }
 
 }

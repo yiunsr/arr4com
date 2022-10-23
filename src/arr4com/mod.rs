@@ -26,9 +26,18 @@ pub trait Arr4ComAL<T, const DLEN: usize>{
     fn mul(&self, ret: &mut [T;DLEN], lhs: [T;DLEN], rhs: [T;DLEN]);
     fn div(&self, ret: &mut [T;DLEN], lhs: [T;DLEN], rhs: [T;DLEN]);
 
-    fn sin(&self, ret: &mut [T;DLEN], lhs: [T;DLEN]);
     fn cos(&self, ret: &mut [T;DLEN], lhs: [T;DLEN]);
+    fn sin(&self, ret: &mut [T;DLEN], lhs: [T;DLEN]);
     fn tan(&self, ret: &mut [T;DLEN], lhs: [T;DLEN]);
+    fn acos(&self, ret: &mut [T;DLEN], lhs: [T;DLEN]);
+    fn asin(&self, ret: &mut [T;DLEN], lhs: [T;DLEN]);
+    fn atan(&self, ret: &mut [T;DLEN], lhs: [T;DLEN]);
+    fn cosh(&self, ret: &mut [T;DLEN], lhs: [T;DLEN]);
+    fn sinh(&self, ret: &mut [T;DLEN], lhs: [T;DLEN]);
+    fn tanh(&self, ret: &mut [T;DLEN], lhs: [T;DLEN]);
+    fn acosh(&self, ret: &mut [T;DLEN], lhs: [T;DLEN]);
+    fn asinh(&self, ret: &mut [T;DLEN], lhs: [T;DLEN]);
+    fn atanh(&self, ret: &mut [T;DLEN], lhs: [T;DLEN]);
 }
 
 
@@ -123,29 +132,54 @@ impl<const DLEN: usize> Arr4Com<f32, DLEN>{
         InterCall2f32!(self, ret, lhs, rhs, div);
     }
 
-    pub fn sin(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+    pub fn cos(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
         match self.op_target {
             OpTarget::LEGACY => {
                 let legacy_com = self.legacy_com.as_ref().unwrap();
-                legacy_com.sin(ret, lhs);
+                legacy_com.cos(ret, lhs);
             },
             OpTarget::AVX2 => {
                 let avx2_com = self.avx2_com.as_ref().unwrap();
-                avx2_com.sin(ret, lhs);
+                avx2_com.cos(ret, lhs);
             },
             OpTarget::CUDA => {
                 let cuda_com = self.cuda_com.as_ref().unwrap();
-                cuda_com.sin(ret, lhs);
+                cuda_com.cos(ret, lhs);
             },
         }
     }
-
-    pub fn cos(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
-        InterCall1f32!(self, ret, lhs, cos);
+    pub fn sin(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCall1f32!(self, ret, lhs, sin);
     }
-
     pub fn tan(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
         InterCall1f32!(self, ret, lhs, tan);
+    }
+    pub fn acos(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCall1f32!(self, ret, lhs, acos);
+    }
+    pub fn asin(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCall1f32!(self, ret, lhs, asin);
+    }
+    pub fn atan(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCall1f32!(self, ret, lhs, atan);
+    }
+    pub fn cosh(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCall1f32!(self, ret, lhs, cosh);
+    }
+    pub fn sinh(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCall1f32!(self, ret, lhs, sinh);
+    }
+    pub fn tanh(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCall1f32!(self, ret, lhs, tanh);
+    }
+    pub fn acosh(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCall1f32!(self, ret, lhs, acosh);
+    }
+    pub fn asinh(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCall1f32!(self, ret, lhs, asinh);
+    }
+    pub fn atanh(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCall1f32!(self, ret, lhs, atanh);
     }
 
     // pub fn sort(self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
