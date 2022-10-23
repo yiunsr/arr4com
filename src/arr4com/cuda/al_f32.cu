@@ -116,3 +116,40 @@ extern "C" __global__ void a4c_log2f32(const float* x, float* out, int count) {
     }
 }
 
+extern "C" __global__ void a4c_expf32(const float* x, float* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = expf (x[i]);
+    }
+}
+extern "C" __global__ void a4c_exp2f32(const float* x, float* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = exp2f(x[i]);
+    }
+}
+extern "C" __global__ void a4c_exp_m1f32(const float* x, float* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = expm1f(x[i]);
+    }
+}
+
+extern "C" __global__ void a4c_sqrtf32(const float* x, float* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = sqrtf (x[i]);
+    }
+}
+extern "C" __global__ void a4c_cbrtf32(const float* x, float* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = cbrtf (x[i]);
+    }
+}
+
+extern "C" __global__ void a4c_powff32(const float* x, const float* y, float* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = powf(x[i], y[i]);
+    }
+}
+extern "C" __global__ void a4c_hypotf32(const float* x, const float* y, float* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = hypotf(x[i], y[i]);
+    }
+}

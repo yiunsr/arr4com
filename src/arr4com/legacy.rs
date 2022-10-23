@@ -119,5 +119,43 @@ impl<const DLEN: usize> Arr4ComAL<f32, DLEN> for LegacyArr4Float<f32, DLEN>{
             ret[index] = lhs[index].log2();
         }
     }
+
+    fn exp(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = lhs[index].exp();
+        }
+    }
+    fn exp2(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = lhs[index].exp2();
+        }
+    }
+    fn exp_m1(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = lhs[index].exp_m1();
+        }
+    }
+    fn sqrt(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = lhs[index].sqrt();
+        }
+    }
+    fn cbrt(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = lhs[index].cbrt();
+        }
+    }
+
+    fn powf(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN], rhs: [f32;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = lhs[index].powf(rhs[index]);
+        }
+    }
+    fn hypot(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN], rhs: [f32;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = lhs[index].hypot(rhs[index]);
+        }
+    }
+
 }
 

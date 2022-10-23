@@ -44,4 +44,16 @@ pub trait Arr4ComAL<T, const DLEN: usize>{
     fn ln_1p(&self, ret: &mut [T;DLEN], lhs: [T;DLEN]); // ln(x+1)
     fn log10(&self, ret: &mut [T;DLEN], lhs: [T;DLEN]);
     fn log2(&self, ret: &mut [T;DLEN], lhs: [T;DLEN]);
+
+    fn exp(&self, ret: &mut [T;DLEN], lhs: [T;DLEN]);   // e (https://en.wikipedia.org/wiki/Exponential_function)
+    fn exp2(&self, ret: &mut [T;DLEN], lhs: [T;DLEN]);  // 2^lhs 
+    fn exp_m1(&self, ret: &mut [T;DLEN], lhs: [T;DLEN]);  // e^lhs - 1
+
+    fn sqrt(&self, ret: &mut [T;DLEN], lhs: [T;DLEN]);
+    fn cbrt(&self, ret: &mut [T;DLEN], lhs: [T;DLEN]);
+
+    fn powf(&self, ret: &mut [T;DLEN], lhs: [T;DLEN], rhs: [T;DLEN]);
+    fn hypot(&self, ret: &mut [T;DLEN], lhs: [T;DLEN], rhs: [T;DLEN]);  // sqrt(lhs^2 + rhs^2)
+    
+    
 }

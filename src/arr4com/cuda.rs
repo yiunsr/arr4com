@@ -189,6 +189,30 @@ impl<const DLEN: usize> F32Cuda<DLEN>{
         InterCuda1f32!(self, ret, lhs, a4c_log2f32);
     }
 
+    pub fn exp(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCuda1f32!(self, ret, lhs, a4c_expf32);
+    }
+    pub fn exp2(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCuda1f32!(self, ret, lhs, a4c_exp2f32);
+    }
+    pub fn exp_m1(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCuda1f32!(self, ret, lhs, a4c_exp_m1f32);
+    }
+
+    pub fn sqrt(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCuda1f32!(self, ret, lhs, a4c_sqrtf32);
+    }
+    pub fn cbrt(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCuda1f32!(self, ret, lhs, a4c_cbrtf32);
+    }
+
+    pub fn powf(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN], rhs: [f32;DLEN]){
+        InterCuda2f32!(self, ret, lhs, rhs, a4c_powff32);
+    }
+    pub fn hypot(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN], rhs: [f32;DLEN]){
+        InterCuda2f32!(self, ret, lhs, rhs, a4c_hypotf32);
+    }
+
     // pub fn sort(self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
     //     let mut x = unsafe { DeviceBuffer::uninitialized(DLEN).unwrap() };
     //     x.copy_from(&lhs).unwrap();

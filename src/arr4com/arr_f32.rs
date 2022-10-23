@@ -159,6 +159,29 @@ impl<const DLEN: usize> Arr4Com<f32, DLEN>{
         InterCall1f32!(self, ret, lhs, log2);
     }
 
+    pub fn exp(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCall1f32!(self, ret, lhs, exp);
+    }
+    pub fn exp2(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCall1f32!(self, ret, lhs, exp2);
+    }
+    pub fn exp_m1(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCall1f32!(self, ret, lhs, exp_m1);
+    }
+
+    pub fn sqrt(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCall1f32!(self, ret, lhs, sqrt);
+    }
+    pub fn cbrt(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCall1f32!(self, ret, lhs, cbrt);
+    }
+    pub fn powf(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN], rhs: [f32;DLEN]){
+        InterCall2f32!(self, ret, lhs, rhs, powf);
+    }
+    pub fn hypot(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN], rhs: [f32;DLEN]){
+        InterCall2f32!(self, ret, lhs, rhs, hypot);
+    }
+
     // pub fn sort(self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
     //     let cuda_com = self.cuda_com.unwrap();
     //     cuda_com.sort(ret, lhs);

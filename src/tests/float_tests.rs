@@ -1,7 +1,9 @@
 macro_rules! assert_eq_f32 {
     ($x:expr, $y:expr) => {
-        let epsilonx:f32 = f32::EPSILON;
-        if !($x - $y <= epsilonx && $y - $x <= epsilonx) { panic!(); }
+        if !($x.is_infinite() && $y.is_infinite() && $x.signum() == $y.signum()){
+            let epsilonx:f32 = f32::EPSILON;
+            if !($x - $y <= epsilonx && $y - $x <= epsilonx) { panic!(); }
+        }
     }
 }
 
@@ -10,7 +12,6 @@ macro_rules! assert_eq_f32_percent{
         let diff = ($x - $y).abs();
         if diff > f32::EPSILON{
             let percent = diff / $x;
-            //let base_per = 0.0000000000001f32;
             let base_per = 0.000001f32;
             if !(percent <= base_per && percent <= base_per) { panic!(); }
         }
@@ -339,8 +340,10 @@ mod float_tests {
 
         let mut result = [0f32;BLOCK_SIZE];
         let mut lhs = [0f32;BLOCK_SIZE];
+        let mut rhs = [0f32;BLOCK_SIZE];
         for i in 0..BLOCK_SIZE{
             lhs[i] = -2.0f32 +  i as f32;
+            rhs[i] = i as f32;
         }
 
         //////// ln
@@ -385,22 +388,19 @@ mod float_tests {
         assert!(result[0].is_nan());    assert!(result[1].is_nan());
         assert!(result[2].is_infinite());
         for i in 3..20{
-            let epsilonx:f32 = f32::EPSILON;
-            let diff =   (result[i] - lhs[i].log10()).abs();
-            println!("diff : {}", diff);
-            assert_eq_f32!(result[i], lhs[i].ln());
+            assert_eq_f32!(result[i], lhs[i].log10());
         }
         avx2.log10(&mut result, lhs);
         assert!(result[0].is_nan());    assert!(result[1].is_nan());
         assert!(result[2].is_infinite());
         for i in 3..20{
-            assert_eq_f32!(result[i], lhs[i].ln());
+            assert_eq_f32!(result[i], lhs[i].log10());
         }
         cuda.log10(&mut result, lhs);
         assert!(result[0].is_nan());    assert!(result[1].is_nan());
         assert!(result[2].is_infinite());
         for i in 3..20{
-            assert_eq_f32!(result[i], lhs[i].ln());
+            assert_eq_f32!(result[i], lhs[i].log10());
         }
 
         //////// log2
@@ -408,19 +408,130 @@ mod float_tests {
         assert!(result[0].is_nan());    assert!(result[1].is_nan());
         assert!(result[2].is_infinite());
         for i in 3..20{
-            assert_eq_f32!(result[i], lhs[i].ln());
+            assert_eq_f32!(result[i], lhs[i].log2());
         }
-        avx2.log10(&mut result, lhs);
+        avx2.log2(&mut result, lhs);
         assert!(result[0].is_nan());    assert!(result[1].is_nan());
         assert!(result[2].is_infinite());
         for i in 3..20{
-            assert_eq_f32!(result[i], lhs[i].ln());
+            assert_eq_f32_percent!(result[i], lhs[i].log2());
         }
-        cuda.log10(&mut result, lhs);
+        cuda.log2(&mut result, lhs);
         assert!(result[0].is_nan());    assert!(result[1].is_nan());
         assert!(result[2].is_infinite());
         for i in 3..20{
-            assert_eq_f32!(result[i], lhs[i].ln());
+            assert_eq_f32!(result[i], lhs[i].log2());
+        }
+
+        //////// exp
+        legacy.exp(&mut result, lhs);
+        for i in 1..10{
+            assert_eq_f32!(result[i], lhs[i].exp());
+        }
+        avx2.exp(&mut result, lhs);
+        for i in 1..10{
+            assert_eq_f32_percent!(result[i], lhs[i].exp());
+        }
+        cuda.exp(&mut result, lhs);
+        for i in 1..10{
+            assert_eq_f32!(result[i], lhs[i].exp());
+        }
+
+        //////// exp2
+        legacy.exp2(&mut result, lhs);
+        for i in 1..10{
+            assert_eq_f32!(result[i], lhs[i].exp2());
+        }
+        avx2.exp2(&mut result, lhs);
+        for i in 1..10{
+            assert_eq_f32!(result[i], lhs[i].exp2());
+        }
+        cuda.exp2(&mut result, lhs);
+        for i in 1..10{
+            assert_eq_f32!(result[i], lhs[i].exp2());
+        }
+
+        //////// exp_m1
+        legacy.exp_m1(&mut result, lhs);
+        for i in 1..10{
+            assert_eq_f32!(result[i], lhs[i].exp_m1());
+        }
+        avx2.exp_m1(&mut result, lhs);
+        for i in 1..10{
+            assert_eq_f32!(result[i], lhs[i].exp_m1());
+        }
+        cuda.exp_m1(&mut result, lhs);
+        for i in 1..10{
+            assert_eq_f32_percent!(result[i], lhs[i].exp_m1());
+        }
+
+        for i in 0..BLOCK_SIZE{
+            lhs[i] = -2.0f32 +  i as f32;
+            rhs[i] = i as f32;
+        }
+        //////// sqrt
+        legacy.sqrt(&mut result, lhs);
+        assert!(result[0].is_nan());    assert!(result[1].is_nan());
+        for i in 2..10{
+            assert_eq_f32!(result[i], lhs[i].sqrt());
+        }
+        avx2.sqrt(&mut result, lhs);
+        assert!(result[0].is_nan());    assert!(result[1].is_nan());
+        for i in 2..10{
+            assert_eq_f32!(result[i], lhs[i].sqrt());
+        }
+        cuda.sqrt(&mut result, lhs);
+        assert!(result[0].is_nan());    assert!(result[1].is_nan());
+        for i in 2..10{
+            assert_eq_f32!(result[i], lhs[i].sqrt());
+        }
+        //////// cbrt
+        legacy.cbrt(&mut result, lhs);
+        for i in 0..10{
+            assert_eq_f32!(result[i], lhs[i].cbrt());
+        }
+        avx2.cbrt(&mut result, lhs);
+        for i in 0..10{
+            assert_eq_f32!(result[i], lhs[i].cbrt());
+        }
+        cuda.cbrt(&mut result, lhs);
+        for i in 0..10{
+            assert_eq_f32!(result[i], lhs[i].cbrt());
+        }
+
+        //////// pow
+        for i in 0..BLOCK_SIZE{
+            lhs[i] = -4.0f32 +  i as f32;
+            rhs[i] = -8.0f32 + i as f32;
+        }
+        legacy.powf(&mut result, lhs, rhs);
+        for i in 0..12{
+            assert_eq_f32!(result[i], lhs[i].powf(rhs[i]));
+        }
+        avx2.powf(&mut result, lhs, rhs);
+        for i in 0..12{
+            assert_eq_f32!(result[i], lhs[i].powf(rhs[i]));
+        }
+        cuda.powf(&mut result, lhs, rhs);
+        for i in 0..12{
+            assert_eq_f32!(result[i], lhs[i].powf(rhs[i]));
+        }
+
+        for i in 0..BLOCK_SIZE{
+            lhs[i] = -4.0f32 +  i as f32;
+            rhs[i] = -8.0f32 + i as f32;
+        }
+        legacy.hypot(&mut result, lhs, rhs);
+        for i in 0..12{
+            assert_eq_f32!(result[i], lhs[i].hypot(rhs[i]));
+        }
+        avx2.hypot(&mut result, lhs, rhs);
+        for i in 0..12{
+            assert_eq_f32!(result[i], lhs[i].hypot(rhs[i]));
+        }
+        cuda.hypot(&mut result, lhs, rhs);
+        for i in 0..12{
+            assert_eq_f32!(result[i], lhs[i].hypot(rhs[i]));
         }
 
         println!("==== test_0003_01_math end ====");
