@@ -94,3 +94,25 @@ extern "C" __global__ void a4c_atanhf32(const float* x, float* out, int count) {
         out[i] = atanhf(x[i]);
     }
 }
+
+extern "C" __global__ void a4c_lnf32(const float* x, float* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = logf(x[i]);
+    }
+}
+extern "C" __global__ void a4c_ln_1pf32(const float* x, float* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = log1pf(x[i]);
+    }
+}
+extern "C" __global__ void a4c_log10f32(const float* x, float* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = log10f(x[i]);
+    }
+}
+extern "C" __global__ void a4c_log2f32(const float* x, float* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = log2f(x[i]);
+    }
+}
+

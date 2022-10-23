@@ -1,40 +1,62 @@
 macro_rules! assert_eq_f32 {
     ($x:expr, $y:expr) => {
-        if !($x - $y < f32::EPSILON || $y - $x < f32::EPSILON) { panic!(); }
+        let epsilonx:f32 = f32::EPSILON;
+        if !($x - $y <= epsilonx && $y - $x <= epsilonx) { panic!(); }
     }
 }
+
+macro_rules! assert_eq_f32_percent{
+    ($x:expr, $y:expr) => {
+        let diff = ($x - $y).abs();
+        if diff > f32::EPSILON{
+            let percent = diff / $x;
+            //let base_per = 0.0000000000001f32;
+            let base_per = 0.000001f32;
+            if !(percent <= base_per && percent <= base_per) { panic!(); }
+        }
+    }
+}
+
 
 macro_rules! assert_eq_f32_array256 {
     ($arr:expr, $y0:expr, $y1:expr, $y2:expr, $y100:expr, $y255:expr) => {
         let epsilonx:f32 = f32::EPSILON;
 
-        if !($arr[0] - $y0 < epsilonx || $arr[0] - $y0 < epsilonx) { println!("index 0 error");panic!(); }
-        if !($arr[1] - $y1 < epsilonx || $arr[1] - $y0 < epsilonx) { println!("index 1 error");panic!(); }
-        if !($arr[2] - $y2 < epsilonx || $arr[2] - $y2 < epsilonx) { println!("index 2 error");panic!(); }
-        if !($arr[100] - $y100 < epsilonx || $arr[100] - $y100 < epsilonx) { println!("index 100 error");panic!(); }
-        if !($arr[255] - $y255 < epsilonx || $arr[255] - $y255 < epsilonx) { println!("index 255 error");panic!(); }
+        if !($arr[0] - $y0 <= epsilonx && $arr[0] - $y0 <= epsilonx) { println!("index 0 error");panic!(); }
+        if !($arr[1] - $y1 <= epsilonx && $arr[1] - $y1 <= epsilonx) { println!("index 1 error");panic!(); }
+        if !($arr[2] - $y2 <= epsilonx && $arr[2] - $y2 <= epsilonx) { println!("index 2 error");panic!(); }
+        if !($arr[100] - $y100 <= epsilonx && $arr[100] - $y100 <= epsilonx) { println!("index 100 error");panic!(); }
+        if !($arr[255] - $y255 <= epsilonx && $arr[255] - $y255 <= epsilonx) { println!("index 255 error");panic!(); }
     }
 }
+
 
 macro_rules! assert_eq_f32_array256_2 {
     ($arr:expr, $y0:expr, $y1:expr, $y2:expr, $y100:expr, $y255:expr) => {
         let epsilonx:f32 = f32::EPSILON * 1.001f32;
 
-        if !($arr[0] - $y0 < epsilonx || $arr[0] - $y0 < epsilonx) { println!("index 0 error");panic!(); }
-        if !($arr[1] - $y1 < epsilonx || $arr[1] - $y0 < epsilonx) { println!("index 1 error");panic!(); }
-        if !($arr[2] - $y2 < epsilonx || $arr[2] - $y2 < epsilonx) { println!("index 2 error");panic!(); }
-        if !($arr[100] - $y100 < epsilonx || $arr[100] - $y100 < epsilonx) { println!("index 100 error");panic!(); }
-        if !($arr[255] - $y255 < epsilonx || $arr[255] - $y255 < epsilonx) { println!("index 255 error");panic!(); }
+        if !($arr[0] - $y0 < epsilonx && $arr[0] - $y0 < epsilonx) { println!("index 0 error");panic!(); }
+        if !($arr[1] - $y1 < epsilonx && $arr[1] - $y1 < epsilonx) { println!("index 1 error");panic!(); }
+        if !($arr[2] - $y2 < epsilonx && $arr[2] - $y2 < epsilonx) { println!("index 2 error");panic!(); }
+        if !($arr[100] - $y100 < epsilonx && $arr[100] - $y100 < epsilonx) { println!("index 100 error");panic!(); }
+        if !($arr[255] - $y255 < epsilonx && $arr[255] - $y255 < epsilonx) { println!("index 255 error");panic!(); }
     }
 }
 
 #[cfg(test)]
 mod float_tests {
-    
-
     use arr4com::arr4com::Arr4Com;
     use arr4com::arr4com::OpTarget;
     const BLOCK_SIZE: usize = 256;
+
+    pub fn assert_eq_f32_percent(x:f32, y:f32){
+        let diff = (x - y).abs();
+        if diff > f32::EPSILON{
+            let percent = diff / x;
+            let base_per = 0.000001f32;
+            if percent > base_per  { println!("{}", percent); panic!(); }
+        }
+    }
 
     #[test]
     fn test_0001_01_arithmetic32() {
@@ -51,7 +73,7 @@ mod float_tests {
             rhs[i] = i as f32;
         }
         legacy.add(&mut result, lhs, rhs);
-        assert_eq_f32_array256!(result, 0f32, 3f32, 6f32, 300f32, 765f32);
+        assert_eq_f32_array256!(&result, 0f32, 3f32, 6f32, 300f32, 765f32);
         avx2.add(&mut result, lhs, rhs);
         assert_eq_f32_array256!(result, 0f32, 3f32, 6f32, 300f32, 765f32);
         cuda.add(&mut result, lhs, rhs);
@@ -127,8 +149,7 @@ mod float_tests {
         assert_eq_f32_array256!(result, 0f32, 1.5574077246549023f32, -2.185039863261519f32,
             -0.5872139151569291f32, 0.5872544546093196f32);
         cuda.tan(&mut result, lhs);
-        // 오차가 조금 더 있다.
-        assert_eq_f32_array256_2!(result, 0f32, 1.5574077246549023f32, -2.185039863261519f32,
+        assert_eq_f32_array256!(result, 0f32, 1.5574077246549023f32, -2.185039863261519f32,
             -0.5872139151569291f32, 0.5872544546093196f32);
         
         //////// acos
@@ -164,7 +185,7 @@ mod float_tests {
         }
         assert!(result[10].is_nan());
 
-        avx2.acos(&mut result, lhs);
+        avx2.asin(&mut result, lhs);
         assert!(result[0].is_nan());
         for i in 1..9{
             assert_eq_f32!(result[i], lhs[i].asin());
@@ -213,7 +234,8 @@ mod float_tests {
         }
         cuda.cosh(&mut result, lhs);
         for i in 0..11{
-            assert_eq_f32!(result[i], lhs[i].cosh());
+            //// cuda float 연산시 오차가 좀 크다.
+            assert_eq_f32_percent!(result[i], lhs[i].cosh());
         }
 
         //////// sinh
@@ -227,7 +249,8 @@ mod float_tests {
         }
         cuda.sinh(&mut result, lhs);
         for i in 0..11{
-            assert_eq_f32!(result[i], lhs[i].sinh());
+            //// 연산시 절대오차가 좀 크다.
+            assert_eq_f32_percent!(result[i], lhs[i].sinh());
         }
 
         //////// tanh
@@ -271,29 +294,135 @@ mod float_tests {
         for i in 0..8{
             assert_eq_f32!(result[i], lhs[i].asinh());
         }
-        avx2.sinh(&mut result, lhs);
+        avx2.asinh(&mut result, lhs);
         for i in 0..8{
-            assert_eq_f32!(result[i], lhs[i].asinh());
+            assert_eq_f32_percent!(result[i], lhs[i].asinh());
         }
         cuda.asinh(&mut result, lhs);
         for i in 0..8{
-            assert_eq_f32!(result[i], lhs[i].asinh());
+            assert_eq_f32_percent!(result[i], lhs[i].asinh());
         }
 
-        //////// tanh
-        legacy.tanh(&mut result, lhs);
-        for i in 1..8{
-            assert_eq_f32!(result[i], lhs[i].tanh());
+        //////// atanh
+        lhs[0] = -2f32;   lhs[1] = -1f32;    lhs[2] = -0.99f32; lhs[3] = -0.9f32;
+        lhs[4] = -0.5f32;   lhs[5] = 0f32;   lhs[6] = 0.5f32;   lhs[7] = 0.9f32;
+        lhs[8] = 0.99f32;   lhs[9] = 1f32;   lhs[10] = 2f32;  
+
+        legacy.atanh(&mut result, lhs);
+        assert!(result[0].is_nan());   assert!(result[1].is_infinite());
+        assert!(result[9].is_infinite());   assert!(result[10].is_nan());
+        for i in 2..9{
+            assert_eq_f32!(result[i], lhs[i].atanh());
         }
-        avx2.tanh(&mut result, lhs);
-        for i in 0..8{
-            assert_eq_f32!(result[i], lhs[i].tanh());
+        avx2.atanh(&mut result, lhs);
+        assert!(result[0].is_nan());   assert!(result[1].is_infinite());
+        assert!(result[9].is_infinite());   assert!(result[10].is_nan());
+        for i in 2..9{
+            assert_eq_f32_percent!(result[i], lhs[i].atanh());
         }
-        cuda.tanh(&mut result, lhs);
-        for i in 0..8{
-            assert_eq_f32!(result[i], lhs[i].tanh());
+        cuda.atanh(&mut result, lhs);
+        assert!(result[0].is_nan());   assert!(result[1].is_infinite());
+        assert!(result[9].is_infinite());   assert!(result[10].is_nan());
+        for i in 2..9{
+            assert_eq_f32_percent!(result[i], lhs[i].atanh());
         }
 
         println!("==== test_0002_01_trigonometric end ====");
+    }
+
+    #[test]
+    fn test_0003_01_math() {
+        println!("==== test_0003_01_math start ====");
+        let legacy:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::new(OpTarget::LEGACY);
+        let avx2:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::new(OpTarget::AVX2);
+        let cuda:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::new(OpTarget::CUDA);
+
+        let mut result = [0f32;BLOCK_SIZE];
+        let mut lhs = [0f32;BLOCK_SIZE];
+        for i in 0..BLOCK_SIZE{
+            lhs[i] = -2.0f32 +  i as f32;
+        }
+
+        //////// ln
+        legacy.ln(&mut result, lhs);
+        assert!(result[0].is_nan());    assert!(result[1].is_nan());
+        assert!(result[2].is_infinite());
+        for i in 3..20{
+            assert_eq_f32!(result[i], lhs[i].ln());
+        }
+        avx2.ln(&mut result, lhs);
+        assert!(result[0].is_nan());    assert!(result[1].is_nan());
+        assert!(result[2].is_infinite());
+        for i in 3..20{
+            assert_eq_f32!(result[i], lhs[i].ln());
+        }
+        cuda.ln(&mut result, lhs);
+        assert!(result[0].is_nan());    assert!(result[1].is_nan());
+        assert!(result[2].is_infinite());
+        for i in 3..20{
+            assert_eq_f32!(result[i], lhs[i].ln());
+        }
+
+        //////// ln_1p    ln(x + 1)
+        legacy.ln_1p(&mut result, lhs);
+        assert!(result[0].is_nan());    assert!(result[1].is_infinite());
+        for i in 2..20{
+            assert_eq_f32!(result[i], lhs[i].ln_1p());
+        }
+        avx2.ln_1p(&mut result, lhs);
+        assert!(result[0].is_nan());    assert!(result[1].is_infinite());
+        for i in 2..20{
+            assert_eq_f32!(result[i], lhs[i].ln_1p());
+        }
+        cuda.ln_1p(&mut result, lhs);
+        assert!(result[0].is_nan());    assert!(result[1].is_infinite());
+        for i in 2..20{
+            assert_eq_f32!(result[i], lhs[i].ln_1p());
+        }
+
+        //////// log10
+        legacy.log10(&mut result, lhs);
+        assert!(result[0].is_nan());    assert!(result[1].is_nan());
+        assert!(result[2].is_infinite());
+        for i in 3..20{
+            let epsilonx:f32 = f32::EPSILON;
+            let diff =   (result[i] - lhs[i].log10()).abs();
+            println!("diff : {}", diff);
+            assert_eq_f32!(result[i], lhs[i].ln());
+        }
+        avx2.log10(&mut result, lhs);
+        assert!(result[0].is_nan());    assert!(result[1].is_nan());
+        assert!(result[2].is_infinite());
+        for i in 3..20{
+            assert_eq_f32!(result[i], lhs[i].ln());
+        }
+        cuda.log10(&mut result, lhs);
+        assert!(result[0].is_nan());    assert!(result[1].is_nan());
+        assert!(result[2].is_infinite());
+        for i in 3..20{
+            assert_eq_f32!(result[i], lhs[i].ln());
+        }
+
+        //////// log2
+        legacy.log2(&mut result, lhs);
+        assert!(result[0].is_nan());    assert!(result[1].is_nan());
+        assert!(result[2].is_infinite());
+        for i in 3..20{
+            assert_eq_f32!(result[i], lhs[i].ln());
+        }
+        avx2.log10(&mut result, lhs);
+        assert!(result[0].is_nan());    assert!(result[1].is_nan());
+        assert!(result[2].is_infinite());
+        for i in 3..20{
+            assert_eq_f32!(result[i], lhs[i].ln());
+        }
+        cuda.log10(&mut result, lhs);
+        assert!(result[0].is_nan());    assert!(result[1].is_nan());
+        assert!(result[2].is_infinite());
+        for i in 3..20{
+            assert_eq_f32!(result[i], lhs[i].ln());
+        }
+
+        println!("==== test_0003_01_math end ====");
     }
 }

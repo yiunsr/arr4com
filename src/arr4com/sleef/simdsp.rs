@@ -886,7 +886,7 @@ pub fn xlog2f(d:vfloat)->vfloat{
     r
 }
 
-fn xlog1pf(d:vfloat)->vfloat{
+pub fn xlog1pf(d:vfloat)->vfloat{
     let mut dp1 = vadd_vf_vf_vf(d, vcast_vf_f(1f32));
 
     let o = vlt_vo_vf_vf(dp1, vcast_vf_f(SLEEF_FLT_MIN));

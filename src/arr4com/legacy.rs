@@ -68,7 +68,6 @@ impl<const DLEN: usize> Arr4ComAL<f32, DLEN> for LegacyArr4Float<f32, DLEN>{
             ret[index] = lhs[index].atan();
         }
     }
-
     fn sinh(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
         for index in 0..DLEN{
             ret[index] = lhs[index].sinh();
@@ -84,7 +83,6 @@ impl<const DLEN: usize> Arr4ComAL<f32, DLEN> for LegacyArr4Float<f32, DLEN>{
             ret[index] = lhs[index].tanh();
         }
     }
-
     fn asinh(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
         for index in 0..DLEN{
             ret[index] = lhs[index].asinh();
@@ -100,4 +98,26 @@ impl<const DLEN: usize> Arr4ComAL<f32, DLEN> for LegacyArr4Float<f32, DLEN>{
             ret[index] = lhs[index].atanh();
         }
     }
+
+    fn ln(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = lhs[index].ln();
+        }
+    }
+    fn ln_1p(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = lhs[index].ln_1p();
+        }
+    }
+    fn log10(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = lhs[index].log10();
+        }
+    }
+    fn log2(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = lhs[index].log2();
+        }
+    }
 }
+

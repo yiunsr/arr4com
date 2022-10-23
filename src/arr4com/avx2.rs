@@ -125,6 +125,18 @@ impl<const DLEN: usize> Arr4ComAL<f32, DLEN> for F32Avx<DLEN>{
     fn atanh(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
         InterLoop1f32!(ret, lhs, xatanhf);
     }
+    fn ln(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterLoop1f32!(ret, lhs, xlogf_u1);
+    }
+    fn ln_1p(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterLoop1f32!(ret, lhs, xlog1pf);
+    }
+    fn log10(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterLoop1f32!(ret, lhs, xlog10f);
+    }
+    fn log2(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterLoop1f32!(ret, lhs, xlog2f);
+    }
 
 }
 

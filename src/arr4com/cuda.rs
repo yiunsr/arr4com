@@ -176,6 +176,19 @@ impl<const DLEN: usize> F32Cuda<DLEN>{
         InterCuda1f32!(self, ret, lhs, a4c_atanhf32);
     }
 
+    pub fn ln(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCuda1f32!(self, ret, lhs, a4c_lnf32);
+    }
+    pub fn ln_1p(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCuda1f32!(self, ret, lhs, a4c_ln_1pf32);
+    }
+    pub fn log10(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCuda1f32!(self, ret, lhs, a4c_log10f32);
+    }
+    pub fn log2(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+        InterCuda1f32!(self, ret, lhs, a4c_log2f32);
+    }
+
     // pub fn sort(self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
     //     let mut x = unsafe { DeviceBuffer::uninitialized(DLEN).unwrap() };
     //     x.copy_from(&lhs).unwrap();

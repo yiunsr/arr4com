@@ -4,5 +4,8 @@
         "titleBar.activeBackground": "#621593",
         "titleBar.activeForeground": "#FCF9FE"
     },
-    "debug.allowBreakpointsEverywhere": true
+    "debug.allowBreakpointsEverywhere": true,
+    "files.associations": {
+        "cmath": "cpp"
+    }
 }
