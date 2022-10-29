@@ -1,3 +1,7 @@
+#![allow(
+    dead_code
+)]
+
 use arr4com::arr4com::Arr4Com;
 use arr4com::arr4com::OpTarget;
 
@@ -7,7 +11,7 @@ const BLOCK_SIZE: usize = 256;
 fn main01() {
     //arr4com::arr4com::OpTarget 
     //let arr = arr4com::arr4com::arr4float::new();
-    let compute:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::new(OpTarget::LEGACY);
+    let compute:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::newf32(OpTarget::LEGACY);
     let mut result = [0f32;BLOCK_SIZE];
     let mut lhs = [0f32;BLOCK_SIZE];
     let mut rhs = [0f32;BLOCK_SIZE];
@@ -23,7 +27,7 @@ fn main01() {
 }
 
 fn main02(){
-    let compute:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::new(OpTarget::AVX2);
+    let compute:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::newf32(OpTarget::AVX2);
     let mut result = [0f32;BLOCK_SIZE];
     let mut lhs:Vec<f32> = Vec::with_capacity(BLOCK_SIZE);
     let mut rhs:Vec<f32> = Vec::with_capacity(BLOCK_SIZE);
@@ -42,7 +46,7 @@ fn main02(){
 }
 
 fn main03(){
-    let compute:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::new(OpTarget::CUDA);
+    let compute:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::newf32(OpTarget::CUDA);
     let mut result = [0f32;BLOCK_SIZE];
     let mut lhs = [0f32;BLOCK_SIZE];
     let mut rhs = [0f32;BLOCK_SIZE];
@@ -58,7 +62,7 @@ fn main03(){
 }
 
 fn main04(){
-    let compute:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::new(OpTarget::AVX2);
+    let compute:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::newf32(OpTarget::AVX2);
     let mut result = [0f32;BLOCK_SIZE];
     let mut lhs = [0f32;BLOCK_SIZE];
     for i in 0..BLOCK_SIZE{

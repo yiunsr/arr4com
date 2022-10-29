@@ -423,3 +423,20 @@ pub fn vsub64_vm_vm_vm(x:vmask, y:vmask)->vmask { unsafe{ _mm256_sub_epi64(x, y)
 pub fn vneg64_vm_vm(x:vmask)->vmask { unsafe{ _mm256_sub_epi64(vcast_vm_i_i(0, 0), x)} }
 pub fn vgt64_vo_vm_vm(x:vmask, y:vmask)->vopmask { unsafe{ _mm256_cmpgt_epi64(x, y)} } // signed compare
 
+
+pub fn vsll64_vm_vm_i<const c: i32>(x:vint2)-> vint2 { unsafe{ _mm256_slli_epi64(x, c)} }
+pub fn vsrl64_vm_vm_i<const c: i32>(x:vint2)-> vint2 { unsafe{ _mm256_srli_epi64(x, c)} }
+
+
+pub fn vcast_vm_vi(vi:vint)->vmask{  unsafe{_mm256_cvtepi32_epi64(vi)} } // signed 32-bit => 64-bit
+pub fn vcast_vi_vm(vm:vmask)->vint{ // signed 32-bit <= 64-bit
+    unsafe{
+        _mm_or_si128(_mm_castps_si128(_mm_shuffle_ps(_mm_castsi128_ps(_mm256_castsi256_si128(vm)), _mm_set1_ps(0.0f32), 0x08)),
+  		      _mm_castps_si128(_mm_shuffle_ps(_mm_set1_ps(0f32), _mm_castsi128_ps(_mm256_extractf128_si256(vm, 1)), 0x80)))
+    }
+}
+
+pub fn vreinterpret_vm_vi64(v:vint64)->vmask { v }
+pub fn vreinterpret_vi64_vm(m:vmask)->vint64{ m }
+pub fn vreinterpret_vm_vu64(v:vuint64)->vmask{ v }
+pub fn vreinterpret_vu64_vm(m:vuint64)->vint64{ m }

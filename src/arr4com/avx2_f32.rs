@@ -1,7 +1,7 @@
 use core::{arch::x86_64::*};
 use crate::arr4com::Arr4ComAL;
 use crate::arr4com::sleef::simdsp;
-
+use crate::arr4com::avx2_type::Avx2Arr4Float;
 
 macro_rules! InterLoopSleef1f32{
     ($ret:ident, $lhs:ident,$F:ident) => {
@@ -49,10 +49,7 @@ macro_rules! InterLoop2f32{
     };
 }
 
-pub struct Avx2Arr4Float<T, const DLEN: usize>{
-    #[allow(dead_code)]
-    nerver_use:T
-}
+
 impl<const DLEN: usize> Avx2Arr4Float<f32, DLEN>{
     pub fn newf32() -> Self{
         Avx2Arr4Float {
@@ -78,10 +75,6 @@ impl<const DLEN: usize> Arr4ComAL<f32, DLEN> for F32Avx<DLEN>{
             }
         }
     }
-
-    // fn add(ret: &mut Arr4F32<DLEN>, lhs: &Arr4F32<DLEN>, rhs: &Arr4F32<DLEN>){
-    //     InterLoop2f32!(ret, lhs, rhs, _mm256_add_ps);
-    // }
 
     fn sub(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN], rhs: [f32;DLEN]){
         InterLoop2f32!(ret, lhs, rhs, _mm256_sub_ps);

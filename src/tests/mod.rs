@@ -1,2 +1,3 @@
 #[cfg(test)]
-pub mod float_tests;
+pub mod f32_tests;
+// pub mod f64_tests;

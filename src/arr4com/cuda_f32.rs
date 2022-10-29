@@ -1,6 +1,7 @@
 use rustacuda::prelude::*;
 use rustacuda::launch;
 use std::ffi::CString;
+use crate::arr4com::cuda_type::CudaArr4Float;
 
 macro_rules! InterCuda1f32{
     ($self:ident, $ret:ident, $lhs:ident,  $F:ident) => {
@@ -70,13 +71,6 @@ pub fn init_module() -> Context {
     //(context, stream)
 }
 
-pub struct CudaArr4Float<T, const DLEN: usize>{
-    #[allow(dead_code)]
-    nerver_use:T,
-    #[allow(dead_code)]
-    ctx: Context,  // never user but need this
-    //stream: Stream,
-}
 impl<const DLEN: usize> CudaArr4Float<f32, DLEN>{
     pub fn newf32() -> Self{
         let c = init_module();
@@ -86,15 +80,6 @@ impl<const DLEN: usize> CudaArr4Float<f32, DLEN>{
     }
 }
 
-impl<const DLEN: usize> CudaArr4Float<f64, DLEN>{
-    #[allow(dead_code)]
-    pub fn newf64() -> Self{
-        let c = init_module();
-        CudaArr4Float {
-            nerver_use: 0f64, ctx:c,
-        }
-    }
-}
 
 type F32Cuda<const DLEN: usize> = CudaArr4Float<f32, DLEN>;
 

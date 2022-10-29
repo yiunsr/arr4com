@@ -1,7 +1,7 @@
 use crate::arr4com::Arr4ComAL;
-use crate::arr4com::legacy;
-use crate::arr4com::avx2;
-use crate::arr4com::cuda;
+use crate::arr4com::legacy_f32;
+use crate::arr4com::avx2_f32;
+use crate::arr4com::cuda_f32;
 use crate::arr4com::*;
 
 
@@ -48,18 +48,18 @@ macro_rules! InterCall2f32{
 }
 
 impl<const DLEN: usize> Arr4Com<f32, DLEN>{
-    pub fn new(op_target: OpTarget) -> Self{
+    pub fn newf32(op_target: OpTarget) -> Self{
         match op_target {
             OpTarget::LEGACY => {
-                let legacy_com = Some(legacy::LegacyArr4Float::newf32());
+                let legacy_com = Some(legacy_type::LegacyArr4Float::newf32());
                 Arr4Com{op_target: OpTarget::LEGACY, dlen: DLEN, legacy_com, avx2_com: None, cuda_com: None}
             }
             OpTarget::AVX2 => {
-                let avx2_com = Some(avx2::Avx2Arr4Float::newf32());
+                let avx2_com = Some(avx2_type::Avx2Arr4Float::newf32());
                 Arr4Com{op_target: OpTarget::AVX2, dlen: DLEN, legacy_com:None, avx2_com, cuda_com: None}
             },
             OpTarget::CUDA => {
-                let cuda_com = Some(cuda::CudaArr4Float::newf32());
+                let cuda_com = Some(cuda_type::CudaArr4Float::newf32());
                 Arr4Com{op_target: OpTarget::CUDA, dlen: DLEN, legacy_com:None, avx2_com: None, cuda_com}
             }
         }

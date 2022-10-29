@@ -1,9 +1,19 @@
 // pub mod arr4float;
-mod legacy;
-mod avx2;
-mod cuda;
+mod legacy_type;
+mod legacy_f32;
+mod legacy_f64;
+mod avx2_type;
+mod avx2_f32;
+mod avx2_f64;
+mod cuda_type;
+mod cuda_f32;
+mod cuda_f64;
+
 mod sleef;
 pub mod arr_f32;
+pub mod arr_f64;
+
+
 
 #[derive(Clone, Copy)]
 pub enum OpTarget {
@@ -12,13 +22,15 @@ pub enum OpTarget {
     CUDA,
 }
 
+
+
 pub struct Arr4Com<T, const DLEN: usize>{
     op_target: OpTarget,
     #[allow(dead_code)]
     dlen: usize,
-    legacy_com: Option<legacy::LegacyArr4Float<T, DLEN>>,
-    avx2_com: Option<avx2::Avx2Arr4Float<T, DLEN>>,
-    cuda_com: Option<cuda::CudaArr4Float<T, DLEN>>
+    legacy_com: Option<legacy_type::LegacyArr4Float<T, DLEN>>,
+    avx2_com: Option<avx2_type::Avx2Arr4Float<T, DLEN>>,
+    cuda_com: Option<cuda_type::CudaArr4Float<T, DLEN>>
 }
 
 pub trait Arr4ComAL<T, const DLEN: usize>{

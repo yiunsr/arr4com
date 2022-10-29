@@ -1,3 +1,8 @@
+#![allow(
+    unused_macros
+)]
+
+
 macro_rules! assert_eq_f32 {
     ($x:expr, $y:expr) => {
         if !($x.is_infinite() && $y.is_infinite() && $x.signum() == $y.signum()){
@@ -45,7 +50,7 @@ macro_rules! assert_eq_f32_array256_2 {
 }
 
 #[cfg(test)]
-mod float_tests {
+mod f32_tests{
     use arr4com::arr4com::Arr4Com;
     use arr4com::arr4com::OpTarget;
     const BLOCK_SIZE: usize = 256;
@@ -62,9 +67,9 @@ mod float_tests {
     #[test]
     fn test_0001_01_arithmetic32() {
         println!("==== test_0001_01_arithmetic32 start ====");
-        let legacy:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::new(OpTarget::LEGACY);
-        let avx2:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::new(OpTarget::AVX2);
-        let cuda:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::new(OpTarget::CUDA);
+        let legacy:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::newf32(OpTarget::LEGACY);
+        let avx2:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::newf32(OpTarget::AVX2);
+        let cuda:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::newf32(OpTarget::CUDA);
 
         let mut result = [0f32;BLOCK_SIZE];
         let mut lhs = [0f32;BLOCK_SIZE];
@@ -110,9 +115,9 @@ mod float_tests {
     #[test]
     fn test_0002_01_trigonometric() {
         println!("==== test_0002_01_trigonometric start ====");
-        let legacy:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::new(OpTarget::LEGACY);
-        let avx2:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::new(OpTarget::AVX2);
-        let cuda:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::new(OpTarget::CUDA);
+        let legacy:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::newf32(OpTarget::LEGACY);
+        let avx2:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::newf32(OpTarget::AVX2);
+        let cuda:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::newf32(OpTarget::CUDA);
 
         let mut result = [0f32;BLOCK_SIZE];
         let mut lhs = [0f32;BLOCK_SIZE];
@@ -334,9 +339,9 @@ mod float_tests {
     #[test]
     fn test_0003_01_math() {
         println!("==== test_0003_01_math start ====");
-        let legacy:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::new(OpTarget::LEGACY);
-        let avx2:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::new(OpTarget::AVX2);
-        let cuda:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::new(OpTarget::CUDA);
+        let legacy:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::newf32(OpTarget::LEGACY);
+        let avx2:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::newf32(OpTarget::AVX2);
+        let cuda:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::newf32(OpTarget::CUDA);
 
         let mut result = [0f32;BLOCK_SIZE];
         let mut lhs = [0f32;BLOCK_SIZE];
