@@ -1,6 +1,8 @@
 use crate::arr4com::Arr4ComAL;
 use crate::arr4com::legacy_type::LegacyArr4Float;
 
+type Float = f64;
+
 impl<const DLEN: usize> LegacyArr4Float<f64, DLEN>{
     pub fn newf64() -> Self{
         LegacyArr4Float {
@@ -9,150 +11,181 @@ impl<const DLEN: usize> LegacyArr4Float<f64, DLEN>{
     }
 }
 
-impl<const DLEN: usize> Arr4ComAL<f64, DLEN> for LegacyArr4Float<f64, DLEN>{
+impl<const DLEN: usize> Arr4ComAL<Float, DLEN> for LegacyArr4Float<Float, DLEN>{
 
-    fn add(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN], rhs: [f64;DLEN]){
+    fn add(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
         for index in 0..DLEN{
-            ret[index] = lhs[index] + rhs[index];
+            ret[index] = opr1[index] + opr2[index];
         }
     }
     
-    fn sub(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN], rhs: [f64;DLEN]){
+    fn sub(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
         for index in 0..DLEN{
-            ret[index] = lhs[index] - rhs[index];
+            ret[index] = opr1[index] - opr2[index];
         }
     }
 
-    fn mul(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN], rhs: [f64;DLEN]){
+    fn mul(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
         for index in 0..DLEN{
-            ret[index] = lhs[index] * rhs[index];
+            ret[index] = opr1[index] * opr2[index];
         }
     }
 
-    fn div(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN], rhs: [f64;DLEN]){
+    fn div(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
         for index in 0..DLEN{
-            ret[index] = lhs[index] / rhs[index];
+            ret[index] = opr1[index] / opr2[index];
         }
     }
 
-    fn sin(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
+    fn mul_add(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN], opr3: [Float;DLEN]){
         for index in 0..DLEN{
-            ret[index] = lhs[index].sin();
-        }
-    }
-    fn cos(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        for index in 0..DLEN{
-            ret[index] = lhs[index].cos();
-        }
-    }
-    fn tan(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        for index in 0..DLEN{
-            ret[index] = lhs[index].tan();
-        }
-    }
-    fn asin(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        for index in 0..DLEN{
-            ret[index] = lhs[index].asin();
-        }
-    }
-    fn acos(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        for index in 0..DLEN{
-            ret[index] = lhs[index].acos();
-        }
-    }
-    fn atan(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        for index in 0..DLEN{
-            ret[index] = lhs[index].atan();
-        }
-    }
-    fn sinh(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        for index in 0..DLEN{
-            ret[index] = lhs[index].sinh();
-        }
-    }
-    fn cosh(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        for index in 0..DLEN{
-            ret[index] = lhs[index].cosh();
-        }
-    }
-    fn tanh(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        for index in 0..DLEN{
-            ret[index] = lhs[index].tanh();
-        }
-    }
-    fn asinh(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        for index in 0..DLEN{
-            ret[index] = lhs[index].asinh();
-        }
-    }
-    fn acosh(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        for index in 0..DLEN{
-            ret[index] = lhs[index].acosh();
-        }
-    }
-    fn atanh(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        for index in 0..DLEN{
-            ret[index] = lhs[index].atanh();
+            ret[index] = opr1[index] * opr2[index] + opr3[index];
         }
     }
 
-    fn ln(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
+    fn ceil(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         for index in 0..DLEN{
-            ret[index] = lhs[index].ln();
+            ret[index] = opr1[index].ceil();
         }
     }
-    fn ln_1p(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
+    fn floor(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         for index in 0..DLEN{
-            ret[index] = lhs[index].ln_1p();
+            ret[index] = opr1[index].floor();
         }
     }
-    fn log10(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
+    fn round(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         for index in 0..DLEN{
-            ret[index] = lhs[index].log10();
+            ret[index] = opr1[index].round();
         }
     }
-    fn log2(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
+    fn trunc(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         for index in 0..DLEN{
-            ret[index] = lhs[index].log2();
-        }
-    }
-
-    fn exp(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        for index in 0..DLEN{
-            ret[index] = lhs[index].exp();
-        }
-    }
-    fn exp2(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        for index in 0..DLEN{
-            ret[index] = lhs[index].exp2();
-        }
-    }
-    fn exp_m1(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        for index in 0..DLEN{
-            ret[index] = lhs[index].exp_m1();
-        }
-    }
-    fn sqrt(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        for index in 0..DLEN{
-            ret[index] = lhs[index].sqrt();
-        }
-    }
-    fn cbrt(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        for index in 0..DLEN{
-            ret[index] = lhs[index].cbrt();
+            ret[index] = opr1[index].trunc();
         }
     }
 
-    fn powf(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN], rhs: [f64;DLEN]){
+    fn sin(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         for index in 0..DLEN{
-            ret[index] = lhs[index].powf(rhs[index]);
+            ret[index] = opr1[index].sin();
         }
     }
-    fn hypot(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN], rhs: [f64;DLEN]){
+    fn cos(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         for index in 0..DLEN{
-            ret[index] = lhs[index].hypot(rhs[index]);
+            ret[index] = opr1[index].cos();
+        }
+    }
+    fn tan(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = opr1[index].tan();
+        }
+    }
+    fn asin(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = opr1[index].asin();
+        }
+    }
+    fn acos(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = opr1[index].acos();
+        }
+    }
+    fn atan(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = opr1[index].atan();
+        }
+    }
+    fn sinh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = opr1[index].sinh();
+        }
+    }
+    fn cosh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = opr1[index].cosh();
+        }
+    }
+    fn tanh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = opr1[index].tanh();
+        }
+    }
+    fn asinh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = opr1[index].asinh();
+        }
+    }
+    fn acosh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = opr1[index].acosh();
+        }
+    }
+    fn atanh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = opr1[index].atanh();
+        }
+    }
+    fn atan2(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = opr1[index].atan2(opr2[index]);
+        }
+    }
+
+    fn ln(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = opr1[index].ln();
+        }
+    }
+    fn ln_1p(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = opr1[index].ln_1p();
+        }
+    }
+    fn log10(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = opr1[index].log10();
+        }
+    }
+    fn log2(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = opr1[index].log2();
+        }
+    }
+
+    fn exp(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = opr1[index].exp();
+        }
+    }
+    fn exp2(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = opr1[index].exp2();
+        }
+    }
+    fn exp_m1(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = opr1[index].exp_m1();
+        }
+    }
+    fn sqrt(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = opr1[index].sqrt();
+        }
+    }
+    fn cbrt(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = opr1[index].cbrt();
+        }
+    }
+
+    fn powf(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = opr1[index].powf(opr2[index]);
+        }
+    }
+    fn hypot(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = opr1[index].hypot(opr2[index]);
         }
     }
 
 }
-

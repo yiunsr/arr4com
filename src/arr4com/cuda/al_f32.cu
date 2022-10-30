@@ -23,6 +23,33 @@ extern "C" __global__ void a4c_divf32(const float* x, const float* y, float* out
     }
 }
 
+extern "C" __global__ void a4c_mul_addf32(const float* x, const float* y, const float* z, float* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = fmaf(x[i], y[i], z[i]);
+    }
+}
+
+extern "C" __global__ void a4c_ceilf32(const float* x, float* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = ceilf(x[i]);
+    }
+}
+extern "C" __global__ void a4c_floorf32(const float* x, float* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = floorf(x[i]);
+    }
+}
+extern "C" __global__ void a4c_roundf32(const float* x, float* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = roundf (x[i]);
+    }
+}
+extern "C" __global__ void a4c_truncf32(const float* x, float* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = truncf(x[i]);
+    }
+}
+
 extern "C" __global__ void a4c_cosf32(const float* x, float* out, int count) {
     for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
         out[i] = cosf(x[i]);
@@ -56,6 +83,12 @@ extern "C" __global__ void a4c_asinf32(const float* x, float* out, int count) {
 extern "C" __global__ void a4c_atanf32(const float* x, float* out, int count) {
     for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
         out[i] = atanf(x[i]);
+    }
+}
+
+extern "C" __global__ void a4c_atan2f32(const float* x, const float* y, float* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = atan2f(x[i], y[i]);
     }
 }
 

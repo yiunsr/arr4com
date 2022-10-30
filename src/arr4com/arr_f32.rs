@@ -1,53 +1,64 @@
 use crate::arr4com::Arr4ComAL;
-use crate::arr4com::legacy_f32;
-use crate::arr4com::avx2_f32;
-use crate::arr4com::cuda_f32;
 use crate::arr4com::*;
 
+type Float = f32;
 
-
-macro_rules! InterCall1f32{
-    ($self:ident, $ret:ident, $lhs:ident, $F:ident) => {
+macro_rules! InterCall{
+    ($self:ident, $ret:ident, $opr1:ident, $F:ident) => {
         match $self.op_target {
             OpTarget::LEGACY => {
                 let legacy_com = $self.legacy_com.as_ref().unwrap();
-                legacy_com.$F($ret, $lhs);
+                legacy_com.$F($ret, $opr1);
             }
             OpTarget::AVX2 => {
                 let avx2_com = $self.avx2_com.as_ref().unwrap();
-                avx2_com.$F($ret, $lhs);
+                avx2_com.$F($ret, $opr1);
             },
             OpTarget::CUDA => {
                 let cuda_com = $self.cuda_com.as_ref().unwrap();
-                cuda_com.$F($ret, $lhs);
+                cuda_com.$F($ret, $opr1);
+            },
+            
+        }
+    };
+    ($self:ident, $ret:ident, $opr1:ident, $opr2:ident, $F:ident) => {
+        match $self.op_target {
+            OpTarget::LEGACY => {
+                let legacy_com = $self.legacy_com.as_ref().unwrap();
+                legacy_com.$F($ret, $opr1, $opr2);
+            }
+            OpTarget::AVX2 => {
+                let avx2_com = $self.avx2_com.as_ref().unwrap();
+                avx2_com.$F($ret, $opr1, $opr2);
+            },
+            OpTarget::CUDA => {
+                let cuda_com = $self.cuda_com.as_ref().unwrap();
+                cuda_com.$F($ret, $opr1, $opr2);
+            },
+            
+        }
+    };
+
+    ($self:ident, $ret:ident, $opr1:ident, $opr2:ident, $opr3:ident, $F:ident) => {
+        match $self.op_target {
+            OpTarget::LEGACY => {
+                let legacy_com = $self.legacy_com.as_ref().unwrap();
+                legacy_com.$F($ret, $opr1, $opr2, $opr3);
+            }
+            OpTarget::AVX2 => {
+                let avx2_com = $self.avx2_com.as_ref().unwrap();
+                avx2_com.$F($ret, $opr1, $opr2, $opr3);
+            },
+            OpTarget::CUDA => {
+                let cuda_com = $self.cuda_com.as_ref().unwrap();
+                cuda_com.$F($ret, $opr1, $opr2, $opr3);
             },
             
         }
     };
 }
 
-
-macro_rules! InterCall2f32{
-    ($self:ident, $ret:ident, $lhs:ident, $rhs:ident, $F:ident) => {
-        match $self.op_target {
-            OpTarget::LEGACY => {
-                let legacy_com = $self.legacy_com.as_ref().unwrap();
-                legacy_com.$F($ret, $lhs, $rhs);
-            }
-            OpTarget::AVX2 => {
-                let avx2_com = $self.avx2_com.as_ref().unwrap();
-                avx2_com.$F($ret, $lhs, $rhs);
-            },
-            OpTarget::CUDA => {
-                let cuda_com = $self.cuda_com.as_ref().unwrap();
-                cuda_com.$F($ret, $lhs, $rhs);
-            },
-            
-        }
-    };
-}
-
-impl<const DLEN: usize> Arr4Com<f32, DLEN>{
+impl<const DLEN: usize> Arr4Com<Float, DLEN>{
     pub fn newf32(op_target: OpTarget) -> Self{
         match op_target {
             OpTarget::LEGACY => {
@@ -66,125 +77,145 @@ impl<const DLEN: usize> Arr4Com<f32, DLEN>{
     }
 }
 
-impl<const DLEN: usize> Arr4Com<f32, DLEN>{
-    pub fn add(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN], rhs: [f32;DLEN]){
+impl<const DLEN: usize> Arr4Com<Float, DLEN>{
+    pub fn add(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
         match self.op_target {
             OpTarget::LEGACY => {
                 let legacy_com = self.legacy_com.as_ref().unwrap();
-                legacy_com.add(ret, lhs, rhs);
+                legacy_com.add(ret, opr1, opr2);
             }
             OpTarget::AVX2 => {
                 let avx2_com = self.avx2_com.as_ref().unwrap();
-                avx2_com.add(ret, lhs, rhs);
+                avx2_com.add(ret, opr1, opr2);
             },
             OpTarget::CUDA => {
                 let cuda_com = self.cuda_com.as_ref().unwrap();
-                cuda_com.add(ret, lhs, rhs);
+                cuda_com.add(ret, opr1, opr2);
             },
             
         }
     }
 
-    pub fn sub(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN], rhs: [f32;DLEN]){
-        InterCall2f32!(self, ret, lhs, rhs, sub);
+    pub fn sub(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterCall!(self, ret, opr1, opr2, sub);
     }
 
-    pub fn mul(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN], rhs: [f32;DLEN]){
-        InterCall2f32!(self, ret, lhs, rhs, mul);
+    pub fn mul(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterCall!(self, ret, opr1, opr2, mul);
     }
 
-    pub fn div(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN], rhs: [f32;DLEN]){
-        InterCall2f32!(self, ret, lhs, rhs, div);
+    pub fn div(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterCall!(self, ret, opr1, opr2, div);
     }
 
-    pub fn cos(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+    pub fn mul_add(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN], opr3: [Float;DLEN]){
+        InterCall!(self, ret, opr1, opr2, opr3, mul_add);
+    }
+
+    pub fn ceil(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterCall!(self, ret, opr1, ceil);
+    }
+    pub fn floor(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterCall!(self, ret, opr1, floor);
+    }
+    pub fn round(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterCall!(self, ret, opr1, round);
+    }
+    pub fn trunc(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterCall!(self, ret, opr1, trunc);
+    }
+
+    pub fn cos(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         match self.op_target {
             OpTarget::LEGACY => {
                 let legacy_com = self.legacy_com.as_ref().unwrap();
-                legacy_com.cos(ret, lhs);
+                legacy_com.cos(ret, opr1);
             },
             OpTarget::AVX2 => {
                 let avx2_com = self.avx2_com.as_ref().unwrap();
-                avx2_com.cos(ret, lhs);
+                avx2_com.cos(ret, opr1);
             },
             OpTarget::CUDA => {
                 let cuda_com = self.cuda_com.as_ref().unwrap();
-                cuda_com.cos(ret, lhs);
+                cuda_com.cos(ret, opr1);
             },
         }
     }
-    pub fn sin(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
-        InterCall1f32!(self, ret, lhs, sin);
+    pub fn sin(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterCall!(self, ret, opr1, sin);
     }
-    pub fn tan(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
-        InterCall1f32!(self, ret, lhs, tan);
+    pub fn tan(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterCall!(self, ret, opr1, tan);
     }
-    pub fn acos(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
-        InterCall1f32!(self, ret, lhs, acos);
+    pub fn acos(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterCall!(self, ret, opr1, acos);
     }
-    pub fn asin(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
-        InterCall1f32!(self, ret, lhs, asin);
+    pub fn asin(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterCall!(self, ret, opr1, asin);
     }
-    pub fn atan(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
-        InterCall1f32!(self, ret, lhs, atan);
+    pub fn atan(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterCall!(self, ret, opr1, atan);
     }
-    pub fn cosh(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
-        InterCall1f32!(self, ret, lhs, cosh);
+    pub fn cosh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterCall!(self, ret, opr1, cosh);
     }
-    pub fn sinh(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
-        InterCall1f32!(self, ret, lhs, sinh);
+    pub fn sinh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterCall!(self, ret, opr1, sinh);
     }
-    pub fn tanh(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
-        InterCall1f32!(self, ret, lhs, tanh);
+    pub fn tanh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterCall!(self, ret, opr1, tanh);
     }
-    pub fn acosh(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
-        InterCall1f32!(self, ret, lhs, acosh);
+    pub fn acosh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterCall!(self, ret, opr1, acosh);
     }
-    pub fn asinh(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
-        InterCall1f32!(self, ret, lhs, asinh);
+    pub fn asinh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterCall!(self, ret, opr1, asinh);
     }
-    pub fn atanh(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
-        InterCall1f32!(self, ret, lhs, atanh);
+    pub fn atanh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterCall!(self, ret, opr1, atanh);
     }
-    pub fn ln(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
-        InterCall1f32!(self, ret, lhs, ln);
+    pub fn ln(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterCall!(self, ret, opr1, ln);
     }
-    pub fn ln_1p(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
-        InterCall1f32!(self, ret, lhs, ln_1p);
+    pub fn ln_1p(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterCall!(self, ret, opr1, ln_1p);
     }
-    pub fn log10(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
-        InterCall1f32!(self, ret, lhs, log10);
+    pub fn log10(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterCall!(self, ret, opr1, log10);
     }
-    pub fn log2(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
-        InterCall1f32!(self, ret, lhs, log2);
-    }
-
-    pub fn exp(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
-        InterCall1f32!(self, ret, lhs, exp);
-    }
-    pub fn exp2(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
-        InterCall1f32!(self, ret, lhs, exp2);
-    }
-    pub fn exp_m1(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
-        InterCall1f32!(self, ret, lhs, exp_m1);
+    pub fn log2(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterCall!(self, ret, opr1, log2);
     }
 
-    pub fn sqrt(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
-        InterCall1f32!(self, ret, lhs, sqrt);
+    pub fn exp(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterCall!(self, ret, opr1, exp);
     }
-    pub fn cbrt(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
-        InterCall1f32!(self, ret, lhs, cbrt);
+    pub fn exp2(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterCall!(self, ret, opr1, exp2);
     }
-    pub fn powf(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN], rhs: [f32;DLEN]){
-        InterCall2f32!(self, ret, lhs, rhs, powf);
-    }
-    pub fn hypot(&self, ret: &mut [f32;DLEN], lhs: [f32;DLEN], rhs: [f32;DLEN]){
-        InterCall2f32!(self, ret, lhs, rhs, hypot);
+    pub fn exp_m1(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterCall!(self, ret, opr1, exp_m1);
     }
 
-    // pub fn sort(self, ret: &mut [f32;DLEN], lhs: [f32;DLEN]){
+    pub fn sqrt(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterCall!(self, ret, opr1, sqrt);
+    }
+    pub fn cbrt(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterCall!(self, ret, opr1, cbrt);
+    }
+    pub fn atan2(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterCall!(self, ret, opr1, opr2, atan2);
+    }
+    pub fn powf(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterCall!(self, ret, opr1, opr2, powf);
+    }
+    pub fn hypot(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterCall!(self, ret, opr1, opr2, hypot);
+    }
+
+    // pub fn sort(self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
     //     let cuda_com = self.cuda_com.unwrap();
-    //     cuda_com.sort(ret, lhs);
+    //     cuda_com.sort(ret, opr1);
     // }
 
 

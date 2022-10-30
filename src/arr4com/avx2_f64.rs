@@ -3,52 +3,95 @@ use crate::arr4com::Arr4ComAL;
 use crate::arr4com::sleef::simddp;
 use crate::arr4com::avx2_type::Avx2Arr4Float;
 
-macro_rules! InterLoopSleef1f64{
-    ($ret:ident, $lhs:ident,$F:ident) => {
-        let bs = 8;
-        let block = DLEN as usize / 8;
+type Float = f64;
 
-        for index in 0..block{
-            unsafe{
-                let left = _mm256_loadu_pd(&$lhs[index * bs]);
-                let result = simddp::$F(left);
-                _mm256_storeu_pd(&mut $ret[index * bs], result);
-            }
-        }
-    };
-}
-macro_rules! InterLoopSleef2f64{
-    ($ret:ident, $lhs:ident, $rhs:ident,$F:ident) => {
-        let bs = 8;
-        let block = DLEN as usize / 8;
-
-        for index in 0..block{
-            unsafe{
-                let left = _mm256_loadu_pd(&$lhs[index * bs]);
-                let right = _mm256_loadu_pd(&$rhs[index * bs]);
-                let result = simddp::$F(left, right);
-                _mm256_storeu_pd(&mut $ret[index * bs], result);
-            }
-        }
-    };
-}
-
-macro_rules! InterLoop2f64{
-    ($ret:ident, $lhs:ident, $rhs:ident, $F:ident) => {
+macro_rules! InterLoop{
+    ($ret:ident, $opr1:ident,  $F:ident) => {
         //let dlen = DLEN;
         let bs = 8;
         let block = DLEN as usize / 8;
         for index in 0..block{
             unsafe{
-                let left = _mm256_loadu_pd(&$lhs[index * bs]);
-                let right = _mm256_loadu_pd(&$rhs[index * bs]);
-                let result = $F(left, right);
+                let opr1 = _mm256_loadu_pd(&$opr1[index * bs]);
+                let result = $F(opr1);
+                _mm256_storeu_pd(&mut $ret[index * bs], result);
+            }
+        }
+    };
+
+    ($ret:ident, $opr1:ident, $opr2:ident, $F:ident) => {
+        //let dlen = DLEN;
+        let bs = 8;
+        let block = DLEN as usize / 8;
+        for index in 0..block{
+            unsafe{
+                let opr1 = _mm256_loadu_pd(&$opr1[index * bs]);
+                let opr2 = _mm256_loadu_pd(&$opr2[index * bs]);
+                let result = $F(opr1, opr2);
+                _mm256_storeu_pd(&mut $ret[index * bs], result);
+            }
+        }
+    };
+
+    ($ret:ident, $opr1:ident, $opr2:ident, $opr3:ident, $F:ident) => {
+        //let dlen = DLEN;
+        let bs = 8;
+        let block = DLEN as usize / 8;
+        for index in 0..block{
+            unsafe{
+                let opr1 = _mm256_loadu_pd(&$opr1[index * bs]);
+                let opr2 = _mm256_loadu_pd(&$opr2[index * bs]);
+                let opr3 = _mm256_loadu_pd(&$opr3[index * bs]);
+                let result = $F(opr1, opr2, opr3);
                 _mm256_storeu_pd(&mut $ret[index * bs], result);
             }
         }
     };
 }
 
+macro_rules! InterLoopSleef{
+    ($ret:ident, $opr1:ident, $F:ident) => {
+        let bs = 8;
+        let block = DLEN as usize / 8;
+
+        for index in 0..block{
+            unsafe{
+                let opr1 = _mm256_loadu_pd(&$opr1[index * bs]);
+                let result = simddp::$F(opr1);
+                _mm256_storeu_pd(&mut $ret[index * bs], result);
+            }
+        }
+    };
+
+    ($ret:ident, $opr1:ident, $opr2:ident, $F:ident) => {
+        let bs = 8;
+        let block = DLEN as usize / 8;
+
+        for index in 0..block{
+            unsafe{
+                let opr1 = _mm256_loadu_pd(&$opr1[index * bs]);
+                let opr2 = _mm256_loadu_pd(&$opr2[index * bs]);
+                let result = simddp::$F(opr1, opr2);
+                _mm256_storeu_pd(&mut $ret[index * bs], result);
+            }
+        }
+    };
+
+    ($ret:ident, $opr1:ident, $opr2:ident, $opr3:ident, $F:ident) => {
+        let bs = 8;
+        let block = DLEN as usize / 8;
+
+        for index in 0..block{
+            unsafe{
+                let opr1 = _mm256_loadu_pd(&$opr1[index * bs]);
+                let opr2 = _mm256_loadu_pd(&$opr2[index * bs]);
+                let opr3 = _mm256_loadu_pd(&$opr3[index * bs]);
+                let result = simddp::$F(opr1, opr2, opr3);
+                _mm256_storeu_pd(&mut $ret[index * bs], result);
+            }
+        }
+    };
+}
 
 impl<const DLEN: usize> Avx2Arr4Float<f64, DLEN>{
     pub fn newf64() -> Self{
@@ -58,115 +101,143 @@ impl<const DLEN: usize> Avx2Arr4Float<f64, DLEN>{
     }
 }
 
+fn trunc(a:__m256d)->__m256d{
+    unsafe{
+        //  _MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC
+        const ROUND_MODE:i32 = 0x08|0x03;
+        _mm256_round_pd::<ROUND_MODE>(a)
+    }
+} 
+
 type F64Avx<const DLEN: usize> = Avx2Arr4Float<f64, DLEN>;
 
 impl<const DLEN: usize> Arr4ComAL<f64, DLEN> for F64Avx<DLEN>{
-    fn add(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN], rhs: [f64;DLEN]){
+    fn add(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
         let dlen = DLEN;
         println!("dlen : {}", dlen);
         let bs = 8;
         let block = DLEN as usize / 8;
         for index in 0..block{
             unsafe{
-                let left = _mm256_loadu_pd(&lhs[index * bs]);
-                let right = _mm256_loadu_pd(&rhs[index * bs]);
+                let left = _mm256_loadu_pd(&opr1[index * bs]);
+                let right = _mm256_loadu_pd(&opr2[index * bs]);
                 let result = _mm256_add_pd(left, right);
                 _mm256_storeu_pd(&mut ret[index * bs], result);
             }
         }
     }
 
-    fn sub(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN], rhs: [f64;DLEN]){
-        InterLoop2f64!(ret, lhs, rhs, _mm256_sub_pd);
+    fn sub(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterLoop!(ret, opr1, opr2, _mm256_sub_pd);
     }
 
-    fn mul(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN], rhs: [f64;DLEN]){
-        InterLoop2f64!(ret, lhs, rhs, _mm256_mul_pd);
+    fn mul(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterLoop!(ret, opr1, opr2, _mm256_mul_pd);
     }
 
-    fn div(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN], rhs: [f64;DLEN]){
-        InterLoop2f64!(ret, lhs, rhs, _mm256_div_pd);
+    fn div(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterLoop!(ret, opr1, opr2, _mm256_div_pd);
     }
 
-    fn cos(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
+    fn mul_add(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN], opr3: [Float;DLEN]){
+        InterLoop!(ret, opr1, opr2, opr3, _mm256_fmadd_pd);
+    }
+
+    fn ceil(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterLoop!(ret, opr1, _mm256_ceil_pd);
+    }
+    fn floor(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterLoop!(ret, opr1, _mm256_floor_pd);
+    }
+    fn round(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, xround);
+    }
+    fn trunc(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterLoop!(ret, opr1, trunc);
+    }
+
+    fn cos(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         let bs = 8;
         let block = DLEN as usize / 8;
 
         for index in 0..block{
             unsafe{
-                let left = _mm256_loadu_pd(&lhs[index * bs]);
+                let left = _mm256_loadu_pd(&opr1[index * bs]);
                 let result = simddp::xcos_u1(left);
                 _mm256_storeu_pd(&mut ret[index * bs], result);
             }
         }
     }
-    fn sin(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        InterLoopSleef1f64!(ret, lhs, xsin_u1);
+    fn sin(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, xsin_u1);
     }
-    fn tan(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        InterLoopSleef1f64!(ret, lhs, xtan_u1);
+    fn tan(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, xtan_u1);
     }
-    fn asin(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        InterLoopSleef1f64!(ret, lhs, xasin_u1);
+    fn asin(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, xasin_u1);
     }
-    fn acos(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        InterLoopSleef1f64!(ret, lhs, xacos_u1);
+    fn acos(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, xacos_u1);
     }
-    fn atan(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        InterLoopSleef1f64!(ret, lhs, xatan_u1);
+    fn atan(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, xatan_u1);
     }
-    fn sinh(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        InterLoopSleef1f64!(ret, lhs, xsinh);
+    fn atan2(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, opr2, xatan2_u1);
     }
-    fn cosh(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        InterLoopSleef1f64!(ret, lhs, xcosh);
+    fn sinh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, xsinh);
     }
-    fn tanh(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        InterLoopSleef1f64!(ret, lhs, xtanh);
+    fn cosh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, xcosh);
     }
-    fn asinh(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        InterLoopSleef1f64!(ret, lhs, xasinh);
+    fn tanh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, xtanh);
     }
-    fn acosh(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        InterLoopSleef1f64!(ret, lhs, xacosh);
+    fn asinh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, xasinh);
     }
-    fn atanh(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        InterLoopSleef1f64!(ret, lhs, xatanh);
+    fn acosh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, xacosh);
     }
-    fn ln(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        InterLoopSleef1f64!(ret, lhs, xlog_u1);
+    fn atanh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, xatanh);
     }
-    fn ln_1p(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        InterLoopSleef1f64!(ret, lhs, xlog1p);
+    fn ln(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, xlog_u1);
     }
-    fn log10(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        InterLoopSleef1f64!(ret, lhs, xlog10);
+    fn ln_1p(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, xlog1p);
     }
-    fn log2(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        InterLoopSleef1f64!(ret, lhs, xlog2);
+    fn log10(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, xlog10);
     }
-
-    fn exp(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        InterLoopSleef1f64!(ret, lhs, xexp);
-    }
-    fn exp2(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        InterLoopSleef1f64!(ret, lhs, xexp2);
-    }
-    fn exp_m1(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        InterLoopSleef1f64!(ret, lhs, xexpm1);
+    fn log2(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, xlog2);
     }
 
-    fn sqrt(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        InterLoopSleef1f64!(ret, lhs, xsqrt);
+    fn exp(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, xexp);
     }
-    fn cbrt(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN]){
-        InterLoopSleef1f64!(ret, lhs, xcbrt_u1);
+    fn exp2(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, xexp2);
     }
-    fn powf(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN], rhs: [f64;DLEN]){
-        InterLoopSleef2f64!(ret, lhs, rhs, xpow);
+    fn exp_m1(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, xexpm1);
     }
-    fn hypot(&self, ret: &mut [f64;DLEN], lhs: [f64;DLEN], rhs: [f64;DLEN]){
-        InterLoopSleef2f64!(ret, lhs, rhs, xhypot_u05);
+
+    fn sqrt(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, xsqrt);
+    }
+    fn cbrt(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, xcbrt_u1);
+    }
+    fn powf(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, opr2, xpow);
+    }
+    fn hypot(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, opr2, xhypot_u05);
     }
 
 }

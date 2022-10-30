@@ -23,6 +23,33 @@ extern "C" __global__ void a4c_divf64(const double* x, const double* y, double* 
     }
 }
 
+extern "C" __global__ void a4c_mul_addf64(const double* x, const double* y, const double* z, double* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = fma(x[i], y[i], z[i]);
+    }
+}
+
+extern "C" __global__ void a4c_ceilf64(const double* x, double* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = ceil(x[i]);
+    }
+}
+extern "C" __global__ void a4c_floorf64(const double* x, double* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = floor(x[i]);
+    }
+}
+extern "C" __global__ void a4c_roundf64(const double* x, double* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = round(x[i]);
+    }
+}
+extern "C" __global__ void a4c_truncf64(const double* x, double* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = trunc(x[i]);
+    }
+}
+
 extern "C" __global__ void a4c_cosf64(const double* x, double* out, int count) {
     for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
         out[i] = cosf(x[i]);
@@ -56,6 +83,12 @@ extern "C" __global__ void a4c_asinf64(const double* x, double* out, int count) 
 extern "C" __global__ void a4c_atanf64(const double* x, double* out, int count) {
     for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
         out[i] = atan(x[i]);
+    }
+}
+
+extern "C" __global__ void a4c_atan2f64(const double* x, const double* y, double* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = atan2(x[i], y[i]);
     }
 }
 

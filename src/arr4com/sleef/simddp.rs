@@ -1027,6 +1027,10 @@ pub fn xfdim(x:vdouble, y:vdouble)->vdouble{
     vsel_vd_vo_vd_vd(vor_vo_vo_vo(vlt_vo_vd_vd(ret, vcast_vd_d(0.0)), veq_vo_vd_vd(x, y)), vcast_vd_d(0.0), ret)
 }
 
+pub fn xround(x:vdouble)->vdouble{
+    vround2_vd_vd(x)
+}
+
 pub fn xnextafter(mut x:vdouble, y:vdouble)->vdouble{
     x = vsel_vd_vo_vd_vd(veq_vo_vd_vd(x, vcast_vd_d(0.0)), vmulsign_vd_vd_vd(vcast_vd_d(0.0), y), x);
     let mut xi2 = vreinterpret_vm_vd(x);
