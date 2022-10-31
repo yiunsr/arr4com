@@ -155,6 +155,18 @@ impl<const DLEN: usize> Arr4ComAL<f64, DLEN> for F64Avx<DLEN>{
     fn trunc(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterLoop!(ret, opr1, trunc);
     }
+    fn abs(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, xfabs);
+    }
+    fn max(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, opr2, xfmax);
+    }
+    fn min(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, opr2, xfmin);
+    }
+    fn copysign(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, opr2, xcopysign);
+    }
 
     fn cos(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         let bs = 8;

@@ -1021,6 +1021,14 @@ pub fn xlog1p(d:vdouble)->vdouble{
     r
 }
 
+pub fn xfabs(x:vdouble)->vdouble{ vabs_vd_vd(x) }
+pub fn xcopysign(x:vdouble, y:vdouble)->vdouble{ vcopysign_vd_vd_vd(x, y) }
+pub fn xfmax(x:vdouble, y:vdouble)->vdouble{
+    vsel_vd_vo_vd_vd(visnan_vo_vd(y), x, vmax_vd_vd_vd(x, y))
+}
+pub fn xfmin(x:vdouble, y:vdouble)->vdouble{
+  vsel_vd_vo_vd_vd(visnan_vo_vd(y), x, vmin_vd_vd_vd(x, y))
+}
 
 pub fn xfdim(x:vdouble, y:vdouble)->vdouble{
     let ret = vsub_vd_vd_vd(x, y);

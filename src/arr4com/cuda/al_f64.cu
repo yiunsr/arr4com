@@ -49,13 +49,33 @@ extern "C" __global__ void a4c_truncf64(const double* x, double* out, int count)
         out[i] = trunc(x[i]);
     }
 }
+extern "C" __global__ void a4c_absf64(const double* x, double* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = fabs(x[i]);
+    }
+}
+extern "C" __global__ void a4c_maxf64(const double* x, const double* y, double* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = fmax(x[i], y[i]);
+    }
+}
+extern "C" __global__ void a4c_minf64(const double* x, const double* y, double* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = fmin(x[i], y[i]);
+    }
+}
+extern "C" __global__ void a4c_copysignf64(const double* x, const double* y, double* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = copysign(x[i], y[i]);
+    }
+}
+
 
 extern "C" __global__ void a4c_cosf64(const double* x, double* out, int count) {
     for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
         out[i] = cosf(x[i]);
     }
 }
-
 extern "C" __global__ void a4c_sinf64(const double* x, double* out, int count) {
     for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
         out[i] = sin(x[i]);

@@ -51,10 +51,10 @@ pub trait Arr4ComAL<T, const DLEN: usize>{
     fn round(&self, ret: &mut [T;DLEN], opr1: [T;DLEN]);
     fn trunc(&self, ret: &mut [T;DLEN], opr1: [T;DLEN]);
 
-    // fn abs(&self, ret: &mut [T;DLEN], opr1: [T;DLEN]);
-    // fn max(&self, ret: &mut [T;DLEN], opr1: [T;DLEN]);
-    // fn min(&self, ret: &mut [T;DLEN], opr1: [T;DLEN]);
-    // fn copysign(&self, ret: &mut [T;DLEN], opr1: [T;DLEN]);
+    fn abs(&self, ret: &mut [T;DLEN], opr1: [T;DLEN]);
+    fn max(&self, ret: &mut [T;DLEN], opr1: [T;DLEN], opr2: [T;DLEN]);
+    fn min(&self, ret: &mut [T;DLEN], opr1: [T;DLEN], opr2: [T;DLEN]);
+    fn copysign(&self, ret: &mut [T;DLEN], opr1: [T;DLEN], opr2: [T;DLEN]);
 
     fn cos(&self, ret: &mut [T;DLEN], opr1: [T;DLEN]);
     fn sin(&self, ret: &mut [T;DLEN], opr1: [T;DLEN]);

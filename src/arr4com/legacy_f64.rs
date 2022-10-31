@@ -64,6 +64,27 @@ impl<const DLEN: usize> Arr4ComAL<Float, DLEN> for LegacyArr4Float<Float, DLEN>{
         }
     }
 
+    fn abs(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = opr1[index].abs();
+        }
+    }
+    fn max(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = opr1[index].max(opr2[index]);
+        }
+    }
+    fn min(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = opr1[index].min(opr2[index]);
+        }
+    }
+    fn copysign(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = opr1[index].copysign(opr2[index]);
+        }
+    }
+
     fn sin(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         for index in 0..DLEN{
             ret[index] = opr1[index].sin();

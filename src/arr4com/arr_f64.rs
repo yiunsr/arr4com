@@ -21,19 +21,19 @@ macro_rules! InterCall{
             
         }
     };
-    ($self:ident, $ret:ident, $opr1:ident, $rhs:ident, $F:ident) => {
+    ($self:ident, $ret:ident, $opr1:ident, $opr2:ident, $F:ident) => {
         match $self.op_target {
             OpTarget::LEGACY => {
                 let legacy_com = $self.legacy_com.as_ref().unwrap();
-                legacy_com.$F($ret, $opr1, $rhs);
+                legacy_com.$F($ret, $opr1, $opr2);
             }
             OpTarget::AVX2 => {
                 let avx2_com = $self.avx2_com.as_ref().unwrap();
-                avx2_com.$F($ret, $opr1, $rhs);
+                avx2_com.$F($ret, $opr1, $opr2);
             },
             OpTarget::CUDA => {
                 let cuda_com = $self.cuda_com.as_ref().unwrap();
-                cuda_com.$F($ret, $opr1, $rhs);
+                cuda_com.$F($ret, $opr1, $opr2);
             },
             
         }
@@ -78,34 +78,34 @@ impl<const DLEN: usize> Arr4Com<f64, DLEN>{
 }
 
 impl<const DLEN: usize> Arr4Com<Float, DLEN>{
-    pub fn add(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], rhs: [Float;DLEN]){
+    pub fn add(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
         match self.op_target {
             OpTarget::LEGACY => {
                 let legacy_com = self.legacy_com.as_ref().unwrap();
-                legacy_com.add(ret, opr1, rhs);
+                legacy_com.add(ret, opr1, opr2);
             }
             OpTarget::AVX2 => {
                 let avx2_com = self.avx2_com.as_ref().unwrap();
-                avx2_com.add(ret, opr1, rhs);
+                avx2_com.add(ret, opr1, opr2);
             },
             OpTarget::CUDA => {
                 let cuda_com = self.cuda_com.as_ref().unwrap();
-                cuda_com.add(ret, opr1, rhs);
+                cuda_com.add(ret, opr1, opr2);
             },
             
         }
     }
 
-    pub fn sub(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], rhs: [Float;DLEN]){
-        InterCall!(self, ret, opr1, rhs, sub);
+    pub fn sub(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterCall!(self, ret, opr1, opr2, sub);
     }
 
-    pub fn mul(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], rhs: [Float;DLEN]){
-        InterCall!(self, ret, opr1, rhs, mul);
+    pub fn mul(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterCall!(self, ret, opr1, opr2, mul);
     }
 
-    pub fn div(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], rhs: [Float;DLEN]){
-        InterCall!(self, ret, opr1, rhs, div);
+    pub fn div(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterCall!(self, ret, opr1, opr2, div);
     }
 
     pub fn mul_add(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN], opr3: [Float;DLEN]){
@@ -123,6 +123,19 @@ impl<const DLEN: usize> Arr4Com<Float, DLEN>{
     }
     pub fn trunc(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCall!(self, ret, opr1, trunc);
+    }
+    
+    pub fn abs(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterCall!(self, ret, opr1, abs);
+    }
+    pub fn max(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterCall!(self, ret, opr1, opr2, max);
+    }
+    pub fn min(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterCall!(self, ret, opr1, opr2, min);
+    }
+    pub fn copysign(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterCall!(self, ret, opr1, opr2, copysign);
     }
 
     pub fn cos(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
@@ -156,8 +169,8 @@ impl<const DLEN: usize> Arr4Com<Float, DLEN>{
     pub fn atan(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCall!(self, ret, opr1, atan);
     }
-    pub fn atan2(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], rhs: [Float;DLEN]){
-        InterCall!(self, ret, opr1, rhs, atan2);
+    pub fn atan2(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterCall!(self, ret, opr1, opr2, atan2);
     }
     pub fn cosh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCall!(self, ret, opr1, cosh);
@@ -206,11 +219,11 @@ impl<const DLEN: usize> Arr4Com<Float, DLEN>{
     pub fn cbrt(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCall!(self, ret, opr1, cbrt);
     }
-    pub fn powf(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], rhs: [Float;DLEN]){
-        InterCall!(self, ret, opr1, rhs, powf);
+    pub fn powf(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterCall!(self, ret, opr1, opr2, powf);
     }
-    pub fn hypot(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], rhs: [Float;DLEN]){
-        InterCall!(self, ret, opr1, rhs, hypot);
+    pub fn hypot(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterCall!(self, ret, opr1, opr2, hypot);
     }
 
     // pub fn sort(self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){

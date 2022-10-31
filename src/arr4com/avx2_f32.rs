@@ -156,6 +156,18 @@ impl<const DLEN: usize> Arr4ComAL<f32, DLEN> for F32Avx<DLEN>{
     fn trunc(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterLoop!(ret, opr1, trunc);
     }
+    fn abs(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, xfabsf);
+    }
+    fn max(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, opr2, xfmaxf);
+    }
+    fn min(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, opr2, xfminf);
+    }
+    fn copysign(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterLoopSleef!(ret, opr1, opr2, xcopysignf);
+    }
 
     fn cos(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         let bs = 8;

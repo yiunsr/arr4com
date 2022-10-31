@@ -1,6 +1,7 @@
 use rustacuda::prelude::*;
 use rustacuda::launch;
 use std::ffi::CString;
+use crate::arr4com::Arr4ComAL;
 use crate::arr4com::cuda_type::CudaArr4Float;
 
 type Float = f64;
@@ -92,7 +93,7 @@ macro_rules! InterCuda{
 }
 
 
-pub fn init_module() -> Context {
+fn init_module() -> Context {
     // Get the first device
     let _result = rustacuda::init(CudaFlags::empty());
     let device = Device::get_device(0).unwrap();
@@ -106,7 +107,6 @@ pub fn init_module() -> Context {
 
 
 impl<const DLEN: usize> CudaArr4Float<f64, DLEN>{
-    #[allow(dead_code)]
     pub fn newf64() -> Self{
         let c = init_module();
         CudaArr4Float {
@@ -117,8 +117,8 @@ impl<const DLEN: usize> CudaArr4Float<f64, DLEN>{
 
 type F64Cuda<const DLEN: usize> = CudaArr4Float<f64, DLEN>;
 
-impl<const DLEN: usize> F64Cuda<DLEN>{
-    pub fn add(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+impl<const DLEN: usize> Arr4ComAL<f64, DLEN> for F64Cuda<DLEN>{
+    fn add(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
         let mut x = unsafe { DeviceBuffer::uninitialized(DLEN).unwrap() };
         x.copy_from(&opr1).unwrap();
 
@@ -146,112 +146,125 @@ impl<const DLEN: usize> F64Cuda<DLEN>{
         r.copy_to(ret).unwrap();
     }
 
-    pub fn sub(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+    fn sub(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
         InterCuda!(self, ret, opr1, opr2, a4c_subf64);
     }
 
-    pub fn mul(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+    fn mul(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
         InterCuda!(self, ret, opr1, opr2, a4c_mulf64);
     }
 
-    pub fn mul_add(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN], opr3: [Float;DLEN]){
+    fn mul_add(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN], opr3: [Float;DLEN]){
         InterCuda!(self, ret, opr1, opr2, opr3, a4c_mul_addf64);
     }
-    pub fn ceil(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn ceil(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCuda!(self, ret, opr1, a4c_ceilf64);
     }
-    pub fn floor(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn floor(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCuda!(self, ret, opr1, a4c_floorf64);
     }
-    pub fn round(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn round(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCuda!(self, ret, opr1, a4c_roundf64);
     }
-    pub fn trunc(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn trunc(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCuda!(self, ret, opr1, a4c_truncf64);
     }
 
-    pub fn div(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+    fn abs(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterCuda!(self, ret, opr1, a4c_absf64);
+    }
+    fn max(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterCuda!(self, ret, opr1, opr2, a4c_maxf64);
+    }
+    fn min(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterCuda!(self, ret, opr1, opr2, a4c_minf64);
+    }
+    fn copysign(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterCuda!(self, ret, opr1, opr2, a4c_copysignf64);
+    }
+
+    fn div(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
         InterCuda!(self, ret, opr1, opr2, a4c_divf64);
     }
 
-    pub fn cos(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn cos(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCuda!(self, ret, opr1, a4c_cosf64);
     }
-    pub fn sin(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn sin(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCuda!(self, ret, opr1, a4c_sinf64);
     }
-    pub fn tan(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn tan(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCuda!(self, ret, opr1, a4c_tanf64);
     }
-    pub fn acos(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn acos(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCuda!(self, ret, opr1, a4c_acosf64);
     }
-    pub fn asin(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn asin(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCuda!(self, ret, opr1, a4c_asinf64);
     }
-    pub fn atan(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn atan(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCuda!(self, ret, opr1, a4c_atanf64);
     }
-    pub fn atan2(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+    fn atan2(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
         InterCuda!(self, ret, opr1, opr2, a4c_atan2f64);
     }
-    pub fn cosh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn cosh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCuda!(self, ret, opr1, a4c_coshf64);
     }
-    pub fn sinh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn sinh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCuda!(self, ret, opr1, a4c_sinhf64);
     }
-    pub fn tanh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn tanh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCuda!(self, ret, opr1, a4c_tanhf64);
     }
-    pub fn acosh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn acosh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCuda!(self, ret, opr1, a4c_acoshf64);
     }
-    pub fn asinh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn asinh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCuda!(self, ret, opr1, a4c_asinhf64);
     }
-    pub fn atanh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn atanh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCuda!(self, ret, opr1, a4c_atanhf64);
     }
 
-    pub fn ln(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn ln(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCuda!(self, ret, opr1, a4c_lnf64);
     }
-    pub fn ln_1p(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn ln_1p(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCuda!(self, ret, opr1, a4c_ln_1pf64);
     }
-    pub fn log10(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn log10(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCuda!(self, ret, opr1, a4c_log10f64);
     }
-    pub fn log2(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn log2(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCuda!(self, ret, opr1, a4c_log2f64);
     }
 
-    pub fn exp(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn exp(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCuda!(self, ret, opr1, a4c_expf64);
     }
-    pub fn exp2(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn exp2(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCuda!(self, ret, opr1, a4c_exp2f64);
     }
-    pub fn exp_m1(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn exp_m1(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCuda!(self, ret, opr1, a4c_exp_m1f64);
     }
 
-    pub fn sqrt(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn sqrt(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCuda!(self, ret, opr1, a4c_sqrtf64);
     }
-    pub fn cbrt(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn cbrt(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCuda!(self, ret, opr1, a4c_cbrtf64);
     }
 
-    pub fn powf(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+    fn powf(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
         InterCuda!(self, ret, opr1, opr2, a4c_powff64);
     }
-    pub fn hypot(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+    fn hypot(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
         InterCuda!(self, ret, opr1, opr2, a4c_hypotf64);
     }
 
-    // pub fn sort(self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    // fn sort(self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
     //     let mut x = unsafe { DeviceBuffer::uninitialized(DLEN).unwrap() };
     //     x.copy_from(&opr1).unwrap();
 

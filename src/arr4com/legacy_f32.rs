@@ -13,27 +13,27 @@ impl<const DLEN: usize> LegacyArr4Float<Float, DLEN>{
 
 impl<const DLEN: usize> Arr4ComAL<Float, DLEN> for LegacyArr4Float<Float, DLEN>{
 
-    fn add(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], rhs: [Float;DLEN]){
+    fn add(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
         for index in 0..DLEN{
-            ret[index] = opr1[index] + rhs[index];
+            ret[index] = opr1[index] + opr2[index];
         }
     }
     
-    fn sub(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], rhs: [Float;DLEN]){
+    fn sub(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
         for index in 0..DLEN{
-            ret[index] = opr1[index] - rhs[index];
+            ret[index] = opr1[index] - opr2[index];
         }
     }
 
-    fn mul(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], rhs: [Float;DLEN]){
+    fn mul(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
         for index in 0..DLEN{
-            ret[index] = opr1[index] * rhs[index];
+            ret[index] = opr1[index] * opr2[index];
         }
     }
 
-    fn div(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], rhs: [Float;DLEN]){
+    fn div(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
         for index in 0..DLEN{
-            ret[index] = opr1[index] / rhs[index];
+            ret[index] = opr1[index] / opr2[index];
         }
     }
 
@@ -60,6 +60,27 @@ impl<const DLEN: usize> Arr4ComAL<Float, DLEN> for LegacyArr4Float<Float, DLEN>{
     fn trunc(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         for index in 0..DLEN{
             ret[index] = opr1[index].trunc();
+        }
+    }
+
+    fn abs(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = opr1[index].abs();
+        }
+    }
+    fn max(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = opr1[index].max(opr2[index]);
+        }
+    }
+    fn min(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = opr1[index].min(opr2[index]);
+        }
+    }
+    fn copysign(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = opr1[index].copysign(opr2[index]);
         }
     }
 
@@ -93,9 +114,9 @@ impl<const DLEN: usize> Arr4ComAL<Float, DLEN> for LegacyArr4Float<Float, DLEN>{
             ret[index] = opr1[index].atan();
         }
     }
-    fn atan2(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], rhs: [Float;DLEN]){
+    fn atan2(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
         for index in 0..DLEN{
-            ret[index] = opr1[index].atan2(rhs[index]);
+            ret[index] = opr1[index].atan2(opr2[index]);
         }
     }
     fn sinh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
@@ -176,14 +197,14 @@ impl<const DLEN: usize> Arr4ComAL<Float, DLEN> for LegacyArr4Float<Float, DLEN>{
         }
     }
 
-    fn powf(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], rhs: [Float;DLEN]){
+    fn powf(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
         for index in 0..DLEN{
-            ret[index] = opr1[index].powf(rhs[index]);
+            ret[index] = opr1[index].powf(opr2[index]);
         }
     }
-    fn hypot(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], rhs: [Float;DLEN]){
+    fn hypot(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
         for index in 0..DLEN{
-            ret[index] = opr1[index].hypot(rhs[index]);
+            ret[index] = opr1[index].hypot(opr2[index]);
         }
     }
 

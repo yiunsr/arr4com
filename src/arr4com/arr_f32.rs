@@ -124,6 +124,18 @@ impl<const DLEN: usize> Arr4Com<Float, DLEN>{
     pub fn trunc(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCall!(self, ret, opr1, trunc);
     }
+    pub fn abs(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+        InterCall!(self, ret, opr1, abs);
+    }
+    pub fn max(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterCall!(self, ret, opr1, opr2, max);
+    }
+    pub fn min(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterCall!(self, ret, opr1, opr2, min);
+    }
+    pub fn copysign(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterCall!(self, ret, opr1, opr2, copysign);
+    }
 
     pub fn cos(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         match self.op_target {

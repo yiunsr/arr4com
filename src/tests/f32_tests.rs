@@ -668,4 +668,94 @@ mod f32_tests{
 
         println!("==== test_0003_01_math end ====");
     }
+
+    #[test]
+    fn test_0004_01_math() {
+        println!("==== test_0004_01_math start ====");
+        let legacy:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::newf32(OpTarget::LEGACY);
+        let avx2:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::newf32(OpTarget::AVX2);
+        let cuda:Arr4Com<f32, BLOCK_SIZE> = Arr4Com::newf32(OpTarget::CUDA);
+
+        let mut result = [0f32;BLOCK_SIZE];
+        let mut opr1 = [0f32;BLOCK_SIZE];
+        let mut opr2 = [0f32;BLOCK_SIZE];
+        for i in 0..BLOCK_SIZE{
+            opr1[i] = -2.0f32 +  i as f32;
+            opr2[i] = i as f32;
+        }
+        opr1[0] = -1.0099f32;           opr1[1] = -1.5001f32;
+        opr1[2] = -1.5000f32;           opr1[3] = -1.4999f32;
+        opr1[4] = -1.0001f32;           opr1[5] = -0.0008f32;
+        opr1[6] = -0.00001f32;          opr1[7] = -0.0f32;
+        opr1[8] = -0.00001f32;          opr1[9] = 0.00001f32;
+        opr1[10] = 0.49999f32;          opr1[11] = 0.5000f32;
+        opr1[12] = 0.50001f32;          opr1[13] = 0.99999f32;
+        opr1[14] = 1f32;                opr1[15] = 1.00001f32;
+        opr1[16] = 10.00001f32;
+
+        legacy.abs(&mut result, opr1);
+        for i in 0..20{
+            assert_eq_f32!(result[i], opr1[i].abs());
+        }
+        avx2.abs(&mut result, opr1);
+        for i in 0..20{
+            assert_eq_f32!(result[i], opr1[i].abs());
+        }
+        cuda.abs(&mut result, opr1);
+        for i in 0..20{
+            assert_eq_f32!(result[i], opr1[i].abs());
+        }
+
+        opr2[0] = -1.0098f32;           opr2[1] = -1.5001f32;
+        opr2[2] = -1.5001f32;           opr2[3] = -1.5f32;
+        opr2[4] = 1.0000f32;           opr2[5] = -0.00089f32;
+        opr2[6] = -0.000001f32;          opr2[7] = -0.0f32;
+        opr2[8] = 0.00001f32;          opr2[9] = 0.00001f32;
+        opr2[10] = 0.49999f32;          opr2[11] = 0.5001f32;
+        opr2[12] = 0.50000f32;          opr2[13] = 0.99999f32;
+        opr2[14] = 10000f32;                opr2[15] = -1.00001f32;
+        opr2[16] = -1000.00001f32;
+
+
+        legacy.max(&mut result, opr1, opr2);
+        for i in 0..20{
+            assert_eq_f32!(result[i], opr1[i].max(opr2[i]));
+        }
+        avx2.max(&mut result, opr1, opr2);
+        for i in 0..20{
+            assert_eq_f32!(result[i], opr1[i].max(opr2[i]));
+        }
+        cuda.max(&mut result, opr1, opr2);
+        for i in 0..20{
+            assert_eq_f32!(result[i], opr1[i].max(opr2[i]));
+        }
+
+        legacy.min(&mut result, opr1, opr2);
+        for i in 0..20{
+            assert_eq_f32!(result[i], opr1[i].min(opr2[i]));
+        }
+        avx2.min(&mut result, opr1, opr2);
+        for i in 0..20{
+            assert_eq_f32!(result[i], opr1[i].min(opr2[i]));
+        }
+        cuda.min(&mut result, opr1, opr2);
+        for i in 0..20{
+            assert_eq_f32!(result[i], opr1[i].min(opr2[i]));
+        }
+
+        legacy.copysign(&mut result, opr1, opr2);
+        for i in 0..20{
+            assert_eq_f32!(result[i], opr1[i].copysign(opr2[i]));
+        }
+        avx2.copysign(&mut result, opr1, opr2);
+        for i in 0..20{
+            assert_eq_f32!(result[i], opr1[i].copysign(opr2[i]));
+        }
+        cuda.copysign(&mut result, opr1, opr2);
+        for i in 0..20{
+            assert_eq_f32!(result[i], opr1[i].copysign(opr2[i]));
+        }
+
+        println!("==== test_0004_01_math end ====");
+    }
 }

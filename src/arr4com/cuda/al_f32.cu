@@ -49,6 +49,26 @@ extern "C" __global__ void a4c_truncf32(const float* x, float* out, int count) {
         out[i] = truncf(x[i]);
     }
 }
+extern "C" __global__ void a4c_absf32(const float* x, float* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = fabsf(x[i]);
+    }
+}
+extern "C" __global__ void a4c_maxf32(const float* x, const float* y, float* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = fmaxf(x[i], y[i]);
+    }
+}
+extern "C" __global__ void a4c_minf32(const float* x, const float* y, float* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = fminf(x[i], y[i]);
+    }
+}
+extern "C" __global__ void a4c_copysignf32(const float* x, const float* y, float* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = copysignf(x[i], y[i]);
+    }
+}
 
 extern "C" __global__ void a4c_cosf32(const float* x, float* out, int count) {
     for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
