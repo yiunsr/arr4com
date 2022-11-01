@@ -1,19 +1,14 @@
 // pub mod arr4float;
-mod legacy_type;
-mod legacy_f32;
-mod legacy_f64;
-mod avx2_type;
-mod avx2_f32;
-mod avx2_f64;
-mod cuda_type;
-mod cuda_f32;
-mod cuda_f64;
-
+mod legacy;
+mod avx2;
+mod cuda;
 mod sleef;
 pub mod arr_f32;
 pub mod arr_f64;
 
-
+use legacy::legacy_type;
+use avx2::avx2_type;
+use cuda::cuda_type;
 
 #[derive(Clone, Copy)]
 pub enum OpTarget {
@@ -33,7 +28,7 @@ pub struct Arr4Com<T, const DLEN: usize>{
     cuda_com: Option<cuda_type::CudaArr4Float<T, DLEN>>
 }
 
-pub trait Arr4ComAL<T, const DLEN: usize>{
+pub trait Arr4ComALFloat<T, const DLEN: usize>{
     fn add(&self, ret: &mut [T;DLEN], opr1: [T;DLEN], opr2: [T;DLEN]);
     fn sub(&self, ret: &mut [T;DLEN], opr1: [T;DLEN], opr2: [T;DLEN]);
     fn mul(&self, ret: &mut [T;DLEN], opr1: [T;DLEN], opr2: [T;DLEN]);

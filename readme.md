@@ -17,7 +17,7 @@ cargo build --lib arr4comlib
 * Visual Studio 의 cl 필요
 ```
 # cmd 실행콘솔에서
-cd src\arr4com\cuda
+cd src\arr4com\cuda\res
 call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\Tools\VsDevCmd.bat"  -arch=x64
 nvcc al_f32.cu -ptx
 nvcc al_f64.cu -ptx

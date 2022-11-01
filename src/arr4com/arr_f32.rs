@@ -1,4 +1,4 @@
-use crate::arr4com::Arr4ComAL;
+use crate::arr4com::Arr4ComALFloat;
 use crate::arr4com::*;
 
 type Float = f32;
