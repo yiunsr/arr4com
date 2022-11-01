@@ -1,5 +1,5 @@
 use core::{arch::x86_64::*};
-use crate::arr4com::Arr4ComALFloat;
+use crate::arr4com::Arr4ComFloat;
 use crate::arr4com::sleef::simdsp;
 use crate::arr4com::avx2_type::Avx2Arr4Float;
 
@@ -112,7 +112,7 @@ fn trunc(a:__m256)->__m256{
 
 type F32Avx<const DLEN: usize> = Avx2Arr4Float<f32, DLEN>;
 
-impl<const DLEN: usize> Arr4ComALFloat<f32, DLEN> for F32Avx<DLEN>{
+impl<const DLEN: usize> Arr4ComFloat<f32, DLEN> for F32Avx<DLEN>{
     fn add(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
         let dlen = DLEN;
         println!("dlen : {}", dlen);

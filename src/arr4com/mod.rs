@@ -28,7 +28,7 @@ pub struct Arr4Com<T, const DLEN: usize>{
     cuda_com: Option<cuda_type::CudaArr4Float<T, DLEN>>
 }
 
-pub trait Arr4ComALFloat<T, const DLEN: usize>{
+pub trait Arr4ComFloat<T, const DLEN: usize>{
     fn add(&self, ret: &mut [T;DLEN], opr1: [T;DLEN], opr2: [T;DLEN]);
     fn sub(&self, ret: &mut [T;DLEN], opr1: [T;DLEN], opr2: [T;DLEN]);
     fn mul(&self, ret: &mut [T;DLEN], opr1: [T;DLEN], opr2: [T;DLEN]);

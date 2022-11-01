@@ -1,4 +1,4 @@
-use crate::arr4com::Arr4ComALFloat;
+use crate::arr4com::Arr4ComFloat;
 use crate::arr4com::legacy_type::LegacyArr4Float;
 
 type Float = f32;
@@ -11,7 +11,7 @@ impl<const DLEN: usize> LegacyArr4Float<Float, DLEN>{
     }
 }
 
-impl<const DLEN: usize> Arr4ComALFloat<Float, DLEN> for LegacyArr4Float<Float, DLEN>{
+impl<const DLEN: usize> Arr4ComFloat<Float, DLEN> for LegacyArr4Float<Float, DLEN>{
 
     fn add(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
         for index in 0..DLEN{

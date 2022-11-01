@@ -1,7 +1,7 @@
 use rustacuda::prelude::*;
 use rustacuda::launch;
 use std::ffi::CString;
-use crate::arr4com::Arr4ComALFloat;
+use crate::arr4com::Arr4ComFloat;
 use crate::arr4com::cuda_type::CudaArr4Float;
 
 type Float = f64;
@@ -117,7 +117,7 @@ impl<const DLEN: usize> CudaArr4Float<f64, DLEN>{
 
 type F64Cuda<const DLEN: usize> = CudaArr4Float<f64, DLEN>;
 
-impl<const DLEN: usize> Arr4ComALFloat<f64, DLEN> for F64Cuda<DLEN>{
+impl<const DLEN: usize> Arr4ComFloat<f64, DLEN> for F64Cuda<DLEN>{
     fn add(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
         let mut x = unsafe { DeviceBuffer::uninitialized(DLEN).unwrap() };
         x.copy_from(&opr1).unwrap();
