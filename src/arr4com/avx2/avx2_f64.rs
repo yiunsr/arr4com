@@ -8,8 +8,8 @@ type Float = f64;
 macro_rules! InterLoop{
     ($ret:ident, $opr1:ident,  $F:ident) => {
         //let dlen = DLEN;
-        let bs = 8;
-        let block = DLEN as usize / 8;
+        let bs = 4;
+        let block = DLEN as usize / bs;
         for index in 0..block{
             unsafe{
                 let opr1 = _mm256_loadu_pd(&$opr1[index * bs]);
@@ -21,8 +21,8 @@ macro_rules! InterLoop{
 
     ($ret:ident, $opr1:ident, $opr2:ident, $F:ident) => {
         //let dlen = DLEN;
-        let bs = 8;
-        let block = DLEN as usize / 8;
+        let bs = 4;
+        let block = DLEN as usize / bs;
         for index in 0..block{
             unsafe{
                 let opr1 = _mm256_loadu_pd(&$opr1[index * bs]);
@@ -35,8 +35,8 @@ macro_rules! InterLoop{
 
     ($ret:ident, $opr1:ident, $opr2:ident, $opr3:ident, $F:ident) => {
         //let dlen = DLEN;
-        let bs = 8;
-        let block = DLEN as usize / 8;
+        let bs = 4;
+        let block = DLEN as usize / bs;
         for index in 0..block{
             unsafe{
                 let opr1 = _mm256_loadu_pd(&$opr1[index * bs]);
@@ -51,8 +51,8 @@ macro_rules! InterLoop{
 
 macro_rules! InterLoopSleef{
     ($ret:ident, $opr1:ident, $F:ident) => {
-        let bs = 8;
-        let block = DLEN as usize / 8;
+        let bs = 4;
+        let block = DLEN as usize / bs;
 
         for index in 0..block{
             unsafe{
@@ -64,8 +64,8 @@ macro_rules! InterLoopSleef{
     };
 
     ($ret:ident, $opr1:ident, $opr2:ident, $F:ident) => {
-        let bs = 8;
-        let block = DLEN as usize / 8;
+        let bs = 4;
+        let block = DLEN as usize / bs;
 
         for index in 0..block{
             unsafe{
@@ -78,8 +78,8 @@ macro_rules! InterLoopSleef{
     };
 
     ($ret:ident, $opr1:ident, $opr2:ident, $opr3:ident, $F:ident) => {
-        let bs = 8;
-        let block = DLEN as usize / 8;
+        let bs = 4;
+        let block = DLEN as usize / bs;
 
         for index in 0..block{
             unsafe{
@@ -107,7 +107,48 @@ fn trunc(a:__m256d)->__m256d{
         const ROUND_MODE:i32 = 0x08|0x03;
         _mm256_round_pd::<ROUND_MODE>(a)
     }
-} 
+}
+
+fn gtf(a:__m256d, b:__m256d)->__m256d{
+    unsafe{
+        //  _MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC
+        const CMP_MODE:i32 = _CMP_LT_OS;
+        // a > b ==>>  b < a
+        let ret_mask = _mm256_cmp_pd::<CMP_MODE>(b, a);
+        let f64_one = _mm256_set_pd(1.0, 1.0, 1.0, 1.0);
+        _mm256_and_pd(ret_mask, f64_one)
+    }
+}
+fn gtef(a:__m256d, b:__m256d)->__m256d{
+    unsafe{
+        //  _MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC
+        const CMP_MODE:i32 = _CMP_LE_OS;
+        // a >= b ==>>  b <= a
+        let ret_mask = _mm256_cmp_pd::<CMP_MODE>(b, a);
+        let f64_one = _mm256_set_pd(1.0, 1.0, 1.0, 1.0);
+        _mm256_and_pd(ret_mask, f64_one)
+    }
+}
+fn ltf(a:__m256d, b:__m256d)->__m256d{
+    unsafe{
+        //  _MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC
+        const CMP_MODE:i32 = _CMP_LT_OS;
+        // a < b 
+        let ret_mask = _mm256_cmp_pd::<CMP_MODE>(a, b);
+        let f64_one = _mm256_set_pd(1.0, 1.0, 1.0, 1.0);
+        _mm256_and_pd(ret_mask, f64_one)
+    }
+}
+fn ltef(a:__m256d, b:__m256d)->__m256d{
+    unsafe{
+        //  _MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC
+        const CMP_MODE:i32 = _CMP_LE_OS;
+        // a <= b 
+        let ret_mask = _mm256_cmp_pd::<CMP_MODE>(a, b);
+        let f64_one = _mm256_set_pd(1.0, 1.0, 1.0, 1.0);
+        _mm256_and_pd(ret_mask, f64_one)
+    }
+}
 
 type F64Avx<const DLEN: usize> = Avx2Arr4Float<f64, DLEN>;
 
@@ -115,8 +156,8 @@ impl<const DLEN: usize> Arr4ComFloat<f64, DLEN> for F64Avx<DLEN>{
     fn add(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
         let dlen = DLEN;
         println!("dlen : {}", dlen);
-        let bs = 8;
-        let block = DLEN as usize / 8;
+        let bs = 4;
+        let block = DLEN as usize / bs;
         for index in 0..block{
             unsafe{
                 let left = _mm256_loadu_pd(&opr1[index * bs]);
@@ -141,6 +182,19 @@ impl<const DLEN: usize> Arr4ComFloat<f64, DLEN> for F64Avx<DLEN>{
 
     fn mul_add(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN], opr3: [Float;DLEN]){
         InterLoop!(ret, opr1, opr2, opr3, _mm256_fmadd_pd);
+    }
+
+    fn gtf(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterLoop!(ret, opr1, opr2, gtf);
+    }
+    fn gtef(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterLoop!(ret, opr1, opr2, gtef);
+    }
+    fn ltf(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterLoop!(ret, opr1, opr2, ltf);
+    }
+    fn ltef(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterLoop!(ret, opr1, opr2, ltef);
     }
 
     fn ceil(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
@@ -169,8 +223,8 @@ impl<const DLEN: usize> Arr4ComFloat<f64, DLEN> for F64Avx<DLEN>{
     }
 
     fn cos(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
-        let bs = 8;
-        let block = DLEN as usize / 8;
+        let bs = 4;
+        let block = DLEN as usize / bs;
 
         for index in 0..block{
             unsafe{

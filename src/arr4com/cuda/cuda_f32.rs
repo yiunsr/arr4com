@@ -161,6 +161,19 @@ impl<const DLEN: usize> Arr4ComFloat<f32, DLEN> for F32Cuda<DLEN>{
     fn mul_add(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN], opr3: [Float;DLEN]){
         InterCuda!(self, ret, opr1, opr2, opr3, a4c_mul_addf32);
     }
+    fn gtf(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterCuda!(self, ret, opr1, opr2, a4c_gtff32);
+    }
+    fn gtef(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterCuda!(self, ret, opr1, opr2, a4c_gteff32);
+    }
+    fn ltf(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterCuda!(self, ret, opr1, opr2, a4c_ltff32);
+    }
+    fn ltef(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterCuda!(self, ret, opr1, opr2, a4c_lteff32);
+    }
+
     fn ceil(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCuda!(self, ret, opr1, a4c_ceilf32);
     }

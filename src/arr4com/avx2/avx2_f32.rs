@@ -108,7 +108,57 @@ fn trunc(a:__m256)->__m256{
         const ROUND_MODE:i32 = 0x08|0x03;
         _mm256_round_ps::<ROUND_MODE>(a)
     }
-} 
+}
+
+fn gtf(a:__m256, b:__m256)->__m256{
+    unsafe{
+        //  _MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC
+        const CMP_MODE:i32 = _CMP_LT_OS;
+        // a > b ==>>  b < a
+        let ret_mask = _mm256_cmp_ps::<CMP_MODE>(b, a);
+        let ret_mask = _mm256_castps_si256(ret_mask);
+        let f32_one = _mm256_set1_epi32(0x3F800000);
+        let ret_si256 = _mm256_and_si256(ret_mask, f32_one);
+        _mm256_castsi256_ps(ret_si256)
+    }
+}
+fn gtef(a:__m256, b:__m256)->__m256{
+    unsafe{
+        //  _MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC
+        const CMP_MODE:i32 = _CMP_LE_OS;
+        // a >= b ==>>  b <= a
+        let ret_mask = _mm256_cmp_ps::<CMP_MODE>(b, a);
+        let ret_mask = _mm256_castps_si256(ret_mask);
+        let f32_one = _mm256_set1_epi32(0x3F800000);
+        let ret_si256 = _mm256_and_si256(ret_mask, f32_one);
+        _mm256_castsi256_ps(ret_si256)
+    }
+}
+fn ltf(a:__m256, b:__m256)->__m256{
+    unsafe{
+        //  _MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC
+        const CMP_MODE:i32 = _CMP_LT_OS;
+        // a < b 
+        let ret_mask = _mm256_cmp_ps::<CMP_MODE>(a, b);
+        let ret_mask = _mm256_castps_si256(ret_mask);
+        let f32_one = _mm256_set1_epi32(0x3F800000);
+        let ret_si256 = _mm256_and_si256(ret_mask, f32_one);
+        _mm256_castsi256_ps(ret_si256)
+    }
+}
+fn ltef(a:__m256, b:__m256)->__m256{
+    unsafe{
+        //  _MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC
+        const CMP_MODE:i32 = _CMP_LE_OS;
+        // a <= b 
+        let ret_mask = _mm256_cmp_ps::<CMP_MODE>(a, b);
+        let ret_mask = _mm256_castps_si256(ret_mask);
+        let f32_one = _mm256_set1_epi32(0x3F800000);
+        let ret_si256 = _mm256_and_si256(ret_mask, f32_one);
+        _mm256_castsi256_ps(ret_si256)
+    }
+}
+
 
 type F32Avx<const DLEN: usize> = Avx2Arr4Float<f32, DLEN>;
 
@@ -142,6 +192,19 @@ impl<const DLEN: usize> Arr4ComFloat<f32, DLEN> for F32Avx<DLEN>{
 
     fn mul_add(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN], opr3: [Float;DLEN]){
         InterLoop!(ret, opr1, opr2, opr3, _mm256_fmadd_ps);
+    }
+
+    fn gtf(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterLoop!(ret, opr1, opr2, gtf);
+    }
+    fn gtef(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterLoop!(ret, opr1, opr2, gtef);
+    }
+    fn ltf(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterLoop!(ret, opr1, opr2, ltf);
+    }
+    fn ltef(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterLoop!(ret, opr1, opr2, ltef);
     }
     
     fn ceil(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){

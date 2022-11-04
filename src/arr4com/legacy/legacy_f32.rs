@@ -42,6 +42,28 @@ impl<const DLEN: usize> Arr4ComFloat<Float, DLEN> for LegacyArr4Float<Float, DLE
             ret[index] = opr1[index] * opr2[index] + opr3[index];
         }
     }
+
+    fn gtf(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = (opr1[index] > opr2[index]) as i32 as Float;
+        }
+    }
+    fn gtef(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = (opr1[index] >= opr2[index]) as i32 as Float;
+        }
+    }
+    fn ltf(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = (opr1[index] < opr2[index]) as i32 as Float;
+        }
+    }
+    fn ltef(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        for index in 0..DLEN{
+            ret[index] = (opr1[index] <= opr2[index]) as i32 as Float;
+        }
+    }
+
     fn ceil(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         for index in 0..DLEN{
             ret[index] = opr1[index].ceil();

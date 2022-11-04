@@ -29,6 +29,27 @@ extern "C" __global__ void a4c_mul_addf64(const double* x, const double* y, cons
     }
 }
 
+extern "C" __global__ void a4c_gtff64(const double* x, const double* y, double* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = x[i] > y[i];
+    }
+}
+extern "C" __global__ void a4c_gteff64(const double* x, const double* y, double* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = x[i] >= y[i];
+    }
+}
+extern "C" __global__ void a4c_ltff64(const double* x, const double* y, double* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = x[i] < y[i];
+    }
+}
+extern "C" __global__ void a4c_lteff64(const double* x, const double* y, double* out, int count) {
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
+        out[i] = x[i] <= y[i];
+    }
+}
+
 extern "C" __global__ void a4c_ceilf64(const double* x, double* out, int count) {
     for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < count; i += blockDim.x * gridDim.x) {
         out[i] = ceil(x[i]);

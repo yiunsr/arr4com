@@ -112,6 +112,19 @@ impl<const DLEN: usize> Arr4Com<Float, DLEN>{
         InterCall!(self, ret, opr1, opr2, opr3, mul_add);
     }
 
+    pub fn gtf(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterCall!(self, ret, opr1, opr2, gtf);
+    }
+    pub fn gtef(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterCall!(self, ret, opr1, opr2, gtef);
+    }
+    pub fn ltf(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterCall!(self, ret, opr1, opr2, ltf);
+    }
+    pub fn ltef(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+        InterCall!(self, ret, opr1, opr2, ltef);
+    }
+
     pub fn ceil(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
         InterCall!(self, ret, opr1, ceil);
     }
