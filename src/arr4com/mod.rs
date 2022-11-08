@@ -2,6 +2,7 @@
 mod legacy;
 mod avx2;
 mod cuda;
+mod opencl;
 mod sleef;
 pub mod arr_f32;
 pub mod arr_f64;
@@ -9,12 +10,14 @@ pub mod arr_f64;
 use legacy::legacy_type;
 use avx2::avx2_type;
 use cuda::cuda_type;
+use opencl::opencl_type;
 
 #[derive(Clone, Copy)]
 pub enum OpTarget {
     LEGACY,
     AVX2,
     CUDA,
+    OPENCL,
 }
 
 pub type Bool = i8;
@@ -25,7 +28,8 @@ pub struct Arr4Com<T, const DLEN: usize>{
     dlen: usize,
     legacy_com: Option<legacy_type::LegacyArr4Float<T, DLEN>>,
     avx2_com: Option<avx2_type::Avx2Arr4Float<T, DLEN>>,
-    cuda_com: Option<cuda_type::CudaArr4Float<T, DLEN>>
+    cuda_com: Option<cuda_type::CudaArr4Float<T, DLEN>>,
+    opencl_com: Option<opencl_type::OpenclArr4Float<T, DLEN>>,
 }
 
 pub trait Arr4ComInt<T, const DLEN: usize>{

@@ -18,7 +18,10 @@ macro_rules! InterCall{
                 let cuda_com = $self.cuda_com.as_ref().unwrap();
                 cuda_com.$F($ret, $opr1);
             },
-            
+            OpTarget::OPENCL => {
+                let opencl_com = $self.opencl_com.as_ref().unwrap();
+                opencl_com.$F($ret, $opr1);
+            },
         }
     };
     ($self:ident, $ret:ident, $opr1:ident, $opr2:ident, $F:ident) => {
@@ -35,7 +38,10 @@ macro_rules! InterCall{
                 let cuda_com = $self.cuda_com.as_ref().unwrap();
                 cuda_com.$F($ret, $opr1, $opr2);
             },
-            
+            OpTarget::OPENCL => {
+                let opencl_com = $self.opencl_com.as_ref().unwrap();
+                opencl_com.$F($ret, $opr1, $opr2);
+            },
         }
     };
 
@@ -53,7 +59,10 @@ macro_rules! InterCall{
                 let cuda_com = $self.cuda_com.as_ref().unwrap();
                 cuda_com.$F($ret, $opr1, $opr2, $opr3);
             },
-            
+            OpTarget::OPENCL => {
+                let opencl_com = $self.opencl_com.as_ref().unwrap();
+                opencl_com.$F($ret, $opr1, $opr2, $opr3);
+            },
         }
     };
 }
@@ -63,15 +72,23 @@ impl<const DLEN: usize> Arr4Com<f64, DLEN>{
         match op_target {
             OpTarget::LEGACY => {
                 let legacy_com = Some(legacy_type::LegacyArr4Float::newf64());
-                Arr4Com{op_target: OpTarget::LEGACY, dlen: DLEN, legacy_com, avx2_com: None, cuda_com: None}
+                Arr4Com{op_target: OpTarget::LEGACY, dlen: DLEN, legacy_com, avx2_com: None, 
+                    cuda_com: None, opencl_com:None}
             }
             OpTarget::AVX2 => {
                 let avx2_com = Some(avx2_type::Avx2Arr4Float::newf64());
-                Arr4Com{op_target: OpTarget::AVX2, dlen: DLEN, legacy_com:None, avx2_com, cuda_com: None}
+                Arr4Com{op_target: OpTarget::AVX2, dlen: DLEN, legacy_com:None, avx2_com,
+                    cuda_com: None, opencl_com: None}
             },
             OpTarget::CUDA => {
                 let cuda_com = Some(cuda_type::CudaArr4Float::newf64());
-                Arr4Com{op_target: OpTarget::CUDA, dlen: DLEN, legacy_com:None, avx2_com: None, cuda_com}
+                Arr4Com{op_target: OpTarget::CUDA, dlen: DLEN, legacy_com:None, avx2_com: None, 
+                    cuda_com, opencl_com: None}
+            },
+            OpTarget::OPENCL => {
+                let opencl_com = Some(opencl_type::OpenclArr4Float::newf64());
+                Arr4Com{op_target: OpTarget::CUDA, dlen: DLEN, legacy_com:None, avx2_com: None,
+                    cuda_com: None, opencl_com}
             }
         }
     }
@@ -92,7 +109,10 @@ impl<const DLEN: usize> Arr4Com<Float, DLEN>{
                 let cuda_com = self.cuda_com.as_ref().unwrap();
                 cuda_com.add(ret, opr1, opr2);
             },
-            
+            OpTarget::OPENCL => {
+                let opencl_com = self.opencl_com.as_ref().unwrap();
+                opencl_com.add(ret, opr1, opr2);
+            },
         }
     }
 
@@ -164,6 +184,10 @@ impl<const DLEN: usize> Arr4Com<Float, DLEN>{
             OpTarget::CUDA => {
                 let cuda_com = self.cuda_com.as_ref().unwrap();
                 cuda_com.cos(ret, opr1);
+            },
+            OpTarget::OPENCL => {
+                let opencl_com = self.opencl_com.as_ref().unwrap();
+                opencl_com.cos(ret, opr1);
             },
         }
     }
