@@ -87,7 +87,7 @@ impl<const DLEN: usize> Arr4Com<f64, DLEN>{
             },
             OpTarget::OPENCL => {
                 let opencl_com = Some(opencl_type::OpenclArr4Float::newf64());
-                Arr4Com{op_target: OpTarget::CUDA, dlen: DLEN, legacy_com:None, avx2_com: None,
+                Arr4Com{op_target: OpTarget::OPENCL, dlen: DLEN, legacy_com:None, avx2_com: None,
                     cuda_com: None, opencl_com}
             }
         }
