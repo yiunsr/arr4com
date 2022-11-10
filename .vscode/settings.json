@@ -6,6 +6,8 @@
     },
     "debug.allowBreakpointsEverywhere": true,
     "files.associations": {
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "xhash": "cpp",
+        "xutility": "cpp"
     }
 }

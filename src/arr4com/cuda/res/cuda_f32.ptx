@@ -15,9 +15,9 @@
 
 .visible .entry a4c_addf32(
 	.param .u64 a4c_addf32_param_0,
-	.param .u64 a4c_addf32_param_1,
+	.param .u32 a4c_addf32_param_1,
 	.param .u64 a4c_addf32_param_2,
-	.param .u32 a4c_addf32_param_3
+	.param .u64 a4c_addf32_param_3
 )
 {
 	.reg .pred 	%p<3>;
@@ -27,9 +27,9 @@
 
 
 	ld.param.u64 	%rd4, [a4c_addf32_param_0];
-	ld.param.u64 	%rd5, [a4c_addf32_param_1];
-	ld.param.u64 	%rd6, [a4c_addf32_param_2];
-	ld.param.u32 	%r6, [a4c_addf32_param_3];
+	ld.param.u32 	%r6, [a4c_addf32_param_1];
+	ld.param.u64 	%rd5, [a4c_addf32_param_2];
+	ld.param.u64 	%rd6, [a4c_addf32_param_3];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -37,9 +37,9 @@
 	setp.ge.s32 	%p1, %r10, %r6;
 	@%p1 bra 	$L__BB0_3;
 
-	cvta.to.global.u64 	%rd1, %rd6;
-	cvta.to.global.u64 	%rd2, %rd5;
-	cvta.to.global.u64 	%rd3, %rd4;
+	cvta.to.global.u64 	%rd1, %rd4;
+	cvta.to.global.u64 	%rd2, %rd6;
+	cvta.to.global.u64 	%rd3, %rd5;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 
@@ -63,9 +63,9 @@ $L__BB0_3:
 	// .globl	a4c_subf32
 .visible .entry a4c_subf32(
 	.param .u64 a4c_subf32_param_0,
-	.param .u64 a4c_subf32_param_1,
+	.param .u32 a4c_subf32_param_1,
 	.param .u64 a4c_subf32_param_2,
-	.param .u32 a4c_subf32_param_3
+	.param .u64 a4c_subf32_param_3
 )
 {
 	.reg .pred 	%p<3>;
@@ -75,9 +75,9 @@ $L__BB0_3:
 
 
 	ld.param.u64 	%rd4, [a4c_subf32_param_0];
-	ld.param.u64 	%rd5, [a4c_subf32_param_1];
-	ld.param.u64 	%rd6, [a4c_subf32_param_2];
-	ld.param.u32 	%r6, [a4c_subf32_param_3];
+	ld.param.u32 	%r6, [a4c_subf32_param_1];
+	ld.param.u64 	%rd5, [a4c_subf32_param_2];
+	ld.param.u64 	%rd6, [a4c_subf32_param_3];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -85,9 +85,9 @@ $L__BB0_3:
 	setp.ge.s32 	%p1, %r10, %r6;
 	@%p1 bra 	$L__BB1_3;
 
-	cvta.to.global.u64 	%rd1, %rd6;
-	cvta.to.global.u64 	%rd2, %rd5;
-	cvta.to.global.u64 	%rd3, %rd4;
+	cvta.to.global.u64 	%rd1, %rd4;
+	cvta.to.global.u64 	%rd2, %rd6;
+	cvta.to.global.u64 	%rd3, %rd5;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 
@@ -111,9 +111,9 @@ $L__BB1_3:
 	// .globl	a4c_mulf32
 .visible .entry a4c_mulf32(
 	.param .u64 a4c_mulf32_param_0,
-	.param .u64 a4c_mulf32_param_1,
+	.param .u32 a4c_mulf32_param_1,
 	.param .u64 a4c_mulf32_param_2,
-	.param .u32 a4c_mulf32_param_3
+	.param .u64 a4c_mulf32_param_3
 )
 {
 	.reg .pred 	%p<3>;
@@ -123,9 +123,9 @@ $L__BB1_3:
 
 
 	ld.param.u64 	%rd4, [a4c_mulf32_param_0];
-	ld.param.u64 	%rd5, [a4c_mulf32_param_1];
-	ld.param.u64 	%rd6, [a4c_mulf32_param_2];
-	ld.param.u32 	%r6, [a4c_mulf32_param_3];
+	ld.param.u32 	%r6, [a4c_mulf32_param_1];
+	ld.param.u64 	%rd5, [a4c_mulf32_param_2];
+	ld.param.u64 	%rd6, [a4c_mulf32_param_3];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -133,9 +133,9 @@ $L__BB1_3:
 	setp.ge.s32 	%p1, %r10, %r6;
 	@%p1 bra 	$L__BB2_3;
 
-	cvta.to.global.u64 	%rd1, %rd6;
-	cvta.to.global.u64 	%rd2, %rd5;
-	cvta.to.global.u64 	%rd3, %rd4;
+	cvta.to.global.u64 	%rd1, %rd4;
+	cvta.to.global.u64 	%rd2, %rd6;
+	cvta.to.global.u64 	%rd3, %rd5;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 
@@ -159,9 +159,9 @@ $L__BB2_3:
 	// .globl	a4c_divf32
 .visible .entry a4c_divf32(
 	.param .u64 a4c_divf32_param_0,
-	.param .u64 a4c_divf32_param_1,
+	.param .u32 a4c_divf32_param_1,
 	.param .u64 a4c_divf32_param_2,
-	.param .u32 a4c_divf32_param_3
+	.param .u64 a4c_divf32_param_3
 )
 {
 	.reg .pred 	%p<3>;
@@ -171,9 +171,9 @@ $L__BB2_3:
 
 
 	ld.param.u64 	%rd4, [a4c_divf32_param_0];
-	ld.param.u64 	%rd5, [a4c_divf32_param_1];
-	ld.param.u64 	%rd6, [a4c_divf32_param_2];
-	ld.param.u32 	%r6, [a4c_divf32_param_3];
+	ld.param.u32 	%r6, [a4c_divf32_param_1];
+	ld.param.u64 	%rd5, [a4c_divf32_param_2];
+	ld.param.u64 	%rd6, [a4c_divf32_param_3];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -181,9 +181,9 @@ $L__BB2_3:
 	setp.ge.s32 	%p1, %r10, %r6;
 	@%p1 bra 	$L__BB3_3;
 
-	cvta.to.global.u64 	%rd1, %rd6;
-	cvta.to.global.u64 	%rd2, %rd5;
-	cvta.to.global.u64 	%rd3, %rd4;
+	cvta.to.global.u64 	%rd1, %rd4;
+	cvta.to.global.u64 	%rd2, %rd6;
+	cvta.to.global.u64 	%rd3, %rd5;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 
@@ -207,10 +207,10 @@ $L__BB3_3:
 	// .globl	a4c_mul_addf32
 .visible .entry a4c_mul_addf32(
 	.param .u64 a4c_mul_addf32_param_0,
-	.param .u64 a4c_mul_addf32_param_1,
+	.param .u32 a4c_mul_addf32_param_1,
 	.param .u64 a4c_mul_addf32_param_2,
 	.param .u64 a4c_mul_addf32_param_3,
-	.param .u32 a4c_mul_addf32_param_4
+	.param .u64 a4c_mul_addf32_param_4
 )
 {
 	.reg .pred 	%p<3>;
@@ -220,10 +220,10 @@ $L__BB3_3:
 
 
 	ld.param.u64 	%rd5, [a4c_mul_addf32_param_0];
-	ld.param.u64 	%rd6, [a4c_mul_addf32_param_1];
-	ld.param.u64 	%rd7, [a4c_mul_addf32_param_2];
-	ld.param.u64 	%rd8, [a4c_mul_addf32_param_3];
-	ld.param.u32 	%r6, [a4c_mul_addf32_param_4];
+	ld.param.u32 	%r6, [a4c_mul_addf32_param_1];
+	ld.param.u64 	%rd6, [a4c_mul_addf32_param_2];
+	ld.param.u64 	%rd7, [a4c_mul_addf32_param_3];
+	ld.param.u64 	%rd8, [a4c_mul_addf32_param_4];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -231,10 +231,10 @@ $L__BB3_3:
 	setp.ge.s32 	%p1, %r10, %r6;
 	@%p1 bra 	$L__BB4_3;
 
-	cvta.to.global.u64 	%rd1, %rd8;
-	cvta.to.global.u64 	%rd2, %rd7;
-	cvta.to.global.u64 	%rd3, %rd6;
-	cvta.to.global.u64 	%rd4, %rd5;
+	cvta.to.global.u64 	%rd1, %rd5;
+	cvta.to.global.u64 	%rd2, %rd8;
+	cvta.to.global.u64 	%rd3, %rd7;
+	cvta.to.global.u64 	%rd4, %rd6;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 
@@ -260,9 +260,9 @@ $L__BB4_3:
 	// .globl	a4c_gtff32
 .visible .entry a4c_gtff32(
 	.param .u64 a4c_gtff32_param_0,
-	.param .u64 a4c_gtff32_param_1,
+	.param .u32 a4c_gtff32_param_1,
 	.param .u64 a4c_gtff32_param_2,
-	.param .u32 a4c_gtff32_param_3
+	.param .u64 a4c_gtff32_param_3
 )
 {
 	.reg .pred 	%p<4>;
@@ -272,9 +272,9 @@ $L__BB4_3:
 
 
 	ld.param.u64 	%rd4, [a4c_gtff32_param_0];
-	ld.param.u64 	%rd5, [a4c_gtff32_param_1];
-	ld.param.u64 	%rd6, [a4c_gtff32_param_2];
-	ld.param.u32 	%r6, [a4c_gtff32_param_3];
+	ld.param.u32 	%r6, [a4c_gtff32_param_1];
+	ld.param.u64 	%rd5, [a4c_gtff32_param_2];
+	ld.param.u64 	%rd6, [a4c_gtff32_param_3];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -282,9 +282,9 @@ $L__BB4_3:
 	setp.ge.s32 	%p1, %r10, %r6;
 	@%p1 bra 	$L__BB5_3;
 
-	cvta.to.global.u64 	%rd1, %rd6;
-	cvta.to.global.u64 	%rd2, %rd5;
-	cvta.to.global.u64 	%rd3, %rd4;
+	cvta.to.global.u64 	%rd1, %rd4;
+	cvta.to.global.u64 	%rd2, %rd6;
+	cvta.to.global.u64 	%rd3, %rd5;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 
@@ -309,9 +309,9 @@ $L__BB5_3:
 	// .globl	a4c_gteff32
 .visible .entry a4c_gteff32(
 	.param .u64 a4c_gteff32_param_0,
-	.param .u64 a4c_gteff32_param_1,
+	.param .u32 a4c_gteff32_param_1,
 	.param .u64 a4c_gteff32_param_2,
-	.param .u32 a4c_gteff32_param_3
+	.param .u64 a4c_gteff32_param_3
 )
 {
 	.reg .pred 	%p<4>;
@@ -321,9 +321,9 @@ $L__BB5_3:
 
 
 	ld.param.u64 	%rd4, [a4c_gteff32_param_0];
-	ld.param.u64 	%rd5, [a4c_gteff32_param_1];
-	ld.param.u64 	%rd6, [a4c_gteff32_param_2];
-	ld.param.u32 	%r6, [a4c_gteff32_param_3];
+	ld.param.u32 	%r6, [a4c_gteff32_param_1];
+	ld.param.u64 	%rd5, [a4c_gteff32_param_2];
+	ld.param.u64 	%rd6, [a4c_gteff32_param_3];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -331,9 +331,9 @@ $L__BB5_3:
 	setp.ge.s32 	%p1, %r10, %r6;
 	@%p1 bra 	$L__BB6_3;
 
-	cvta.to.global.u64 	%rd1, %rd6;
-	cvta.to.global.u64 	%rd2, %rd5;
-	cvta.to.global.u64 	%rd3, %rd4;
+	cvta.to.global.u64 	%rd1, %rd4;
+	cvta.to.global.u64 	%rd2, %rd6;
+	cvta.to.global.u64 	%rd3, %rd5;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 
@@ -358,9 +358,9 @@ $L__BB6_3:
 	// .globl	a4c_ltff32
 .visible .entry a4c_ltff32(
 	.param .u64 a4c_ltff32_param_0,
-	.param .u64 a4c_ltff32_param_1,
+	.param .u32 a4c_ltff32_param_1,
 	.param .u64 a4c_ltff32_param_2,
-	.param .u32 a4c_ltff32_param_3
+	.param .u64 a4c_ltff32_param_3
 )
 {
 	.reg .pred 	%p<4>;
@@ -370,9 +370,9 @@ $L__BB6_3:
 
 
 	ld.param.u64 	%rd4, [a4c_ltff32_param_0];
-	ld.param.u64 	%rd5, [a4c_ltff32_param_1];
-	ld.param.u64 	%rd6, [a4c_ltff32_param_2];
-	ld.param.u32 	%r6, [a4c_ltff32_param_3];
+	ld.param.u32 	%r6, [a4c_ltff32_param_1];
+	ld.param.u64 	%rd5, [a4c_ltff32_param_2];
+	ld.param.u64 	%rd6, [a4c_ltff32_param_3];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -380,9 +380,9 @@ $L__BB6_3:
 	setp.ge.s32 	%p1, %r10, %r6;
 	@%p1 bra 	$L__BB7_3;
 
-	cvta.to.global.u64 	%rd1, %rd6;
-	cvta.to.global.u64 	%rd2, %rd5;
-	cvta.to.global.u64 	%rd3, %rd4;
+	cvta.to.global.u64 	%rd1, %rd4;
+	cvta.to.global.u64 	%rd2, %rd6;
+	cvta.to.global.u64 	%rd3, %rd5;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 
@@ -407,9 +407,9 @@ $L__BB7_3:
 	// .globl	a4c_lteff32
 .visible .entry a4c_lteff32(
 	.param .u64 a4c_lteff32_param_0,
-	.param .u64 a4c_lteff32_param_1,
+	.param .u32 a4c_lteff32_param_1,
 	.param .u64 a4c_lteff32_param_2,
-	.param .u32 a4c_lteff32_param_3
+	.param .u64 a4c_lteff32_param_3
 )
 {
 	.reg .pred 	%p<4>;
@@ -419,9 +419,9 @@ $L__BB7_3:
 
 
 	ld.param.u64 	%rd4, [a4c_lteff32_param_0];
-	ld.param.u64 	%rd5, [a4c_lteff32_param_1];
-	ld.param.u64 	%rd6, [a4c_lteff32_param_2];
-	ld.param.u32 	%r6, [a4c_lteff32_param_3];
+	ld.param.u32 	%r6, [a4c_lteff32_param_1];
+	ld.param.u64 	%rd5, [a4c_lteff32_param_2];
+	ld.param.u64 	%rd6, [a4c_lteff32_param_3];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -429,9 +429,9 @@ $L__BB7_3:
 	setp.ge.s32 	%p1, %r10, %r6;
 	@%p1 bra 	$L__BB8_3;
 
-	cvta.to.global.u64 	%rd1, %rd6;
-	cvta.to.global.u64 	%rd2, %rd5;
-	cvta.to.global.u64 	%rd3, %rd4;
+	cvta.to.global.u64 	%rd1, %rd4;
+	cvta.to.global.u64 	%rd2, %rd6;
+	cvta.to.global.u64 	%rd3, %rd5;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 
@@ -456,8 +456,8 @@ $L__BB8_3:
 	// .globl	a4c_ceilf32
 .visible .entry a4c_ceilf32(
 	.param .u64 a4c_ceilf32_param_0,
-	.param .u64 a4c_ceilf32_param_1,
-	.param .u32 a4c_ceilf32_param_2
+	.param .u32 a4c_ceilf32_param_1,
+	.param .u64 a4c_ceilf32_param_2
 )
 {
 	.reg .pred 	%p<3>;
@@ -467,8 +467,8 @@ $L__BB8_3:
 
 
 	ld.param.u64 	%rd3, [a4c_ceilf32_param_0];
-	ld.param.u64 	%rd4, [a4c_ceilf32_param_1];
-	ld.param.u32 	%r6, [a4c_ceilf32_param_2];
+	ld.param.u32 	%r6, [a4c_ceilf32_param_1];
+	ld.param.u64 	%rd4, [a4c_ceilf32_param_2];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -476,8 +476,8 @@ $L__BB8_3:
 	setp.ge.s32 	%p1, %r10, %r6;
 	@%p1 bra 	$L__BB9_3;
 
-	cvta.to.global.u64 	%rd1, %rd4;
-	cvta.to.global.u64 	%rd2, %rd3;
+	cvta.to.global.u64 	%rd1, %rd3;
+	cvta.to.global.u64 	%rd2, %rd4;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 
@@ -499,8 +499,8 @@ $L__BB9_3:
 	// .globl	a4c_floorf32
 .visible .entry a4c_floorf32(
 	.param .u64 a4c_floorf32_param_0,
-	.param .u64 a4c_floorf32_param_1,
-	.param .u32 a4c_floorf32_param_2
+	.param .u32 a4c_floorf32_param_1,
+	.param .u64 a4c_floorf32_param_2
 )
 {
 	.reg .pred 	%p<3>;
@@ -510,8 +510,8 @@ $L__BB9_3:
 
 
 	ld.param.u64 	%rd3, [a4c_floorf32_param_0];
-	ld.param.u64 	%rd4, [a4c_floorf32_param_1];
-	ld.param.u32 	%r6, [a4c_floorf32_param_2];
+	ld.param.u32 	%r6, [a4c_floorf32_param_1];
+	ld.param.u64 	%rd4, [a4c_floorf32_param_2];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -519,8 +519,8 @@ $L__BB9_3:
 	setp.ge.s32 	%p1, %r10, %r6;
 	@%p1 bra 	$L__BB10_3;
 
-	cvta.to.global.u64 	%rd1, %rd4;
-	cvta.to.global.u64 	%rd2, %rd3;
+	cvta.to.global.u64 	%rd1, %rd3;
+	cvta.to.global.u64 	%rd2, %rd4;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 
@@ -542,8 +542,8 @@ $L__BB10_3:
 	// .globl	a4c_roundf32
 .visible .entry a4c_roundf32(
 	.param .u64 a4c_roundf32_param_0,
-	.param .u64 a4c_roundf32_param_1,
-	.param .u32 a4c_roundf32_param_2
+	.param .u32 a4c_roundf32_param_1,
+	.param .u64 a4c_roundf32_param_2
 )
 {
 	.reg .pred 	%p<3>;
@@ -553,8 +553,8 @@ $L__BB10_3:
 
 
 	ld.param.u64 	%rd3, [a4c_roundf32_param_0];
-	ld.param.u64 	%rd4, [a4c_roundf32_param_1];
-	ld.param.u32 	%r6, [a4c_roundf32_param_2];
+	ld.param.u32 	%r6, [a4c_roundf32_param_1];
+	ld.param.u64 	%rd4, [a4c_roundf32_param_2];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -562,8 +562,8 @@ $L__BB10_3:
 	setp.ge.s32 	%p1, %r13, %r6;
 	@%p1 bra 	$L__BB11_3;
 
-	cvta.to.global.u64 	%rd1, %rd4;
-	cvta.to.global.u64 	%rd2, %rd3;
+	cvta.to.global.u64 	%rd1, %rd3;
+	cvta.to.global.u64 	%rd2, %rd4;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 
@@ -590,8 +590,8 @@ $L__BB11_3:
 	// .globl	a4c_truncf32
 .visible .entry a4c_truncf32(
 	.param .u64 a4c_truncf32_param_0,
-	.param .u64 a4c_truncf32_param_1,
-	.param .u32 a4c_truncf32_param_2
+	.param .u32 a4c_truncf32_param_1,
+	.param .u64 a4c_truncf32_param_2
 )
 {
 	.reg .pred 	%p<3>;
@@ -601,8 +601,8 @@ $L__BB11_3:
 
 
 	ld.param.u64 	%rd3, [a4c_truncf32_param_0];
-	ld.param.u64 	%rd4, [a4c_truncf32_param_1];
-	ld.param.u32 	%r6, [a4c_truncf32_param_2];
+	ld.param.u32 	%r6, [a4c_truncf32_param_1];
+	ld.param.u64 	%rd4, [a4c_truncf32_param_2];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -610,8 +610,8 @@ $L__BB11_3:
 	setp.ge.s32 	%p1, %r10, %r6;
 	@%p1 bra 	$L__BB12_3;
 
-	cvta.to.global.u64 	%rd1, %rd4;
-	cvta.to.global.u64 	%rd2, %rd3;
+	cvta.to.global.u64 	%rd1, %rd3;
+	cvta.to.global.u64 	%rd2, %rd4;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 
@@ -633,8 +633,8 @@ $L__BB12_3:
 	// .globl	a4c_absf32
 .visible .entry a4c_absf32(
 	.param .u64 a4c_absf32_param_0,
-	.param .u64 a4c_absf32_param_1,
-	.param .u32 a4c_absf32_param_2
+	.param .u32 a4c_absf32_param_1,
+	.param .u64 a4c_absf32_param_2
 )
 {
 	.reg .pred 	%p<3>;
@@ -644,8 +644,8 @@ $L__BB12_3:
 
 
 	ld.param.u64 	%rd3, [a4c_absf32_param_0];
-	ld.param.u64 	%rd4, [a4c_absf32_param_1];
-	ld.param.u32 	%r6, [a4c_absf32_param_2];
+	ld.param.u32 	%r6, [a4c_absf32_param_1];
+	ld.param.u64 	%rd4, [a4c_absf32_param_2];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -653,8 +653,8 @@ $L__BB12_3:
 	setp.ge.s32 	%p1, %r10, %r6;
 	@%p1 bra 	$L__BB13_3;
 
-	cvta.to.global.u64 	%rd1, %rd4;
-	cvta.to.global.u64 	%rd2, %rd3;
+	cvta.to.global.u64 	%rd1, %rd3;
+	cvta.to.global.u64 	%rd2, %rd4;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 
@@ -676,9 +676,9 @@ $L__BB13_3:
 	// .globl	a4c_maxf32
 .visible .entry a4c_maxf32(
 	.param .u64 a4c_maxf32_param_0,
-	.param .u64 a4c_maxf32_param_1,
+	.param .u32 a4c_maxf32_param_1,
 	.param .u64 a4c_maxf32_param_2,
-	.param .u32 a4c_maxf32_param_3
+	.param .u64 a4c_maxf32_param_3
 )
 {
 	.reg .pred 	%p<3>;
@@ -688,9 +688,9 @@ $L__BB13_3:
 
 
 	ld.param.u64 	%rd4, [a4c_maxf32_param_0];
-	ld.param.u64 	%rd5, [a4c_maxf32_param_1];
-	ld.param.u64 	%rd6, [a4c_maxf32_param_2];
-	ld.param.u32 	%r6, [a4c_maxf32_param_3];
+	ld.param.u32 	%r6, [a4c_maxf32_param_1];
+	ld.param.u64 	%rd5, [a4c_maxf32_param_2];
+	ld.param.u64 	%rd6, [a4c_maxf32_param_3];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -698,9 +698,9 @@ $L__BB13_3:
 	setp.ge.s32 	%p1, %r10, %r6;
 	@%p1 bra 	$L__BB14_3;
 
-	cvta.to.global.u64 	%rd1, %rd6;
-	cvta.to.global.u64 	%rd2, %rd5;
-	cvta.to.global.u64 	%rd3, %rd4;
+	cvta.to.global.u64 	%rd1, %rd4;
+	cvta.to.global.u64 	%rd2, %rd6;
+	cvta.to.global.u64 	%rd3, %rd5;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 
@@ -724,9 +724,9 @@ $L__BB14_3:
 	// .globl	a4c_minf32
 .visible .entry a4c_minf32(
 	.param .u64 a4c_minf32_param_0,
-	.param .u64 a4c_minf32_param_1,
+	.param .u32 a4c_minf32_param_1,
 	.param .u64 a4c_minf32_param_2,
-	.param .u32 a4c_minf32_param_3
+	.param .u64 a4c_minf32_param_3
 )
 {
 	.reg .pred 	%p<3>;
@@ -736,9 +736,9 @@ $L__BB14_3:
 
 
 	ld.param.u64 	%rd4, [a4c_minf32_param_0];
-	ld.param.u64 	%rd5, [a4c_minf32_param_1];
-	ld.param.u64 	%rd6, [a4c_minf32_param_2];
-	ld.param.u32 	%r6, [a4c_minf32_param_3];
+	ld.param.u32 	%r6, [a4c_minf32_param_1];
+	ld.param.u64 	%rd5, [a4c_minf32_param_2];
+	ld.param.u64 	%rd6, [a4c_minf32_param_3];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -746,9 +746,9 @@ $L__BB14_3:
 	setp.ge.s32 	%p1, %r10, %r6;
 	@%p1 bra 	$L__BB15_3;
 
-	cvta.to.global.u64 	%rd1, %rd6;
-	cvta.to.global.u64 	%rd2, %rd5;
-	cvta.to.global.u64 	%rd3, %rd4;
+	cvta.to.global.u64 	%rd1, %rd4;
+	cvta.to.global.u64 	%rd2, %rd6;
+	cvta.to.global.u64 	%rd3, %rd5;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 
@@ -772,9 +772,9 @@ $L__BB15_3:
 	// .globl	a4c_copysignf32
 .visible .entry a4c_copysignf32(
 	.param .u64 a4c_copysignf32_param_0,
-	.param .u64 a4c_copysignf32_param_1,
+	.param .u32 a4c_copysignf32_param_1,
 	.param .u64 a4c_copysignf32_param_2,
-	.param .u32 a4c_copysignf32_param_3
+	.param .u64 a4c_copysignf32_param_3
 )
 {
 	.reg .pred 	%p<3>;
@@ -783,9 +783,9 @@ $L__BB15_3:
 
 
 	ld.param.u64 	%rd4, [a4c_copysignf32_param_0];
-	ld.param.u64 	%rd5, [a4c_copysignf32_param_1];
-	ld.param.u64 	%rd6, [a4c_copysignf32_param_2];
-	ld.param.u32 	%r6, [a4c_copysignf32_param_3];
+	ld.param.u32 	%r6, [a4c_copysignf32_param_1];
+	ld.param.u64 	%rd5, [a4c_copysignf32_param_2];
+	ld.param.u64 	%rd6, [a4c_copysignf32_param_3];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -793,9 +793,9 @@ $L__BB15_3:
 	setp.ge.s32 	%p1, %r15, %r6;
 	@%p1 bra 	$L__BB16_3;
 
-	cvta.to.global.u64 	%rd1, %rd6;
-	cvta.to.global.u64 	%rd2, %rd5;
-	cvta.to.global.u64 	%rd3, %rd4;
+	cvta.to.global.u64 	%rd1, %rd4;
+	cvta.to.global.u64 	%rd2, %rd6;
+	cvta.to.global.u64 	%rd3, %rd5;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 
@@ -821,8 +821,8 @@ $L__BB16_3:
 	// .globl	a4c_cosf32
 .visible .entry a4c_cosf32(
 	.param .u64 a4c_cosf32_param_0,
-	.param .u64 a4c_cosf32_param_1,
-	.param .u32 a4c_cosf32_param_2
+	.param .u32 a4c_cosf32_param_1,
+	.param .u64 a4c_cosf32_param_2
 )
 {
 	.local .align 4 .b8 	__local_depot17[28];
@@ -837,8 +837,8 @@ $L__BB16_3:
 
 	mov.u64 	%SPL, __local_depot17;
 	ld.param.u64 	%rd11, [a4c_cosf32_param_0];
-	ld.param.u64 	%rd12, [a4c_cosf32_param_1];
-	ld.param.u32 	%r25, [a4c_cosf32_param_2];
+	ld.param.u32 	%r25, [a4c_cosf32_param_1];
+	ld.param.u64 	%rd12, [a4c_cosf32_param_2];
 	add.u64 	%rd1, %SPL, 0;
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r26, %ctaid.x;
@@ -849,8 +849,8 @@ $L__BB16_3:
 
 	mov.u32 	%r28, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r28;
-	cvta.to.global.u64 	%rd2, %rd11;
-	cvta.to.global.u64 	%rd3, %rd12;
+	cvta.to.global.u64 	%rd2, %rd12;
+	cvta.to.global.u64 	%rd3, %rd11;
 	mov.f32 	%f16, 0fBFC90FDA;
 	mov.f32 	%f18, 0fB3A22168;
 	mov.f32 	%f20, 0fA7C234C5;
@@ -1002,8 +1002,8 @@ $L__BB17_15:
 	// .globl	a4c_sinf32
 .visible .entry a4c_sinf32(
 	.param .u64 a4c_sinf32_param_0,
-	.param .u64 a4c_sinf32_param_1,
-	.param .u32 a4c_sinf32_param_2
+	.param .u32 a4c_sinf32_param_1,
+	.param .u64 a4c_sinf32_param_2
 )
 {
 	.local .align 4 .b8 	__local_depot18[28];
@@ -1018,8 +1018,8 @@ $L__BB17_15:
 
 	mov.u64 	%SPL, __local_depot18;
 	ld.param.u64 	%rd11, [a4c_sinf32_param_0];
-	ld.param.u64 	%rd12, [a4c_sinf32_param_1];
-	ld.param.u32 	%r24, [a4c_sinf32_param_2];
+	ld.param.u32 	%r24, [a4c_sinf32_param_1];
+	ld.param.u64 	%rd12, [a4c_sinf32_param_2];
 	add.u64 	%rd1, %SPL, 0;
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r25, %ctaid.x;
@@ -1030,8 +1030,8 @@ $L__BB17_15:
 
 	mov.u32 	%r27, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r27;
-	cvta.to.global.u64 	%rd2, %rd11;
-	cvta.to.global.u64 	%rd3, %rd12;
+	cvta.to.global.u64 	%rd2, %rd12;
+	cvta.to.global.u64 	%rd3, %rd11;
 	mov.f32 	%f16, 0fBFC90FDA;
 	mov.f32 	%f18, 0fB3A22168;
 	mov.f32 	%f20, 0fA7C234C5;
@@ -1182,8 +1182,8 @@ $L__BB18_15:
 	// .globl	a4c_tanf32
 .visible .entry a4c_tanf32(
 	.param .u64 a4c_tanf32_param_0,
-	.param .u64 a4c_tanf32_param_1,
-	.param .u32 a4c_tanf32_param_2
+	.param .u32 a4c_tanf32_param_1,
+	.param .u64 a4c_tanf32_param_2
 )
 {
 	.local .align 4 .b8 	__local_depot19[28];
@@ -1198,8 +1198,8 @@ $L__BB18_15:
 
 	mov.u64 	%SPL, __local_depot19;
 	ld.param.u64 	%rd11, [a4c_tanf32_param_0];
-	ld.param.u64 	%rd12, [a4c_tanf32_param_1];
-	ld.param.u32 	%r23, [a4c_tanf32_param_2];
+	ld.param.u32 	%r23, [a4c_tanf32_param_1];
+	ld.param.u64 	%rd12, [a4c_tanf32_param_2];
 	add.u64 	%rd1, %SPL, 0;
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r24, %ctaid.x;
@@ -1210,8 +1210,8 @@ $L__BB18_15:
 
 	mov.u32 	%r26, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r26;
-	cvta.to.global.u64 	%rd2, %rd11;
-	cvta.to.global.u64 	%rd3, %rd12;
+	cvta.to.global.u64 	%rd2, %rd12;
+	cvta.to.global.u64 	%rd3, %rd11;
 	mov.f32 	%f9, 0fBFC90FDA;
 	mov.f32 	%f11, 0fB3A22168;
 	mov.f32 	%f13, 0fA7C234C5;
@@ -1357,8 +1357,8 @@ $L__BB19_11:
 	// .globl	a4c_acosf32
 .visible .entry a4c_acosf32(
 	.param .u64 a4c_acosf32_param_0,
-	.param .u64 a4c_acosf32_param_1,
-	.param .u32 a4c_acosf32_param_2
+	.param .u32 a4c_acosf32_param_1,
+	.param .u64 a4c_acosf32_param_2
 )
 {
 	.reg .pred 	%p<5>;
@@ -1368,8 +1368,8 @@ $L__BB19_11:
 
 
 	ld.param.u64 	%rd3, [a4c_acosf32_param_0];
-	ld.param.u64 	%rd4, [a4c_acosf32_param_1];
-	ld.param.u32 	%r6, [a4c_acosf32_param_2];
+	ld.param.u32 	%r6, [a4c_acosf32_param_1];
+	ld.param.u64 	%rd4, [a4c_acosf32_param_2];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -1377,8 +1377,8 @@ $L__BB19_11:
 	setp.ge.s32 	%p1, %r10, %r6;
 	@%p1 bra 	$L__BB20_3;
 
-	cvta.to.global.u64 	%rd1, %rd4;
-	cvta.to.global.u64 	%rd2, %rd3;
+	cvta.to.global.u64 	%rd1, %rd3;
+	cvta.to.global.u64 	%rd2, %rd4;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 	mov.f32 	%f3, 0f3F800000;
@@ -1426,8 +1426,8 @@ $L__BB20_3:
 	// .globl	a4c_asinf32
 .visible .entry a4c_asinf32(
 	.param .u64 a4c_asinf32_param_0,
-	.param .u64 a4c_asinf32_param_1,
-	.param .u32 a4c_asinf32_param_2
+	.param .u32 a4c_asinf32_param_1,
+	.param .u64 a4c_asinf32_param_2
 )
 {
 	.reg .pred 	%p<5>;
@@ -1437,8 +1437,8 @@ $L__BB20_3:
 
 
 	ld.param.u64 	%rd3, [a4c_asinf32_param_0];
-	ld.param.u64 	%rd4, [a4c_asinf32_param_1];
-	ld.param.u32 	%r6, [a4c_asinf32_param_2];
+	ld.param.u32 	%r6, [a4c_asinf32_param_1];
+	ld.param.u64 	%rd4, [a4c_asinf32_param_2];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -1446,8 +1446,8 @@ $L__BB20_3:
 	setp.ge.s32 	%p1, %r14, %r6;
 	@%p1 bra 	$L__BB21_3;
 
-	cvta.to.global.u64 	%rd1, %rd4;
-	cvta.to.global.u64 	%rd2, %rd3;
+	cvta.to.global.u64 	%rd1, %rd3;
+	cvta.to.global.u64 	%rd2, %rd4;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 	mov.f32 	%f3, 0f3F800000;
@@ -1498,8 +1498,8 @@ $L__BB21_3:
 	// .globl	a4c_atanf32
 .visible .entry a4c_atanf32(
 	.param .u64 a4c_atanf32_param_0,
-	.param .u64 a4c_atanf32_param_1,
-	.param .u32 a4c_atanf32_param_2
+	.param .u32 a4c_atanf32_param_1,
+	.param .u64 a4c_atanf32_param_2
 )
 {
 	.reg .pred 	%p<6>;
@@ -1509,8 +1509,8 @@ $L__BB21_3:
 
 
 	ld.param.u64 	%rd4, [a4c_atanf32_param_0];
-	ld.param.u64 	%rd5, [a4c_atanf32_param_1];
-	ld.param.u32 	%r6, [a4c_atanf32_param_2];
+	ld.param.u32 	%r6, [a4c_atanf32_param_1];
+	ld.param.u64 	%rd5, [a4c_atanf32_param_2];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -1518,8 +1518,8 @@ $L__BB21_3:
 	setp.ge.s32 	%p1, %r15, %r6;
 	@%p1 bra 	$L__BB22_5;
 
-	cvta.to.global.u64 	%rd1, %rd5;
-	cvta.to.global.u64 	%rd2, %rd4;
+	cvta.to.global.u64 	%rd1, %rd4;
+	cvta.to.global.u64 	%rd2, %rd5;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 	mov.f32 	%f6, 0fC0B59883;
@@ -1576,9 +1576,9 @@ $L__BB22_5:
 	// .globl	a4c_atan2f32
 .visible .entry a4c_atan2f32(
 	.param .u64 a4c_atan2f32_param_0,
-	.param .u64 a4c_atan2f32_param_1,
+	.param .u32 a4c_atan2f32_param_1,
 	.param .u64 a4c_atan2f32_param_2,
-	.param .u32 a4c_atan2f32_param_3
+	.param .u64 a4c_atan2f32_param_3
 )
 {
 	.reg .pred 	%p<13>;
@@ -1588,9 +1588,9 @@ $L__BB22_5:
 
 
 	ld.param.u64 	%rd5, [a4c_atan2f32_param_0];
-	ld.param.u64 	%rd6, [a4c_atan2f32_param_1];
-	ld.param.u64 	%rd7, [a4c_atan2f32_param_2];
-	ld.param.u32 	%r8, [a4c_atan2f32_param_3];
+	ld.param.u32 	%r8, [a4c_atan2f32_param_1];
+	ld.param.u64 	%rd6, [a4c_atan2f32_param_2];
+	ld.param.u64 	%rd7, [a4c_atan2f32_param_3];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r9, %ctaid.x;
 	mov.u32 	%r10, %tid.x;
@@ -1598,9 +1598,9 @@ $L__BB22_5:
 	setp.ge.s32 	%p1, %r21, %r8;
 	@%p1 bra 	$L__BB23_8;
 
-	cvta.to.global.u64 	%rd1, %rd7;
-	cvta.to.global.u64 	%rd2, %rd6;
-	cvta.to.global.u64 	%rd3, %rd5;
+	cvta.to.global.u64 	%rd1, %rd5;
+	cvta.to.global.u64 	%rd2, %rd7;
+	cvta.to.global.u64 	%rd3, %rd6;
 	mov.u32 	%r11, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r11;
 
@@ -1692,8 +1692,8 @@ $L__BB23_8:
 	// .globl	a4c_coshf32
 .visible .entry a4c_coshf32(
 	.param .u64 a4c_coshf32_param_0,
-	.param .u64 a4c_coshf32_param_1,
-	.param .u32 a4c_coshf32_param_2
+	.param .u32 a4c_coshf32_param_1,
+	.param .u64 a4c_coshf32_param_2
 )
 {
 	.reg .pred 	%p<5>;
@@ -1703,8 +1703,8 @@ $L__BB23_8:
 
 
 	ld.param.u64 	%rd3, [a4c_coshf32_param_0];
-	ld.param.u64 	%rd4, [a4c_coshf32_param_1];
-	ld.param.u32 	%r6, [a4c_coshf32_param_2];
+	ld.param.u32 	%r6, [a4c_coshf32_param_1];
+	ld.param.u64 	%rd4, [a4c_coshf32_param_2];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -1712,8 +1712,8 @@ $L__BB23_8:
 	setp.ge.s32 	%p1, %r15, %r6;
 	@%p1 bra 	$L__BB24_3;
 
-	cvta.to.global.u64 	%rd1, %rd4;
-	cvta.to.global.u64 	%rd2, %rd3;
+	cvta.to.global.u64 	%rd1, %rd3;
+	cvta.to.global.u64 	%rd2, %rd4;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 	mov.f32 	%f3, 0f3FB8AA3B;
@@ -1762,8 +1762,8 @@ $L__BB24_3:
 	// .globl	a4c_sinhf32
 .visible .entry a4c_sinhf32(
 	.param .u64 a4c_sinhf32_param_0,
-	.param .u64 a4c_sinhf32_param_1,
-	.param .u32 a4c_sinhf32_param_2
+	.param .u32 a4c_sinhf32_param_1,
+	.param .u64 a4c_sinhf32_param_2
 )
 {
 	.reg .pred 	%p<6>;
@@ -1773,8 +1773,8 @@ $L__BB24_3:
 
 
 	ld.param.u64 	%rd4, [a4c_sinhf32_param_0];
-	ld.param.u64 	%rd5, [a4c_sinhf32_param_1];
-	ld.param.u32 	%r6, [a4c_sinhf32_param_2];
+	ld.param.u32 	%r6, [a4c_sinhf32_param_1];
+	ld.param.u64 	%rd5, [a4c_sinhf32_param_2];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -1782,8 +1782,8 @@ $L__BB24_3:
 	setp.ge.s32 	%p1, %r20, %r6;
 	@%p1 bra 	$L__BB25_6;
 
-	cvta.to.global.u64 	%rd1, %rd5;
-	cvta.to.global.u64 	%rd2, %rd4;
+	cvta.to.global.u64 	%rd1, %rd4;
+	cvta.to.global.u64 	%rd2, %rd5;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 	mov.f32 	%f28, 0f394FFF49;
@@ -1860,8 +1860,8 @@ $L__BB25_6:
 	// .globl	a4c_tanhf32
 .visible .entry a4c_tanhf32(
 	.param .u64 a4c_tanhf32_param_0,
-	.param .u64 a4c_tanhf32_param_1,
-	.param .u32 a4c_tanhf32_param_2
+	.param .u32 a4c_tanhf32_param_1,
+	.param .u64 a4c_tanhf32_param_2
 )
 {
 	.reg .pred 	%p<5>;
@@ -1871,8 +1871,8 @@ $L__BB25_6:
 
 
 	ld.param.u64 	%rd4, [a4c_tanhf32_param_0];
-	ld.param.u64 	%rd5, [a4c_tanhf32_param_1];
-	ld.param.u32 	%r6, [a4c_tanhf32_param_2];
+	ld.param.u32 	%r6, [a4c_tanhf32_param_1];
+	ld.param.u64 	%rd5, [a4c_tanhf32_param_2];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -1880,8 +1880,8 @@ $L__BB25_6:
 	setp.ge.s32 	%p1, %r15, %r6;
 	@%p1 bra 	$L__BB26_6;
 
-	cvta.to.global.u64 	%rd1, %rd5;
-	cvta.to.global.u64 	%rd2, %rd4;
+	cvta.to.global.u64 	%rd1, %rd4;
+	cvta.to.global.u64 	%rd2, %rd5;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 	mov.f32 	%f15, 0fBD563CAE;
@@ -1940,8 +1940,8 @@ $L__BB26_6:
 	// .globl	a4c_acoshf32
 .visible .entry a4c_acoshf32(
 	.param .u64 a4c_acoshf32_param_0,
-	.param .u64 a4c_acoshf32_param_1,
-	.param .u32 a4c_acoshf32_param_2
+	.param .u32 a4c_acoshf32_param_1,
+	.param .u64 a4c_acoshf32_param_2
 )
 {
 	.reg .pred 	%p<10>;
@@ -1951,8 +1951,8 @@ $L__BB26_6:
 
 
 	ld.param.u64 	%rd4, [a4c_acoshf32_param_0];
-	ld.param.u64 	%rd5, [a4c_acoshf32_param_1];
-	ld.param.u32 	%r7, [a4c_acoshf32_param_2];
+	ld.param.u32 	%r7, [a4c_acoshf32_param_1];
+	ld.param.u64 	%rd5, [a4c_acoshf32_param_2];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r8, %ctaid.x;
 	mov.u32 	%r9, %tid.x;
@@ -1960,8 +1960,8 @@ $L__BB26_6:
 	setp.ge.s32 	%p1, %r23, %r7;
 	@%p1 bra 	$L__BB27_11;
 
-	cvta.to.global.u64 	%rd1, %rd5;
-	cvta.to.global.u64 	%rd2, %rd4;
+	cvta.to.global.u64 	%rd1, %rd4;
+	cvta.to.global.u64 	%rd2, %rd5;
 	mov.u32 	%r10, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r10;
 	mov.f32 	%f52, 0f34000000;
@@ -2094,8 +2094,8 @@ $L__BB27_11:
 	// .globl	a4c_asinhf32
 .visible .entry a4c_asinhf32(
 	.param .u64 a4c_asinhf32_param_0,
-	.param .u64 a4c_asinhf32_param_1,
-	.param .u32 a4c_asinhf32_param_2
+	.param .u32 a4c_asinhf32_param_1,
+	.param .u64 a4c_asinhf32_param_2
 )
 {
 	.reg .pred 	%p<8>;
@@ -2105,8 +2105,8 @@ $L__BB27_11:
 
 
 	ld.param.u64 	%rd4, [a4c_asinhf32_param_0];
-	ld.param.u64 	%rd5, [a4c_asinhf32_param_1];
-	ld.param.u32 	%r7, [a4c_asinhf32_param_2];
+	ld.param.u32 	%r7, [a4c_asinhf32_param_1];
+	ld.param.u64 	%rd5, [a4c_asinhf32_param_2];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r8, %ctaid.x;
 	mov.u32 	%r9, %tid.x;
@@ -2114,8 +2114,8 @@ $L__BB27_11:
 	setp.ge.s32 	%p1, %r22, %r7;
 	@%p1 bra 	$L__BB28_9;
 
-	cvta.to.global.u64 	%rd1, %rd5;
-	cvta.to.global.u64 	%rd2, %rd4;
+	cvta.to.global.u64 	%rd1, %rd4;
+	cvta.to.global.u64 	%rd2, %rd5;
 	mov.u32 	%r10, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r10;
 	mov.f32 	%f48, 0f3F317218;
@@ -2215,8 +2215,8 @@ $L__BB28_9:
 	// .globl	a4c_atanhf32
 .visible .entry a4c_atanhf32(
 	.param .u64 a4c_atanhf32_param_0,
-	.param .u64 a4c_atanhf32_param_1,
-	.param .u32 a4c_atanhf32_param_2
+	.param .u32 a4c_atanhf32_param_1,
+	.param .u64 a4c_atanhf32_param_2
 )
 {
 	.reg .pred 	%p<8>;
@@ -2226,8 +2226,8 @@ $L__BB28_9:
 
 
 	ld.param.u64 	%rd4, [a4c_atanhf32_param_0];
-	ld.param.u64 	%rd5, [a4c_atanhf32_param_1];
-	ld.param.u32 	%r7, [a4c_atanhf32_param_2];
+	ld.param.u32 	%r7, [a4c_atanhf32_param_1];
+	ld.param.u64 	%rd5, [a4c_atanhf32_param_2];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r8, %ctaid.x;
 	mov.u32 	%r9, %tid.x;
@@ -2235,8 +2235,8 @@ $L__BB28_9:
 	setp.ge.s32 	%p1, %r22, %r7;
 	@%p1 bra 	$L__BB29_7;
 
-	cvta.to.global.u64 	%rd1, %rd5;
-	cvta.to.global.u64 	%rd2, %rd4;
+	cvta.to.global.u64 	%rd1, %rd4;
+	cvta.to.global.u64 	%rd2, %rd5;
 	mov.u32 	%r10, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r10;
 	mov.f32 	%f9, 0f3F800000;
@@ -2327,8 +2327,8 @@ $L__BB29_7:
 	// .globl	a4c_lnf32
 .visible .entry a4c_lnf32(
 	.param .u64 a4c_lnf32_param_0,
-	.param .u64 a4c_lnf32_param_1,
-	.param .u32 a4c_lnf32_param_2
+	.param .u32 a4c_lnf32_param_1,
+	.param .u64 a4c_lnf32_param_2
 )
 {
 	.reg .pred 	%p<6>;
@@ -2338,8 +2338,8 @@ $L__BB29_7:
 
 
 	ld.param.u64 	%rd4, [a4c_lnf32_param_0];
-	ld.param.u64 	%rd5, [a4c_lnf32_param_1];
-	ld.param.u32 	%r6, [a4c_lnf32_param_2];
+	ld.param.u32 	%r6, [a4c_lnf32_param_1];
+	ld.param.u64 	%rd5, [a4c_lnf32_param_2];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -2347,8 +2347,8 @@ $L__BB29_7:
 	setp.ge.s32 	%p1, %r15, %r6;
 	@%p1 bra 	$L__BB30_5;
 
-	cvta.to.global.u64 	%rd1, %rd5;
-	cvta.to.global.u64 	%rd2, %rd4;
+	cvta.to.global.u64 	%rd1, %rd4;
+	cvta.to.global.u64 	%rd2, %rd5;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 	mov.f32 	%f10, 0f34000000;
@@ -2414,8 +2414,8 @@ $L__BB30_5:
 	// .globl	a4c_ln_1pf32
 .visible .entry a4c_ln_1pf32(
 	.param .u64 a4c_ln_1pf32_param_0,
-	.param .u64 a4c_ln_1pf32_param_1,
-	.param .u32 a4c_ln_1pf32_param_2
+	.param .u32 a4c_ln_1pf32_param_1,
+	.param .u64 a4c_ln_1pf32_param_2
 )
 {
 	.reg .pred 	%p<6>;
@@ -2425,8 +2425,8 @@ $L__BB30_5:
 
 
 	ld.param.u64 	%rd2, [a4c_ln_1pf32_param_0];
-	ld.param.u64 	%rd3, [a4c_ln_1pf32_param_1];
-	ld.param.u32 	%r5, [a4c_ln_1pf32_param_2];
+	ld.param.u32 	%r5, [a4c_ln_1pf32_param_1];
+	ld.param.u64 	%rd3, [a4c_ln_1pf32_param_2];
 	mov.u32 	%r6, %ctaid.x;
 	mov.u32 	%r7, %ntid.x;
 	mov.u32 	%r8, %tid.x;
@@ -2434,13 +2434,13 @@ $L__BB30_5:
 	setp.ge.s32 	%p1, %r18, %r5;
 	@%p1 bra 	$L__BB31_7;
 
-	cvta.to.global.u64 	%rd4, %rd2;
+	cvta.to.global.u64 	%rd4, %rd3;
 	mov.f32 	%f7, 0f3F800000;
 	mov.u32 	%r13, 1082130432;
 	mov.f32 	%f11, 0fBF800000;
 	mov.f32 	%f12, 0f3E800000;
 	mov.f32 	%f17, 0f3DD80012;
-	cvta.to.global.u64 	%rd7, %rd3;
+	cvta.to.global.u64 	%rd7, %rd2;
 
 $L__BB31_2:
 	cvt.s64.s32 	%rd1, %r18;
@@ -2509,8 +2509,8 @@ $L__BB31_7:
 	// .globl	a4c_log10f32
 .visible .entry a4c_log10f32(
 	.param .u64 a4c_log10f32_param_0,
-	.param .u64 a4c_log10f32_param_1,
-	.param .u32 a4c_log10f32_param_2
+	.param .u32 a4c_log10f32_param_1,
+	.param .u64 a4c_log10f32_param_2
 )
 {
 	.reg .pred 	%p<6>;
@@ -2520,8 +2520,8 @@ $L__BB31_7:
 
 
 	ld.param.u64 	%rd4, [a4c_log10f32_param_0];
-	ld.param.u64 	%rd5, [a4c_log10f32_param_1];
-	ld.param.u32 	%r6, [a4c_log10f32_param_2];
+	ld.param.u32 	%r6, [a4c_log10f32_param_1];
+	ld.param.u64 	%rd5, [a4c_log10f32_param_2];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -2529,8 +2529,8 @@ $L__BB31_7:
 	setp.ge.s32 	%p1, %r15, %r6;
 	@%p1 bra 	$L__BB32_5;
 
-	cvta.to.global.u64 	%rd1, %rd5;
-	cvta.to.global.u64 	%rd2, %rd4;
+	cvta.to.global.u64 	%rd1, %rd4;
+	cvta.to.global.u64 	%rd2, %rd5;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 	mov.f32 	%f10, 0f34000000;
@@ -2597,8 +2597,8 @@ $L__BB32_5:
 	// .globl	a4c_log2f32
 .visible .entry a4c_log2f32(
 	.param .u64 a4c_log2f32_param_0,
-	.param .u64 a4c_log2f32_param_1,
-	.param .u32 a4c_log2f32_param_2
+	.param .u32 a4c_log2f32_param_1,
+	.param .u64 a4c_log2f32_param_2
 )
 {
 	.reg .pred 	%p<6>;
@@ -2608,8 +2608,8 @@ $L__BB32_5:
 
 
 	ld.param.u64 	%rd4, [a4c_log2f32_param_0];
-	ld.param.u64 	%rd5, [a4c_log2f32_param_1];
-	ld.param.u32 	%r6, [a4c_log2f32_param_2];
+	ld.param.u32 	%r6, [a4c_log2f32_param_1];
+	ld.param.u64 	%rd5, [a4c_log2f32_param_2];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -2617,8 +2617,8 @@ $L__BB32_5:
 	setp.ge.s32 	%p1, %r15, %r6;
 	@%p1 bra 	$L__BB33_5;
 
-	cvta.to.global.u64 	%rd1, %rd5;
-	cvta.to.global.u64 	%rd2, %rd4;
+	cvta.to.global.u64 	%rd1, %rd4;
+	cvta.to.global.u64 	%rd2, %rd5;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 	mov.f32 	%f10, 0f34000000;
@@ -2687,8 +2687,8 @@ $L__BB33_5:
 	// .globl	a4c_expf32
 .visible .entry a4c_expf32(
 	.param .u64 a4c_expf32_param_0,
-	.param .u64 a4c_expf32_param_1,
-	.param .u32 a4c_expf32_param_2
+	.param .u32 a4c_expf32_param_1,
+	.param .u64 a4c_expf32_param_2
 )
 {
 	.reg .pred 	%p<3>;
@@ -2698,8 +2698,8 @@ $L__BB33_5:
 
 
 	ld.param.u64 	%rd3, [a4c_expf32_param_0];
-	ld.param.u64 	%rd4, [a4c_expf32_param_1];
-	ld.param.u32 	%r6, [a4c_expf32_param_2];
+	ld.param.u32 	%r6, [a4c_expf32_param_1];
+	ld.param.u64 	%rd4, [a4c_expf32_param_2];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -2707,8 +2707,8 @@ $L__BB33_5:
 	setp.ge.s32 	%p1, %r12, %r6;
 	@%p1 bra 	$L__BB34_3;
 
-	cvta.to.global.u64 	%rd1, %rd4;
-	cvta.to.global.u64 	%rd2, %rd3;
+	cvta.to.global.u64 	%rd1, %rd3;
+	cvta.to.global.u64 	%rd2, %rd4;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 	mov.f32 	%f2, 0f3F000000;
@@ -2747,8 +2747,8 @@ $L__BB34_3:
 	// .globl	a4c_exp2f32
 .visible .entry a4c_exp2f32(
 	.param .u64 a4c_exp2f32_param_0,
-	.param .u64 a4c_exp2f32_param_1,
-	.param .u32 a4c_exp2f32_param_2
+	.param .u32 a4c_exp2f32_param_1,
+	.param .u64 a4c_exp2f32_param_2
 )
 {
 	.reg .pred 	%p<3>;
@@ -2758,8 +2758,8 @@ $L__BB34_3:
 
 
 	ld.param.u64 	%rd3, [a4c_exp2f32_param_0];
-	ld.param.u64 	%rd4, [a4c_exp2f32_param_1];
-	ld.param.u32 	%r6, [a4c_exp2f32_param_2];
+	ld.param.u32 	%r6, [a4c_exp2f32_param_1];
+	ld.param.u64 	%rd4, [a4c_exp2f32_param_2];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -2767,8 +2767,8 @@ $L__BB34_3:
 	setp.ge.s32 	%p1, %r10, %r6;
 	@%p1 bra 	$L__BB35_3;
 
-	cvta.to.global.u64 	%rd1, %rd4;
-	cvta.to.global.u64 	%rd2, %rd3;
+	cvta.to.global.u64 	%rd1, %rd3;
+	cvta.to.global.u64 	%rd2, %rd4;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 
@@ -2790,8 +2790,8 @@ $L__BB35_3:
 	// .globl	a4c_exp_m1f32
 .visible .entry a4c_exp_m1f32(
 	.param .u64 a4c_exp_m1f32_param_0,
-	.param .u64 a4c_exp_m1f32_param_1,
-	.param .u32 a4c_exp_m1f32_param_2
+	.param .u32 a4c_exp_m1f32_param_1,
+	.param .u64 a4c_exp_m1f32_param_2
 )
 {
 	.reg .pred 	%p<8>;
@@ -2801,8 +2801,8 @@ $L__BB35_3:
 
 
 	ld.param.u64 	%rd3, [a4c_exp_m1f32_param_0];
-	ld.param.u64 	%rd4, [a4c_exp_m1f32_param_1];
-	ld.param.u32 	%r6, [a4c_exp_m1f32_param_2];
+	ld.param.u32 	%r6, [a4c_exp_m1f32_param_1];
+	ld.param.u64 	%rd4, [a4c_exp_m1f32_param_2];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -2810,8 +2810,8 @@ $L__BB35_3:
 	setp.ge.s32 	%p1, %r10, %r6;
 	@%p1 bra 	$L__BB36_3;
 
-	cvta.to.global.u64 	%rd1, %rd4;
-	cvta.to.global.u64 	%rd2, %rd3;
+	cvta.to.global.u64 	%rd1, %rd3;
+	cvta.to.global.u64 	%rd2, %rd4;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 	mov.f32 	%f7, 0f3F317200;
@@ -2868,8 +2868,8 @@ $L__BB36_3:
 	// .globl	a4c_sqrtf32
 .visible .entry a4c_sqrtf32(
 	.param .u64 a4c_sqrtf32_param_0,
-	.param .u64 a4c_sqrtf32_param_1,
-	.param .u32 a4c_sqrtf32_param_2
+	.param .u32 a4c_sqrtf32_param_1,
+	.param .u64 a4c_sqrtf32_param_2
 )
 {
 	.reg .pred 	%p<3>;
@@ -2879,8 +2879,8 @@ $L__BB36_3:
 
 
 	ld.param.u64 	%rd3, [a4c_sqrtf32_param_0];
-	ld.param.u64 	%rd4, [a4c_sqrtf32_param_1];
-	ld.param.u32 	%r6, [a4c_sqrtf32_param_2];
+	ld.param.u32 	%r6, [a4c_sqrtf32_param_1];
+	ld.param.u64 	%rd4, [a4c_sqrtf32_param_2];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -2888,8 +2888,8 @@ $L__BB36_3:
 	setp.ge.s32 	%p1, %r10, %r6;
 	@%p1 bra 	$L__BB37_3;
 
-	cvta.to.global.u64 	%rd1, %rd4;
-	cvta.to.global.u64 	%rd2, %rd3;
+	cvta.to.global.u64 	%rd1, %rd3;
+	cvta.to.global.u64 	%rd2, %rd4;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 
@@ -2911,8 +2911,8 @@ $L__BB37_3:
 	// .globl	a4c_cbrtf32
 .visible .entry a4c_cbrtf32(
 	.param .u64 a4c_cbrtf32_param_0,
-	.param .u64 a4c_cbrtf32_param_1,
-	.param .u32 a4c_cbrtf32_param_2
+	.param .u32 a4c_cbrtf32_param_1,
+	.param .u64 a4c_cbrtf32_param_2
 )
 {
 	.reg .pred 	%p<5>;
@@ -2922,8 +2922,8 @@ $L__BB37_3:
 
 
 	ld.param.u64 	%rd3, [a4c_cbrtf32_param_0];
-	ld.param.u64 	%rd4, [a4c_cbrtf32_param_1];
-	ld.param.u32 	%r6, [a4c_cbrtf32_param_2];
+	ld.param.u32 	%r6, [a4c_cbrtf32_param_1];
+	ld.param.u64 	%rd4, [a4c_cbrtf32_param_2];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -2931,8 +2931,8 @@ $L__BB37_3:
 	setp.ge.s32 	%p1, %r10, %r6;
 	@%p1 bra 	$L__BB38_3;
 
-	cvta.to.global.u64 	%rd1, %rd4;
-	cvta.to.global.u64 	%rd2, %rd3;
+	cvta.to.global.u64 	%rd1, %rd3;
+	cvta.to.global.u64 	%rd2, %rd4;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 	mov.f32 	%f10, 0fBEAAAAAB;
@@ -2969,9 +2969,9 @@ $L__BB38_3:
 	// .globl	a4c_powff32
 .visible .entry a4c_powff32(
 	.param .u64 a4c_powff32_param_0,
-	.param .u64 a4c_powff32_param_1,
+	.param .u32 a4c_powff32_param_1,
 	.param .u64 a4c_powff32_param_2,
-	.param .u32 a4c_powff32_param_3
+	.param .u64 a4c_powff32_param_3
 )
 {
 	.reg .pred 	%p<30>;
@@ -2981,9 +2981,9 @@ $L__BB38_3:
 
 
 	ld.param.u64 	%rd5, [a4c_powff32_param_0];
-	ld.param.u64 	%rd6, [a4c_powff32_param_1];
-	ld.param.u64 	%rd7, [a4c_powff32_param_2];
-	ld.param.u32 	%r6, [a4c_powff32_param_3];
+	ld.param.u32 	%r6, [a4c_powff32_param_1];
+	ld.param.u64 	%rd6, [a4c_powff32_param_2];
+	ld.param.u64 	%rd7, [a4c_powff32_param_3];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -2991,9 +2991,9 @@ $L__BB38_3:
 	setp.ge.s32 	%p2, %r36, %r6;
 	@%p2 bra 	$L__BB39_17;
 
-	cvta.to.global.u64 	%rd1, %rd7;
-	cvta.to.global.u64 	%rd2, %rd6;
-	cvta.to.global.u64 	%rd3, %rd5;
+	cvta.to.global.u64 	%rd1, %rd5;
+	cvta.to.global.u64 	%rd2, %rd7;
+	cvta.to.global.u64 	%rd3, %rd6;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 
@@ -3194,7 +3194,7 @@ $L__BB39_12:
 $L__BB39_16:
 	cvt.s64.s32 	%rd14, %r36;
 	mul.wide.s32 	%rd13, %r36, 4;
-	ld.param.u32 	%r35, [a4c_powff32_param_3];
+	ld.param.u32 	%r35, [a4c_powff32_param_1];
 	setp.eq.f32 	%p26, %f1, 0f00000000;
 	setp.eq.f32 	%p27, %f3, 0f3F800000;
 	or.pred  	%p28, %p27, %p26;
@@ -3213,9 +3213,9 @@ $L__BB39_17:
 	// .globl	a4c_hypotf32
 .visible .entry a4c_hypotf32(
 	.param .u64 a4c_hypotf32_param_0,
-	.param .u64 a4c_hypotf32_param_1,
+	.param .u32 a4c_hypotf32_param_1,
 	.param .u64 a4c_hypotf32_param_2,
-	.param .u32 a4c_hypotf32_param_3
+	.param .u64 a4c_hypotf32_param_3
 )
 {
 	.reg .pred 	%p<5>;
@@ -3225,9 +3225,9 @@ $L__BB39_17:
 
 
 	ld.param.u64 	%rd4, [a4c_hypotf32_param_0];
-	ld.param.u64 	%rd5, [a4c_hypotf32_param_1];
-	ld.param.u64 	%rd6, [a4c_hypotf32_param_2];
-	ld.param.u32 	%r6, [a4c_hypotf32_param_3];
+	ld.param.u32 	%r6, [a4c_hypotf32_param_1];
+	ld.param.u64 	%rd5, [a4c_hypotf32_param_2];
+	ld.param.u64 	%rd6, [a4c_hypotf32_param_3];
 	mov.u32 	%r1, %ntid.x;
 	mov.u32 	%r7, %ctaid.x;
 	mov.u32 	%r8, %tid.x;
@@ -3235,9 +3235,9 @@ $L__BB39_17:
 	setp.ge.s32 	%p1, %r18, %r6;
 	@%p1 bra 	$L__BB40_3;
 
-	cvta.to.global.u64 	%rd1, %rd6;
-	cvta.to.global.u64 	%rd2, %rd5;
-	cvta.to.global.u64 	%rd3, %rd4;
+	cvta.to.global.u64 	%rd1, %rd4;
+	cvta.to.global.u64 	%rd2, %rd6;
+	cvta.to.global.u64 	%rd3, %rd5;
 	mov.u32 	%r9, %nctaid.x;
 	mul.lo.s32 	%r3, %r1, %r9;
 

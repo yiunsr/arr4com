@@ -14,16 +14,16 @@ macro_rules! InterCuda{
         let mut r = unsafe { DeviceBuffer::uninitialized(DLEN).unwrap() };
         // r.copy_from(&ret).unwrap();
 
-        let module_data = CString::new(include_str!("./res/al_f32.ptx")).unwrap();
+        let module_data = CString::new(include_str!("./res/cuda_f32.ptx")).unwrap();
         let module = Module::load_from_string(&module_data).unwrap();
         let stream = Stream::new(StreamFlags::NON_BLOCKING, None).unwrap();
 
         unsafe {
             // Launch the `arr4com_add` function with one block containing one thread on the given stream.
             launch!(module.$F<<<1, 256, 0, stream>>>(
-                x.as_device_ptr(),
                 r.as_device_ptr(),
-                DLEN // Length
+                DLEN, // Length
+                x.as_device_ptr()
             )).unwrap();
         }
     
@@ -41,17 +41,17 @@ macro_rules! InterCuda{
         let mut r = unsafe { DeviceBuffer::uninitialized(DLEN).unwrap() };
         // r.copy_from(&ret).unwrap();
 
-        let module_data = CString::new(include_str!("./res/al_f32.ptx")).unwrap();
+        let module_data = CString::new(include_str!("./res/cuda_f32.ptx")).unwrap();
         let module = Module::load_from_string(&module_data).unwrap();
         let stream = Stream::new(StreamFlags::NON_BLOCKING, None).unwrap();
 
         unsafe {
             // Launch the `arr4com_add` function with one block containing one thread on the given stream.
             launch!(module.$F<<<1, 256, 0, stream>>>(
-                x.as_device_ptr(),
-                y.as_device_ptr(),
                 r.as_device_ptr(),
-                DLEN // Length
+                DLEN, // Length
+                x.as_device_ptr(),
+                y.as_device_ptr()
             )).unwrap();
         }
     
@@ -72,18 +72,18 @@ macro_rules! InterCuda{
         let mut r = unsafe { DeviceBuffer::uninitialized(DLEN).unwrap() };
         // r.copy_from(&ret).unwrap();
 
-        let module_data = CString::new(include_str!("./res/al_f32.ptx")).unwrap();
+        let module_data = CString::new(include_str!("./res/cuda_f32.ptx")).unwrap();
         let module = Module::load_from_string(&module_data).unwrap();
         let stream = Stream::new(StreamFlags::NON_BLOCKING, None).unwrap();
 
         unsafe {
             // Launch the `arr4com_add` function with one block containing one thread on the given stream.
             launch!(module.$F<<<1, 256, 0, stream>>>(
+                r.as_device_ptr(),
+                DLEN, // Length
                 x.as_device_ptr(),
                 y.as_device_ptr(),
-                z.as_device_ptr(),
-                r.as_device_ptr(),
-                DLEN // Length
+                z.as_device_ptr()
             )).unwrap();
         }
     
@@ -128,17 +128,17 @@ impl<const DLEN: usize> Arr4ComFloat<f32, DLEN> for F32Cuda<DLEN>{
         let mut r = unsafe { DeviceBuffer::uninitialized(DLEN).unwrap() };
         // r.copy_from(&ret).unwrap();
 
-        let module_data = CString::new(include_str!("./res/al_f32.ptx")).unwrap();
+        let module_data = CString::new(include_str!("./res/cuda_f32.ptx")).unwrap();
         let module = Module::load_from_string(&module_data).unwrap();
         let stream = Stream::new(StreamFlags::NON_BLOCKING, None).unwrap();
 
         unsafe {
             // Launch the `arr4com_add` function with one block containing one thread on the given stream.
             launch!(module.a4c_addf32<<<1, 256, 0, stream>>>(
-                x.as_device_ptr(),
-                y.as_device_ptr(),
                 r.as_device_ptr(),
-                DLEN // Length
+                DLEN, // Length
+                x.as_device_ptr(),
+                y.as_device_ptr()
             )).unwrap();
         }
     
