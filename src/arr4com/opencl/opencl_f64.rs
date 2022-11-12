@@ -60,25 +60,25 @@ macro_rules! InterOpencl{
 
 
 
-impl<const DLEN: usize> OpenclArr4Float<f64, DLEN>{
-    pub fn newf64() -> Self{
+impl OpenclArr4Float<f64>{
+    pub fn newf64(dlen: usize) -> Self{
         let src = include_str!("./res/opencl_f64.cl");
         let pro_que =  ProQue::builder()
         .src(src)
-        .dims(DLEN)
+        .dims(dlen)
         .build().unwrap();
         OpenclArr4Float {
-            dlen: DLEN,
+            dlen,
             nerver_use: 0f64, pro_que,
         }
     }
 }
 
 
-type F32Opencl<const DLEN: usize> = OpenclArr4Float<f64, DLEN>;
+type F32Opencl = OpenclArr4Float<f64>;
 
-impl<const DLEN: usize> Arr4ComFloat<f64, DLEN> for F32Opencl<DLEN>{
-    fn add(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+impl Arr4ComFloat<f64> for F32Opencl{
+    fn add(&self, ret: &mut [Float], opr1: &[Float], opr2: &[Float]){
         let out = self.pro_que.create_buffer::<f64>().unwrap();
         let x = self.pro_que.create_buffer::<f64>().unwrap();
         x.write(&opr1[..]).enq().unwrap();
@@ -95,133 +95,133 @@ impl<const DLEN: usize> Arr4ComFloat<f64, DLEN> for F32Opencl<DLEN>{
         out.read(&mut ret[..]).enq().unwrap();
     }
 
-    fn sub(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+    fn sub(&self, ret: &mut [Float], opr1: &[Float], opr2: &[Float]){
         InterOpencl!(self, ret, opr1, opr2, "a4c_subf64");
     }
 
-    fn mul(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+    fn mul(&self, ret: &mut [Float], opr1: &[Float], opr2: &[Float]){
         InterOpencl!(self, ret, opr1, opr2, "a4c_mulf64");
     }
 
-    fn div(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+    fn div(&self, ret: &mut [Float], opr1: &[Float], opr2: &[Float]){
         InterOpencl!(self, ret, opr1, opr2, "a4c_divf64");
     }
 
-    fn mul_add(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN], opr3: [Float;DLEN]){
+    fn mul_add(&self, ret: &mut [Float], opr1: &[Float], opr2: &[Float], opr3: &[Float]){
         InterOpencl!(self, ret, opr1, opr2, opr3, "a4c_mul_addf64");
     }
-    fn gtf(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+    fn gtf(&self, ret: &mut [Float], opr1: &[Float], opr2: &[Float]){
         InterOpencl!(self, ret, opr1, opr2, "a4c_gtff64");
     }
-    fn gtef(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+    fn gtef(&self, ret: &mut [Float], opr1: &[Float], opr2: &[Float]){
         InterOpencl!(self, ret, opr1, opr2, "a4c_gteff64");
     }
-    fn ltf(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+    fn ltf(&self, ret: &mut [Float], opr1: &[Float], opr2: &[Float]){
         InterOpencl!(self, ret, opr1, opr2, "a4c_ltff64");
     }
-    fn ltef(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+    fn ltef(&self, ret: &mut [Float], opr1: &[Float], opr2: &[Float]){
         InterOpencl!(self, ret, opr1, opr2, "a4c_lteff64");
     }
 
-    fn ceil(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn ceil(&self, ret: &mut [Float], opr1: &[Float]){
         InterOpencl!(self, ret, opr1, "a4c_ceilf64");
     }
-    fn floor(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn floor(&self, ret: &mut [Float], opr1: &[Float]){
         InterOpencl!(self, ret, opr1, "a4c_floorf64");
     }
-    fn round(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn round(&self, ret: &mut [Float], opr1: &[Float]){
         InterOpencl!(self, ret, opr1, "a4c_roundf64");
     }
-    fn trunc(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn trunc(&self, ret: &mut [Float], opr1: &[Float]){
         InterOpencl!(self, ret, opr1, "a4c_truncf64");
     }
-    fn abs(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn abs(&self, ret: &mut [Float], opr1: &[Float]){
         InterOpencl!(self, ret, opr1, "a4c_absf64");
     }
-    fn max(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+    fn max(&self, ret: &mut [Float], opr1: &[Float], opr2: &[Float]){
         InterOpencl!(self, ret, opr1, opr2, "a4c_maxf64");
     }
-    fn min(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+    fn min(&self, ret: &mut [Float], opr1: &[Float], opr2: &[Float]){
         InterOpencl!(self, ret, opr1, opr2, "a4c_minf64");
     }
-    fn copysign(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+    fn copysign(&self, ret: &mut [Float], opr1: &[Float], opr2: &[Float]){
         InterOpencl!(self, ret, opr1, opr2, "a4c_copysignf64");
     }
 
-    fn cos(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn cos(&self, ret: &mut [Float], opr1: &[Float]){
         InterOpencl!(self, ret, opr1, "a4c_cosf64");
     }
-    fn sin(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn sin(&self, ret: &mut [Float], opr1: &[Float]){
         InterOpencl!(self, ret, opr1, "a4c_sinf64");
     }
-    fn tan(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn tan(&self, ret: &mut [Float], opr1: &[Float]){
         InterOpencl!(self, ret, opr1, "a4c_tanf64");
     }
-    fn acos(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn acos(&self, ret: &mut [Float], opr1: &[Float]){
         InterOpencl!(self, ret, opr1, "a4c_acosf64");
     }
-    fn asin(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn asin(&self, ret: &mut [Float], opr1: &[Float]){
         InterOpencl!(self, ret, opr1, "a4c_asinf64");
     }
-    fn atan(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn atan(&self, ret: &mut [Float], opr1: &[Float]){
         InterOpencl!(self, ret, opr1, "a4c_atanf64");
     }
-    fn atan2(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+    fn atan2(&self, ret: &mut [Float], opr1: &[Float], opr2: &[Float]){
         InterOpencl!(self, ret, opr1, opr2, "a4c_atan2f64");
     }
-    fn cosh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn cosh(&self, ret: &mut [Float], opr1: &[Float]){
         InterOpencl!(self, ret, opr1, "a4c_coshf64");
     }
-    fn sinh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn sinh(&self, ret: &mut [Float], opr1: &[Float]){
         InterOpencl!(self, ret, opr1, "a4c_sinhf64");
     }
-    fn tanh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn tanh(&self, ret: &mut [Float], opr1: &[Float]){
         InterOpencl!(self, ret, opr1, "a4c_tanhf64");
     }
-    fn acosh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn acosh(&self, ret: &mut [Float], opr1: &[Float]){
         InterOpencl!(self, ret, opr1, "a4c_acoshf64");
     }
-    fn asinh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn asinh(&self, ret: &mut [Float], opr1: &[Float]){
         InterOpencl!(self, ret, opr1, "a4c_asinhf64");
     }
-    fn atanh(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn atanh(&self, ret: &mut [Float], opr1: &[Float]){
         InterOpencl!(self, ret, opr1, "a4c_atanhf64");
     }
 
-    fn ln(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn ln(&self, ret: &mut [Float], opr1: &[Float]){
         InterOpencl!(self, ret, opr1, "a4c_lnf64");
     }
-    fn ln_1p(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn ln_1p(&self, ret: &mut [Float], opr1: &[Float]){
         InterOpencl!(self, ret, opr1, "a4c_ln_1pf64");
     }
-    fn log10(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn log10(&self, ret: &mut [Float], opr1: &[Float]){
         InterOpencl!(self, ret, opr1, "a4c_log10f64");
     }
-    fn log2(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn log2(&self, ret: &mut [Float], opr1: &[Float]){
         InterOpencl!(self, ret, opr1, "a4c_log2f64");
     }
 
-    fn exp(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn exp(&self, ret: &mut [Float], opr1: &[Float]){
         InterOpencl!(self, ret, opr1, "a4c_expf64");
     }
-    fn exp2(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn exp2(&self, ret: &mut [Float], opr1: &[Float]){
         InterOpencl!(self, ret, opr1, "a4c_exp2f64");
     }
-    fn exp_m1(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn exp_m1(&self, ret: &mut [Float], opr1: &[Float]){
         InterOpencl!(self, ret, opr1, "a4c_exp_m1f64");
     }
 
-    fn sqrt(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn sqrt(&self, ret: &mut [Float], opr1: &[Float]){
         InterOpencl!(self, ret, opr1, "a4c_sqrtf64");
     }
-    fn cbrt(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN]){
+    fn cbrt(&self, ret: &mut [Float], opr1: &[Float]){
         InterOpencl!(self, ret, opr1, "a4c_cbrtf64");
     }
 
-    fn powf(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+    fn powf(&self, ret: &mut [Float], opr1: &[Float], opr2: &[Float]){
         InterOpencl!(self, ret, opr1, opr2, "a4c_powff64");
     }
-    fn hypot(&self, ret: &mut [Float;DLEN], opr1: [Float;DLEN], opr2: [Float;DLEN]){
+    fn hypot(&self, ret: &mut [Float], opr1: &[Float], opr2: &[Float]){
         InterOpencl!(self, ret, opr1, opr2, "a4c_hypotf64");
     }
     

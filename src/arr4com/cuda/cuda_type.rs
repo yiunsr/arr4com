@@ -1,7 +1,7 @@
 use rustacuda::prelude::*;
 
-
-pub struct CudaArr4Float<T, const DLEN: usize>{
+pub struct CudaArr4Float<T>{
+    pub dlen: usize,
     #[allow(dead_code)]
     pub nerver_use:T,
     #[allow(dead_code)]
